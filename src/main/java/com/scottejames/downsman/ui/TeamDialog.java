@@ -5,20 +5,33 @@ import com.scottejames.downsman.model.SupportModel;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
+import com.scottejames.downsman.ui.validators.PhoneOrEmailValidator;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.value.ValueChangeMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TeamDialog extends Dialog {
+
+
+    private static final String ERROR = "error";
+    private static final String OK = "ok";
+
     private TeamService         service             = ServiceManager.getInstance().getTeamService();
     private TeamModel           model               = null;
     private Binder<TeamModel>   binder              = new Binder<>(TeamModel.class);
@@ -75,8 +88,32 @@ public class TeamDialog extends Dialog {
         add(new Label("Team Phones"));
 
         FormLayout teamPhoneForm = new FormLayout();
-        addTextField(teamPhoneForm,"Active Phone","activeMobile");
-        addTextField(teamPhoneForm,"Backup Phone","backupMobile");
+
+
+        TextField activePhone = new TextField();
+        Label activePhoneStatus = new Label();
+
+        activePhone.setValueChangeMode(ValueChangeMode.ON_BLUR);
+        teamPhoneForm.addFormItem(activePhone,"Active Phone");
+        teamPhoneForm.addFormItem(activePhoneStatus, "");
+        binder.forField(activePhone)
+                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withStatusLabel(activePhoneStatus)
+                .bind("activeMobile");
+
+        TextField backupPhone = new TextField();
+        Label backupPhoneStatus = new Label();
+
+        backupPhone.setValueChangeMode(ValueChangeMode.ON_BLUR);
+        teamPhoneForm.addFormItem(backupPhone,"Backup Phone");
+        teamPhoneForm.addFormItem(backupPhoneStatus, "");
+        binder.forField(backupPhone)
+                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withStatusLabel(backupPhoneStatus)
+                .bind("backupMobile");
+
+
+
         add(teamPhoneForm);
     }
     private void setupTeamDetails(){
@@ -237,10 +274,49 @@ public class TeamDialog extends Dialog {
     private void setupEmergencyContact(){
         FormLayout          emergencyContactForm = new FormLayout();
         add(new Label("Emergency Contact"));
-        addTextField(emergencyContactForm,"Name", "emergencyContactName" );
-        addTextField(emergencyContactForm,"Email", "emergencyContactEmail" );
-        addTextField(emergencyContactForm,"Mobile", "emergencyContactMobile");
-        addTextField(emergencyContactForm,"LandLine","emergencyContactLandline" );
+
+        TextField name = new TextField();
+        Label nameStatus = new Label();
+
+        name.setValueChangeMode(ValueChangeMode.EAGER);
+        emergencyContactForm.addFormItem(name,"Name");
+        emergencyContactForm.addFormItem(nameStatus, "");
+        binder.forField(name)
+                .withStatusLabel(nameStatus)
+                .bind("emergencyContactName");
+
+        TextField email = new TextField();
+        Label emailStatus = new Label();
+
+        email.setValueChangeMode(ValueChangeMode.ON_BLUR);
+        emergencyContactForm.addFormItem(email,"Email");
+        emergencyContactForm.addFormItem(emailStatus, "");
+        binder.forField(email)
+                .withValidator(new PhoneOrEmailValidator("That does not look like an email"))
+                .withStatusLabel(emailStatus)
+                .bind("emergencyContactEmail");
+
+        TextField mobilePhone = new TextField();
+        Label mobilePhoneStatus = new Label();
+
+        mobilePhone.setValueChangeMode(ValueChangeMode.ON_BLUR);
+        emergencyContactForm.addFormItem(mobilePhone,"Mobile");
+        emergencyContactForm.addFormItem(mobilePhoneStatus, "");
+        binder.forField(mobilePhone)
+                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withStatusLabel(mobilePhoneStatus)
+                .bind("emergencyContactMobile");
+
+        TextField landLinePhone = new TextField();
+        Label landlinePhoneStatus = new Label();
+
+        landLinePhone.setValueChangeMode(ValueChangeMode.ON_BLUR);
+        emergencyContactForm.addFormItem(landLinePhone,"Landline");
+        emergencyContactForm.addFormItem(landlinePhoneStatus, "");
+        binder.forField(landLinePhone)
+                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withStatusLabel(landlinePhoneStatus)
+                .bind("emergencyContactLandline");
 
         add(emergencyContactForm);
     }
@@ -255,24 +331,44 @@ public class TeamDialog extends Dialog {
     }
 
     private void saveForm(){
-        try {
-            binder.writeBean(model);
-        } catch (ValidationException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Save Form");
-        if (model.isPersisted()==true)
-            service.update(model);
-        else
-            service.add(model);
-        onSave.run();
-        close();
 
+            if (binder.writeBeanIfValid(model)){
+                if (model.isPersisted()==true)
+                    service.update(model);
+                else
+                    service.add(model);
+                showNotification("Team Saved Successfully", model.toString(),false);
+                onSave.run();
+
+                close();
+            } else {
+                showNotification("Error", "Team not saved check errors", true);
+            }
     }
     private void cancelForm(){
        close();
 
 
+    }
+
+    private void showNotification(String title, String message, boolean error) {
+        Dialog dialog = createDialog(title, message, error);
+
+        getUI().get().add(dialog);
+        dialog.open();
+    }
+    private Dialog createDialog(String title, String text,
+                                boolean error) {
+        Dialog dialog = new Dialog();
+        dialog.setId("notification");
+        dialog.add(new H2(title));
+        HtmlComponent paragraph = new HtmlComponent(Tag.P);
+        paragraph.getElement().setText(text);
+        if (error) {
+            paragraph.setClassName(ERROR);
+        }
+        dialog.add(paragraph);
+        return dialog;
     }
 
 }

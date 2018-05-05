@@ -8,6 +8,7 @@ import com.scottejames.downsman.services.TeamService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,7 @@ public class TestScoutService {
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
 
-        ScoutModel scout = new ScoutModel("Scott","12-12-99","male");
+        ScoutModel scout = new ScoutModel("Scott", LocalDate.now(),"male");
 
         assertEquals(scout.isPersisted(),false);
         assertEquals(team.getScoutsTeam().size(),0);
@@ -61,9 +62,9 @@ public class TestScoutService {
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
 
-        team.addScoutMember(new ScoutModel("Scott","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Fred","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Harry","12-12-99","male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
 
         assertEquals(team.getScoutsTeam().size(),3);
     }
@@ -72,10 +73,9 @@ public class TestScoutService {
 
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
-
-        team.addScoutMember(new ScoutModel("Scott","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Fred","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Harry","12-12-99","male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
 
         List<ScoutModel> list = team.getScoutsTeam();
         assertEquals(list.size(),3);
@@ -89,10 +89,9 @@ public class TestScoutService {
     public void removeScoutFromTeam(){
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
-
-        team.addScoutMember(new ScoutModel("Scott","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Fred","12-12-99","male"));
-        team.addScoutMember(new ScoutModel("Harry","12-12-99","male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
 
         ScoutModel scout = team.getScoutsTeam().get(0);
         assertEquals(team.getScoutsTeam().size(),3);

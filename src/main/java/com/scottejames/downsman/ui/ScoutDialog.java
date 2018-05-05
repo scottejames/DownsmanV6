@@ -4,6 +4,7 @@ package com.scottejames.downsman.ui;
 import com.scottejames.downsman.model.ScoutModel;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,7 +30,11 @@ public class ScoutDialog extends Dialog {
         this.onChange = onChange;
 
         addTextField("Full Name","fullName");
-        addTextField("DOB", "dob");
+        //addTextField("DOB", "dob");
+
+        DatePicker dobDate = new DatePicker();
+        binder.bind(dobDate,"dob");
+        form.addFormItem(dobDate,"DOB");
 
         ComboBox<String> genderCombo= new ComboBox<>();
         genderCombo.setItems("Male","Female");

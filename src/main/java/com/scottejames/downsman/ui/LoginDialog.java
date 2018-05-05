@@ -6,6 +6,7 @@ import com.scottejames.downsman.services.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 
@@ -13,7 +14,7 @@ public class LoginDialog extends Dialog {
     public static final String SESSION_USERNAME = "username";
 
     TextField userNameField = new TextField();
-    TextField passwordField = new TextField();
+    PasswordField passwordField = new PasswordField();
 
     String username = null;
     Runnable onEnter = null;
