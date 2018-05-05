@@ -3,6 +3,7 @@ package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.ScoutModel;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,7 +30,12 @@ public class ScoutDialog extends Dialog {
 
         addTextField("Full Name","fullName");
         addTextField("DOB", "dob");
-        addTextField("Gender", "gender");
+
+        ComboBox<String> genderCombo= new ComboBox<>();
+        genderCombo.setItems("Male","Female");
+        binder.bind(genderCombo,"gender");
+        form.addFormItem(genderCombo,"Gender");
+
         binder.readBean(model);
         HorizontalLayout buttons = new HorizontalLayout(save, delete);
         add(buttons);
