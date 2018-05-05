@@ -31,25 +31,7 @@ public class ServiceManager {
     public UserService getUserService() { return userService; }
     public void createTestData() {
 
-        TeamModel one = new TeamModel("teamOne","Open","Submitted");
-        TeamModel two = new TeamModel("teamTwo","Open","Draft");
-        teamService.add(one);
-        teamService.add(two);
-
-        one.addScoutMember(new ScoutModel("Scott James","17-11-73","male"));
-        one.addScoutMember(new ScoutModel("Thomas James","17-11-73","male"));
-
-        two.addScoutMember(new ScoutModel("Maddie", "17-11-73","female"));
-
-
-
-        SupportModel supportOne = new SupportModel("SCott","17-11-73","start","finish");
-        SupportModel supportTwo  = new SupportModel("Anna","17-11-73","start","finish");
-        one.addSupportMember(supportOne);
-        one.addSupportMember(supportTwo);
-
-
-        UserModel userOne = new UserModel("scottejames","password");
+        UserModel userOne = new UserModel("scott","password");
         UserModel userTwo = new UserModel("fred","password");
         userService.add(userOne);
         userService.add(userTwo);

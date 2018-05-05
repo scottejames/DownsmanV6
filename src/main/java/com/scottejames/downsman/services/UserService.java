@@ -8,6 +8,9 @@ public class UserService extends Service<UserModel> {
 
     //TODO: Should add uniqueness constraint on username or this will get confused.
     //TODO: Really should check passwords hash things - do something useful
+    public UserService(){
+        setTestUser("FIXED");
+    }
     public UserModel login(String username, String password){
         UserModel user = findByUserName(username);
         if (user.getPassword().equals(password))
