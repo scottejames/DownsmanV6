@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import sun.plugin2.message.Message;
 
 public class RegisterUserDialog extends Dialog {
     Runnable onEnter = null;
@@ -88,9 +89,12 @@ public class RegisterUserDialog extends Dialog {
         }
         else{
             LogUtil.logEvent("Registered user " + username);
+
             String hash= HashHelper.hashPassword(password);
             ServiceManager.getInstance().getUserService().add(new UserModel(username,hash));
             close();
+            MessageDialog dialog = new MessageDialog("Success","User " + username + " successfully registered",false);
+            dialog.open();
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class TeamModel extends Model {
 
     public String toString() {
-        return "MODEL for Team Name:" + teamName;
+        return "Team : " + teamName + " Hike class " + hikeClass;
     }
 
     private String teamName = null;

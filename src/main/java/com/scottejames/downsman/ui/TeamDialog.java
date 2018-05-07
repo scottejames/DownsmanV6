@@ -336,7 +336,7 @@ public class TeamDialog extends Dialog {
     }
 
     private void saveForm(){
-
+            if ()
             if (binder.writeBeanIfValid(model)){
                 if (model.isPersisted()==true)
                     service.update(model);

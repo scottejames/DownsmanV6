@@ -3,8 +3,11 @@ package com.scottejames.downsman.ui;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
+import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -52,12 +55,15 @@ public class LoginDialog extends Dialog {
         if (user != null) {
             VaadinSession.getCurrent().setAttribute(
                     SESSION_USERNAME, username);
-        } // TODO handle error message for not logged in user
+            if (onEnter != null) onEnter.run();
+            close();
+        } else {
+            MessageDialog dialog = new MessageDialog("Login Failed", "Unable to login with that user check username or password", true);
+            dialog.open();
+        }
 
 
-        if (onEnter != null) onEnter.run();
 
-        close();
     }
     public void cancel(){
         username = null;
@@ -83,4 +89,5 @@ public class LoginDialog extends Dialog {
         VaadinSession.getCurrent()
                 .setAttribute(SESSION_USERNAME,null);
     }
+
 }
