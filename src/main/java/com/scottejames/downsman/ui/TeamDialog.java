@@ -1,16 +1,16 @@
 package com.scottejames.downsman.ui;
 
+import com.scottejames.downsman.model.ReferenceData;
 import com.scottejames.downsman.model.ScoutModel;
 import com.scottejames.downsman.model.SupportModel;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
-import com.scottejames.downsman.ui.validators.PhoneOrEmailValidator;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasStyle;
+import com.scottejames.downsman.ui.validators.PhoneValidator;
 import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,12 +19,8 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.BindingValidationStatus;
-import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TeamDialog extends Dialog {
 
@@ -97,7 +93,7 @@ public class TeamDialog extends Dialog {
         teamPhoneForm.addFormItem(activePhone,"Active Phone");
         teamPhoneForm.addFormItem(activePhoneStatus, "");
         binder.forField(activePhone)
-                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withValidator(new PhoneValidator("That does not look like a phone number"))
                 .withStatusLabel(activePhoneStatus)
                 .bind("activeMobile");
 
@@ -108,7 +104,7 @@ public class TeamDialog extends Dialog {
         teamPhoneForm.addFormItem(backupPhone,"Backup Phone");
         teamPhoneForm.addFormItem(backupPhoneStatus, "");
         binder.forField(backupPhone)
-                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withValidator(new PhoneValidator("That does not look like a phone number"))
                 .withStatusLabel(backupPhoneStatus)
                 .bind("backupMobile");
 
@@ -123,8 +119,17 @@ public class TeamDialog extends Dialog {
         addTextField(teamDetailsForm,"Section", "section");
         addTextField(teamDetailsForm,"District", "district");
         addTextField(teamDetailsForm,"County", "county");
-        addTextField(teamDetailsForm,"Start Time","prefStart");
-        addTextField(teamDetailsForm,"Hike Class", "hikeClass");
+
+        ComboBox<String> startTimeCombo= new ComboBox<>();
+        startTimeCombo.setItems(ReferenceData.START_TIMES);
+        teamDetailsForm.addFormItem(startTimeCombo,"Start Time");
+        binder.bind(startTimeCombo,"prefStart");
+
+        ComboBox<String> hikeClass= new ComboBox<>();
+        hikeClass.setItems(ReferenceData.HIKE_CLASSES);
+        teamDetailsForm.addFormItem(hikeClass,"Hike Class Time");
+        binder.bind(hikeClass,"hikeClass");
+
         add(teamDetailsForm);
 
     }
@@ -292,7 +297,7 @@ public class TeamDialog extends Dialog {
         emergencyContactForm.addFormItem(email,"Email");
         emergencyContactForm.addFormItem(emailStatus, "");
         binder.forField(email)
-                .withValidator(new PhoneOrEmailValidator("That does not look like an email"))
+                .withValidator(new EmailValidator("That does not look like a valid email"))
                 .withStatusLabel(emailStatus)
                 .bind("emergencyContactEmail");
 
@@ -303,7 +308,7 @@ public class TeamDialog extends Dialog {
         emergencyContactForm.addFormItem(mobilePhone,"Mobile");
         emergencyContactForm.addFormItem(mobilePhoneStatus, "");
         binder.forField(mobilePhone)
-                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withValidator(new PhoneValidator("That does not look like a phone number"))
                 .withStatusLabel(mobilePhoneStatus)
                 .bind("emergencyContactMobile");
 
@@ -314,7 +319,7 @@ public class TeamDialog extends Dialog {
         emergencyContactForm.addFormItem(landLinePhone,"Landline");
         emergencyContactForm.addFormItem(landlinePhoneStatus, "");
         binder.forField(landLinePhone)
-                .withValidator(new PhoneOrEmailValidator("That does not look like a phone number"))
+                .withValidator(new PhoneValidator("That does not look like a phone number"))
                 .withStatusLabel(landlinePhoneStatus)
                 .bind("emergencyContactLandline");
 
