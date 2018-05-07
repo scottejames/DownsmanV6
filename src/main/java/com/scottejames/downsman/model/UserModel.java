@@ -4,8 +4,6 @@ public class UserModel extends Model {
 
     String username = null;
     String password = null;
-    String firstName = null;
-    String lastName = null;
 
     public UserModel(String u, String p) {
         username = u;
@@ -30,19 +28,5 @@ public class UserModel extends Model {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }

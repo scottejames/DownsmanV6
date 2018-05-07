@@ -1,5 +1,8 @@
 package com.scottejames.downsman.ui;
 
+import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.services.ServiceManager;
+import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
@@ -14,7 +17,7 @@ public class RegisterUserDialog extends Dialog {
 
     PasswordField passwordField = new PasswordField("Password");
     PasswordField checkPasswordField = new PasswordField("Re-enter Password");
-
+    Label status = new Label();
     public RegisterUserDialog (Runnable onEnter){
 
         this.onEnter = onEnter;
@@ -26,6 +29,7 @@ public class RegisterUserDialog extends Dialog {
         layout.add(userNameField);
         layout.add(passwordField);
         layout.add(checkPasswordField);
+        layout.add(status);
 
         add(layout);
         HorizontalLayout buttons = new HorizontalLayout();
@@ -43,5 +47,49 @@ public class RegisterUserDialog extends Dialog {
         String username = userNameField.getValue();
         String password = passwordField.getValue();
         String checkPassword = checkPasswordField.getValue();
+
+        LogUtil.logDebug("Trying to register new user ");
+
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+
+        for (int i = 0; i < password.length(); i++) {
+            char x = password.charAt(i);
+            if (Character.isLetter(x)) {
+
+                hasLetter = true;
+            } else if (Character.isDigit(x)) {
+
+                hasDigit = true;
+            }
+            // no need to check further, break the loop
+            if (hasLetter && hasDigit) {
+
+                break;
+            }
+        }
+
+        UserModel priorUser = ServiceManager.getInstance().getUserService().findByUserName(username);
+
+        if (priorUser != null){
+            LogUtil.logDebug("Username has already been taken");
+            status.setText("Username has already been taken");
+        } else if (password.equals(checkPassword)==false){
+            LogUtil.logDebug("Passwords dont match");
+            status.setText("Passwords Dont Match");
+        } else if (password.length() < 6) {
+            LogUtil.logDebug("Password too short (less than 6 chars)");
+            status.setText("Password should be more than 6 chars");
+        } else if (!(hasDigit && hasLetter)) {
+            LogUtil.logDebug("Passwword does not contain letters and numbers");
+            status.setText("Password should contain letters and numbers");
+
+        }
+        else{
+            LogUtil.logEvent("Registered user " + username);
+
+            ServiceManager.getInstance().getUserService().add(new UserModel(username,password));
+            close();
+        }
     }
 }
