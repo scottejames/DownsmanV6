@@ -5,7 +5,7 @@ import com.scottejames.downsman.services.Service;
 import java.util.logging.Logger;
 
 public class LogUtil {
-    static Logger log = Logger.getLogger(LogUtil.class.getName());
+    private static final Logger log = Logger.getLogger(LogUtil.class.getName());
     static Logger logService = Logger.getLogger(Service.class.getName());
     public static void logEvent(String msg){
         log.info(msg);

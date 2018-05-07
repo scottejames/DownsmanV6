@@ -8,31 +8,31 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestUserService {
+class TestUserService {
     private static UserService service = null;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
 
         service = ServiceManager.getInstance().getUserService();
         service.reset();
     }
 
     @Test
-    public void loginNoUsers(){
+    void loginNoUsers(){
         UserModel u = service.login("scott","password");
         assertEquals (u,null);
     }
 
     @Test
-    public void failedLoginWithUsers(){
+    void failedLoginWithUsers(){
         service.add(new UserModel("fred","password"));
         UserModel u = service.login("scott","password");
         assertEquals (u,null);
     }
 
     @Test
-    public void loginWithUsers(){
+    void loginWithUsers(){
         service.add(new UserModel("fred","password"));
         UserModel u = service.login("fred","password");
         assertEquals (u.getUsername(),"fred");

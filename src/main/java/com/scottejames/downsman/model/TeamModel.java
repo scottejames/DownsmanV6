@@ -24,8 +24,8 @@ public class TeamModel extends Model {
     private String emergencyContactName = null;
     private String emergencyContactMobile = null;
 
-    private ScoutService scoutService = new ScoutService();
-    private SupportService supportService = new SupportService();
+    private final ScoutService scoutService = new ScoutService();
+    private final SupportService supportService = new SupportService();
 
     public String getEmergencyContactLandline() {
         return emergencyContactLandline;

@@ -11,15 +11,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import sun.plugin2.message.Message;
 
-public class RegisterUserDialog extends Dialog {
-    Runnable onEnter = null;
-    TextField userNameField = new TextField("UserName");
+class RegisterUserDialog extends Dialog {
+    private Runnable onEnter = null;
+    private final TextField userNameField = new TextField("UserName");
 
-    PasswordField passwordField = new PasswordField("Password");
-    PasswordField checkPasswordField = new PasswordField("Re-enter Password");
-    Label status = new Label();
+    private final PasswordField passwordField = new PasswordField("Password");
+    private final PasswordField checkPasswordField = new PasswordField("Re-enter Password");
+    private final Label status = new Label();
     public RegisterUserDialog (Runnable onEnter){
 
         this.onEnter = onEnter;
@@ -76,7 +75,7 @@ public class RegisterUserDialog extends Dialog {
         if (priorUser != null){
             LogUtil.logDebug("Username has already been taken");
             status.setText("Username has already been taken");
-        } else if (password.equals(checkPassword)==false){
+        } else if (!password.equals(checkPassword)){
             LogUtil.logDebug("Passwords dont match");
             status.setText("Passwords Dont Match");
         } else if (password.length() < 6) {

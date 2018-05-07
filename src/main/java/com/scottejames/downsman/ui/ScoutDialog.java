@@ -12,14 +12,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 
-public class ScoutDialog extends Dialog {
-    ScoutModel model = null;
-    Runnable onChange = null;
+class ScoutDialog extends Dialog {
+    private ScoutModel model = null;
+    private Runnable onChange = null;
 
-    private Binder<ScoutModel> binder = new Binder<>(ScoutModel.class);
-    private Button save = new Button("Save");
-    private Button delete = new Button("Cancel");
-    private FormLayout form = new FormLayout();
+    private final Binder<ScoutModel> binder = new Binder<>(ScoutModel.class);
+    private final FormLayout form = new FormLayout();
 
     public ScoutDialog(ScoutModel model, Runnable onChange){
         if (model == null)
@@ -29,8 +27,9 @@ public class ScoutDialog extends Dialog {
 
         this.onChange = onChange;
 
-        addTextField("Full Name","fullName");
-        //addTextField("DOB", "dob");
+        TextField fullName = new TextField();
+        binder.bind(fullName,"fullName");
+        form.addFormItem(fullName,"Full Name");
 
         DatePicker dobDate = new DatePicker();
         binder.bind(dobDate,"dob");
@@ -42,6 +41,8 @@ public class ScoutDialog extends Dialog {
         form.addFormItem(genderCombo,"Gender");
 
         binder.readBean(model);
+        Button save = new Button("Save");
+        Button delete = new Button("Cancel");
         HorizontalLayout buttons = new HorizontalLayout(save, delete);
         add(buttons);
         save.addClickListener(e -> save());
@@ -50,19 +51,12 @@ public class ScoutDialog extends Dialog {
 
     }
 
-    private  void addTextField( String label, String bindValue){
 
-        TextField textField = new TextField();
-        form.addFormItem(textField,label);
-        if (bindValue != null)
-            binder.bind(textField,bindValue);
-
-    }
     public ScoutModel getScout(){
         return model;
     }
 
-    public void save(){
+    private void save(){
         try {
             binder.writeBean(model);
         } catch (ValidationException e) {
@@ -72,7 +66,7 @@ public class ScoutDialog extends Dialog {
         close();
 
     }
-    public void cancel(){
+    private void cancel(){
         close();
     }
 }

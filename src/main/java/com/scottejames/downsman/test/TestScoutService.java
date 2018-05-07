@@ -14,19 +14,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestScoutService {
+class TestScoutService {
 
     private static TeamService service = null;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         service = ServiceManager.getInstance().getTeamService();
         service.reset();
 
     }
 
     @Test
-    public void addTeam(){
+    void addTeam(){
 
         TeamModel team = new TeamModel("Team One");
 
@@ -41,7 +41,7 @@ public class TestScoutService {
         assertEquals(team, result);
     }
     @Test
-    public void addScoutToTeam(){
+    void addScoutToTeam(){
 
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
@@ -57,7 +57,7 @@ public class TestScoutService {
         assertEquals(team.getScoutsTeam().size(),1);
     }
     @Test
-    public void addTwoScoutToTeam(){
+    void addTwoScoutToTeam(){
 
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
@@ -69,7 +69,7 @@ public class TestScoutService {
         assertEquals(team.getScoutsTeam().size(),3);
     }
     @Test
-    public void validateListOfScouts(){
+    void validateListOfScouts(){
 
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
@@ -86,7 +86,7 @@ public class TestScoutService {
     }
 
     @Test
-    public void removeScoutFromTeam(){
+    void removeScoutFromTeam(){
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
         team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));

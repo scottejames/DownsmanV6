@@ -6,21 +6,19 @@ import java.security.NoSuchAlgorithmException;
 public class HashHelper {
     public static String hashPassword(String psswd){
 
-        String passwordToHash = psswd;
         String generatedPassword = null;
         try {
             // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
             //Add password bytes to digest
-            md.update(passwordToHash.getBytes());
+            md.update(psswd.getBytes());
             //Get the hash's bytes
             byte[] bytes = md.digest();
             //This bytes[] has bytes in decimal format;
             //Convert it to hexadecimal format
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++)
-            {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
             //Get complete hashed password in hex format
             generatedPassword = sb.toString();
@@ -29,7 +27,7 @@ public class HashHelper {
         {
             e.printStackTrace();
         }
-        LogUtil.logDebug("Password: " + passwordToHash + " to hash " + generatedPassword);
+        LogUtil.logDebug("Password: " + psswd + " to hash " + generatedPassword);
         return generatedPassword;
     }
 }

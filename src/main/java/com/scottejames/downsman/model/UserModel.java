@@ -2,8 +2,8 @@ package com.scottejames.downsman.model;
 
 public class UserModel extends Model {
 
-    String username = null;
-    String password = null;
+    private String username = null;
+    private String password = null;
 
     public UserModel(String u, String p) {
         username = u;

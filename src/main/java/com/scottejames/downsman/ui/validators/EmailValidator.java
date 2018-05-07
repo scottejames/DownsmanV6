@@ -5,7 +5,7 @@ import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.AbstractValidator;
 
 public class EmailValidator extends AbstractValidator<String> {
-    com.vaadin.flow.data.validator.EmailValidator validator = null;
+    private com.vaadin.flow.data.validator.EmailValidator validator = null;
 
 
     public EmailValidator(String errorMessage) {

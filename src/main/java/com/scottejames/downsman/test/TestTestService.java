@@ -8,26 +8,26 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestTestService {
+class TestTestService {
 
     private static TestService service = null;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
 
         service = ServiceManager.getInstance().getTestService();
         service.reset();
     }
 
     @Test
-    public void storeModelSetsId(){
+    void storeModelSetsId(){
         TestModel model= new TestModel("First");
         service.add(model);
         assertEquals(model.getId(),1);
     }
 
     @Test
-    public void storeModelGetSameModel(){
+    void storeModelGetSameModel(){
         TestModel model= new TestModel("First");
         service.add(model);
         TestModel result = service.getById(model.getId());
@@ -35,7 +35,7 @@ public class TestTestService {
     }
 
     @Test
-    public void addSeveral(){
+    void addSeveral(){
         int size  = service.getAll().size();
         assertEquals(size,0);
         service.add(new TestModel("One"));

@@ -1,6 +1,5 @@
 package com.scottejames.downsman.ui;
 
-import com.scottejames.downsman.model.ScoutModel;
 import com.scottejames.downsman.model.SupportModel;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -10,14 +9,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 
-public class SupportDialog extends Dialog {
-    SupportModel model = null;
-    Runnable onChange = null;
+class SupportDialog extends Dialog {
+    private SupportModel model = null;
+    private Runnable onChange = null;
 
-    private Binder<SupportModel> binder = new Binder<>(SupportModel.class);
-    private Button save = new Button("Save");
-    private Button delete = new Button("Cancel");
-    private FormLayout form = new FormLayout();
+    private final Binder<SupportModel> binder = new Binder<>(SupportModel.class);
+    private final FormLayout form = new FormLayout();
 
     public SupportDialog(SupportModel model, Runnable onChange) {
         if (model == null)
@@ -32,6 +29,8 @@ public class SupportDialog extends Dialog {
         addTextField("To", "to");
 
         binder.readBean(model);
+        Button save = new Button("Save");
+        Button delete = new Button("Cancel");
         HorizontalLayout buttons = new HorizontalLayout(save, delete);
         add(buttons);
         save.addClickListener(e -> save());
@@ -51,7 +50,7 @@ public class SupportDialog extends Dialog {
         return model;
     }
 
-    public void save(){
+    private void save(){
         try {
             binder.writeBean(model);
         } catch (ValidationException e) {
@@ -61,7 +60,7 @@ public class SupportDialog extends Dialog {
         close();
 
     }
-    public void cancel(){
+    private void cancel(){
         close();
     }
 }

@@ -17,19 +17,19 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class MainView extends VerticalLayout {
 
-    private TeamService service = ServiceManager.getInstance().getTeamService();
-    TeamModel selectedTeam = null;
+    private final TeamService service = ServiceManager.getInstance().getTeamService();
+    private TeamModel selectedTeam = null;
 
-    LoginDialog loginDialog = null;
-    TeamDialog teamDialog = null;
-    RegisterUserDialog registerUserDialog = null;
+    private LoginDialog loginDialog = null;
+    private TeamDialog teamDialog = null;
+    private RegisterUserDialog registerUserDialog = null;
 
-    Grid<TeamModel> teamGrid = new Grid<>();
-    HorizontalLayout gridButtons = new HorizontalLayout();
+    private final Grid<TeamModel> teamGrid = new Grid<>();
+    private final HorizontalLayout gridButtons = new HorizontalLayout();
 
-    Button deleteTeam = null;
-    Button addTeam = null;
-    Button editTeam = null;
+    private Button deleteTeam = null;
+    private Button addTeam = null;
+    private Button editTeam = null;
 
     public MainView(){
         loginDialog = new LoginDialog(this::onLogin);
@@ -39,7 +39,7 @@ public class MainView extends VerticalLayout {
         teamGrid.addColumn(TeamModel::getStatus).setHeader("Status");
         teamGrid.setHeightByRows(true);
 
-        deleteTeam = new Button("Delete Team",e-> deleteTeam(e));
+        deleteTeam = new Button("Delete Team", this::deleteTeam);
         editTeam = new Button("Edit Team", e->editTeam());
         addTeam = new Button("Add Team",e->addTeam());
         gridButtons.add(deleteTeam,editTeam,addTeam);
@@ -59,7 +59,7 @@ public class MainView extends VerticalLayout {
         buildUI();
     }
 
-    public void buildUI(){
+    private void buildUI(){
 
         removeAll();
 
@@ -91,7 +91,7 @@ public class MainView extends VerticalLayout {
 
     }
 
-    public void updateTeamGrid(){
+    private void updateTeamGrid(){
         teamGrid.setItems(service.getAll());
         deleteTeam.setEnabled(false);
         editTeam.setEnabled(false);
@@ -120,19 +120,19 @@ public class MainView extends VerticalLayout {
         
     }
 
-    public void login(){
+    private void login(){
         loginDialog.open();
     }
-    public void logout(){
+    private void logout(){
         loginDialog.logout();
         buildUI();
     }
 
-    public void onLogin(){
+    private void onLogin(){
         buildUI();
     }
-    public void onTeamSave(){
+    private void onTeamSave(){
         buildUI();
     }
-    public void onRegister() { buildUI(); }
+    private void onRegister() { buildUI(); }
 }

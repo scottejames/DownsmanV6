@@ -22,34 +22,34 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
-public class TeamDialog extends Dialog {
+class TeamDialog extends Dialog {
 
 
     private static final String ERROR = "error";
     private static final String OK = "ok";
 
-    private TeamService         service             = ServiceManager.getInstance().getTeamService();
+    private final TeamService         service             = ServiceManager.getInstance().getTeamService();
     private TeamModel           model               = null;
-    private Binder<TeamModel>   binder              = new Binder<>(TeamModel.class);
-    private FormLayout          teamDetailsForm     = new FormLayout();
-    private Grid<SupportModel>  supportMembersGrid  = new Grid<>();
+    private final Binder<TeamModel>   binder              = new Binder<>(TeamModel.class);
+    private final FormLayout          teamDetailsForm     = new FormLayout();
+    private final Grid<SupportModel>  supportMembersGrid  = new Grid<>();
     private Button              addNewSupportButton = null;
     private Button              editSupportButton   = null;
     private Button              deleteSupportButton = null;
     private SupportModel        selectedSupport     = null;
     private SupportDialog       supportDialog       = null;
 
-    private Grid<ScoutModel>    teamMembersGrid     = new Grid<>();
+    private final Grid<ScoutModel>    teamMembersGrid     = new Grid<>();
     private Button              addNewScoutButton   = null;
     private Button              editScoutButton     = null;
     private Button              deleteScoutButton   = null;
     private ScoutModel          selectedScout       = null;
     private ScoutDialog         scoutDialog         = null;
 
-    private Button              saveFormButton;
-    private Button              cancelFormButton;
+    private final Button              saveFormButton;
+    private final Button              cancelFormButton;
 
-    private Runnable            onSave;
+    private final Runnable            onSave;
 
     public TeamDialog(TeamModel team, Runnable onSave){
         if (team == null)
@@ -174,7 +174,7 @@ public class TeamDialog extends Dialog {
         updateScoutGrid();
     }
 
-    public void updateScoutGrid(){
+    private void updateScoutGrid(){
         if ((model.getScoutsTeam() != null)){
             teamMembersGrid.setItems(model.getScoutsTeam());
 
@@ -246,7 +246,7 @@ public class TeamDialog extends Dialog {
     }
 
 
-    public void updateSupportGrid(){
+    private void updateSupportGrid(){
 
         if ((model.getSupportTeam() != null))
             supportMembersGrid.setItems(model.getSupportTeam());
@@ -336,9 +336,8 @@ public class TeamDialog extends Dialog {
     }
 
     private void saveForm(){
-            if ()
             if (binder.writeBeanIfValid(model)){
-                if (model.isPersisted()==true)
+                if (model.isPersisted())
                     service.update(model);
                 else
                     service.add(model);
@@ -358,8 +357,8 @@ public class TeamDialog extends Dialog {
 
     private void showNotification(String title, String message, boolean error) {
         Dialog dialog = createDialog(title, message, error);
-
-        getUI().get().add(dialog);
+        if (getUI().isPresent())
+            getUI().get().add(dialog);
         dialog.open();
     }
     private Dialog createDialog(String title, String text,

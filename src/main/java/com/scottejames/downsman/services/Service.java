@@ -7,18 +7,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("SameParameterValue")
 public class Service<M extends Model> {
     private int id = 0;
 
-    public void setTestUser(String testUser) {
+    void setTestUser(String testUser) {
         this.testUser = testUser;
     }
 
     private String testUser = null;
 
-    public static final String SESSION_USERNAME = "username";
+    private static final String SESSION_USERNAME = "username";
 
-    private HashMap<String,List<M>> ownedData = new HashMap<>();
+    private final HashMap<String,List<M>> ownedData = new HashMap<>();
 
     private String getUser(){
         String username;
@@ -28,7 +29,7 @@ public class Service<M extends Model> {
         } else {
             username = testUser;
         }
-        ownedData.putIfAbsent(username, new ArrayList<M>());
+        ownedData.putIfAbsent(username, new ArrayList<>());
         return username;
     }
     //private List<M> data = new ArrayList<>();
@@ -39,7 +40,7 @@ public class Service<M extends Model> {
         this.ownedData.put(getUser(), data);
     }
 
-    protected int getNextId(){
+    int getNextId(){
         return ++id;
     }
 

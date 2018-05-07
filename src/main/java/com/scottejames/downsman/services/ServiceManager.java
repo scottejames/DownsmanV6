@@ -1,12 +1,6 @@
 package com.scottejames.downsman.services;
 
-import com.scottejames.downsman.model.ScoutModel;
-import com.scottejames.downsman.model.SupportModel;
-import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.model.UserModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServiceManager {
 
@@ -20,16 +14,16 @@ public class ServiceManager {
         }
         return instance;
     }
-    private TeamService teamService = new TeamService();
-    private TestService testService = new TestService();
-    private UserService userService = new UserService();
+    private final TeamService teamService = new TeamService();
+    private final TestService testService = new TestService();
+    private final UserService userService = new UserService();
 
     public TeamService getTeamService() {
         return teamService;
     }
     public TestService getTestService() { return testService; }
     public UserService getUserService() { return userService; }
-    public void createTestData() {
+    private void createTestData() {
 
         UserModel userOne = new UserModel("scott","password");
         UserModel userTwo = new UserModel("fred","password");
