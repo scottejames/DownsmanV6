@@ -22,6 +22,7 @@ public class MainView extends VerticalLayout {
 
     LoginDialog loginDialog = null;
     TeamDialog teamDialog = null;
+    RegisterUserDialog registerUserDialog = null;
 
     Grid<TeamModel> teamGrid = new Grid<>();
     HorizontalLayout gridButtons = new HorizontalLayout();
@@ -73,7 +74,9 @@ public class MainView extends VerticalLayout {
             updateTeamGrid();
 
         } else {
+
             userStrip.add(new Button("Login", e -> login()));
+            userStrip.add(new Button ( "Register", e -> register()));
         }
 
         add(userStrip);
@@ -95,6 +98,10 @@ public class MainView extends VerticalLayout {
 
     }
 
+    private void register() {
+        registerUserDialog = new RegisterUserDialog(this::onRegister);
+        registerUserDialog.open();
+    }
 
     private void addTeam() {
         teamDialog = new TeamDialog(null,this::onTeamSave);
@@ -127,4 +134,5 @@ public class MainView extends VerticalLayout {
     public void onTeamSave(){
         buildUI();
     }
+    public void onRegister() { buildUI(); }
 }
