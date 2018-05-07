@@ -2,6 +2,7 @@ package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.ServiceManager;
+import com.scottejames.downsman.utils.HashHelper;
 import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -87,8 +88,8 @@ public class RegisterUserDialog extends Dialog {
         }
         else{
             LogUtil.logEvent("Registered user " + username);
-
-            ServiceManager.getInstance().getUserService().add(new UserModel(username,password));
+            String hash= HashHelper.hashPassword(password);
+            ServiceManager.getInstance().getUserService().add(new UserModel(username,hash));
             close();
         }
     }

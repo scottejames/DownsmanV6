@@ -1,6 +1,7 @@
 package com.scottejames.downsman.services;
 
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.utils.HashHelper;
 
 import java.util.List;
 
@@ -11,9 +12,11 @@ public class UserService extends Service<UserModel> {
     public UserService(){
         setTestUser("FIXED");
     }
+
     public UserModel login(String username, String password){
         UserModel user = findByUserName(username);
-        if (user.getPassword().equals(password))
+        String hash = HashHelper.hashPassword(password);
+        if (user.getPassword().equals(hash))
             return user;
         else
             return null;
