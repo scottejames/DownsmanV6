@@ -6,6 +6,7 @@ import com.scottejames.downsman.model.SupportModel;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
+import com.scottejames.downsman.ui.validators.EmailValidator;
 import com.scottejames.downsman.ui.validators.PhoneValidator;
 import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.Tag;
@@ -19,7 +20,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.validator.EmailValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
 public class TeamDialog extends Dialog {

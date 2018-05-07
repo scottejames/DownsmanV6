@@ -70,14 +70,18 @@ public class MainView extends VerticalLayout {
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
 
+            updateTeamGrid();
+
         } else {
             userStrip.add(new Button("Login", e -> login()));
         }
-        add(userStrip);
-        add(teamGrid);
-        add(gridButtons);
-        updateTeamGrid();
 
+        add(userStrip);
+        if (LoginDialog.isAuthenticated()) {
+
+            add(teamGrid);
+            add(gridButtons);
+        }
         setClassName("main-layout");
 
 
