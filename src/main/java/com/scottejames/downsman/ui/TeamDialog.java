@@ -18,6 +18,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -46,12 +47,12 @@ class TeamDialog extends Dialog {
     private ScoutModel          selectedScout       = null;
     private ScoutDialog         scoutDialog         = null;
 
-    private final Button              saveFormButton;
-    private final Button              cancelFormButton;
+    private  Button              saveFormButton     = null;
+    private  Button              cancelFormButton   = null;
 
-    private final Runnable            onSave;
+    private  Runnable            onSave = null;
 
-    public TeamDialog(TeamModel team, Runnable onSave){
+    public TeamDialog(TeamModel team, Runnable onSave) {
         if (team == null)
             model = new TeamModel();
         else
@@ -66,19 +67,38 @@ class TeamDialog extends Dialog {
         setupTeamPhone();
         setupSupportGrid();
         setupEmergencyContact();
+        ComboBox<String> submittedCombo = new ComboBox<>();
+        submittedCombo.setItems(ReferenceData.SUBMITTED_ENUM);
+        binder.bind(submittedCombo,"submitted");
 
+        ComboBox<String> paidCombo = new ComboBox<>();
+        paidCombo.setItems(ReferenceData.PAID_ENUM);
+        binder.bind(paidCombo,"paid");
+        VerticalLayout verticalLayout = new VerticalLayout();
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(new Label("Submitted: "),submittedCombo, new Label("paid: "), paidCombo);
+
+        verticalLayout.add(horizontalLayout);
         saveFormButton = new Button("Save");
         saveFormButton.addClickListener(e -> this.saveForm());
 
         cancelFormButton = new Button("Cancel");
         cancelFormButton.addClickListener(e -> this.cancelForm());
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(saveFormButton, cancelFormButton);
-        add(horizontalLayout);
+
+
+        HorizontalLayout saveButtonLayout = new HorizontalLayout();
+        saveButtonLayout.add(saveFormButton, cancelFormButton);
+        verticalLayout.add(saveButtonLayout);
+
+        add(verticalLayout);
 
         binder.readBean(model);
 
+
     }
+
+
 
     private void setupTeamPhone(){
         add(new Label("Team Phones"));
@@ -115,6 +135,7 @@ class TeamDialog extends Dialog {
     private void setupTeamDetails(){
         add(new Label("Team Details"));
 
+
         addTextField(teamDetailsForm,"Team Name", "teamName");
         addTextField(teamDetailsForm,"Section", "section");
         addTextField(teamDetailsForm,"District", "district");
@@ -131,6 +152,10 @@ class TeamDialog extends Dialog {
         binder.bind(hikeClass,"hikeClass");
 
         add(teamDetailsForm);
+
+
+
+
 
     }
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

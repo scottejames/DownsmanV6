@@ -24,6 +24,25 @@ public class TeamModel extends Model {
     private String emergencyContactName = null;
     private String emergencyContactMobile = null;
 
+    public String getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(String submitted) {
+        this.submitted = submitted;
+    }
+
+    public String getPaid() {
+        return paid;
+    }
+
+    public void setPaid(String paid) {
+        this.paid = paid;
+    }
+
+    private String submitted = null;
+    private String paid = null;
+
     private final ScoutService scoutService = new ScoutService();
     private final SupportService supportService = new SupportService();
 
@@ -192,5 +211,7 @@ public class TeamModel extends Model {
     public void removeSupportMember(SupportModel support){
         supportService.remove(support);
     }
+
+
 }
 
