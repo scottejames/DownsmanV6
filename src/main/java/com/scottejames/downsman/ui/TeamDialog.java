@@ -29,7 +29,7 @@ class TeamDialog extends Dialog {
     private static final String OK = "ok";
 
     private final TeamService         service             = ServiceManager.getInstance().getTeamService();
-    private TeamModel           model               = null;
+    private TeamModel                 model               = null;
     private final Binder<TeamModel>   binder              = new Binder<>(TeamModel.class);
     private final FormLayout          teamDetailsForm     = new FormLayout();
     private final Grid<SupportModel>  supportMembersGrid  = new Grid<>();

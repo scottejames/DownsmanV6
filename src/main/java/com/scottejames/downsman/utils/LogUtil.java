@@ -10,8 +10,8 @@ public class LogUtil {
     public static void logEvent(String msg){
         log.info(msg);
     }
-
     public static void logDebug(String msg){
+
         log.fine(msg);
     }
     public static void logServiceEvent(String msg){
