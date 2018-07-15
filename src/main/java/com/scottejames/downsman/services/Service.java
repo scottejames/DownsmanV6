@@ -21,7 +21,7 @@ public class Service<M extends Model> {
 
     private final HashMap<String,List<M>> ownedData = new HashMap<>();
 
-    private String getUser(){
+    protected String getUser(){
         String username;
         if (testUser == null){
             username = (String) VaadinSession.getCurrent().getAttribute(

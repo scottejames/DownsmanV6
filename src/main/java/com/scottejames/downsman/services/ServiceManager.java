@@ -1,6 +1,7 @@
 package com.scottejames.downsman.services;
 
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.utils.HashHelper;
 
 public class ServiceManager {
 
@@ -26,8 +27,12 @@ public class ServiceManager {
 
     private void createTestData() {
 
-        UserModel userOne = new UserModel("scott","password");
-        UserModel userTwo = new UserModel("fred","password");
+
+        UserModel userOne = new UserModel("scott",HashHelper.hashPassword("knot8gen"));
+        userOne.setAdmin(true);
+        UserModel userTwo = new UserModel("fred",HashHelper.hashPassword("knot8gen"));
+        userTwo.setAdmin(false);
+
         userService.add(userOne);
         userService.add(userTwo);
 

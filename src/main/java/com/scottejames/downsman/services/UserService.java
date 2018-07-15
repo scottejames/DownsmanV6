@@ -12,6 +12,10 @@ public class UserService extends Service<UserModel> {
         setTestUser("FIXED");
     }
 
+    public UserModel getCurrentUser(){
+        String currentUserName = getUser();
+        return findByUserName(currentUserName);
+    }
     public UserModel login(String username, String password){
         // if user or password is null dont try to loging
         if (password == null || password.length() == 0 || username == null || username.length() == 0)

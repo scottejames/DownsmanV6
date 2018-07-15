@@ -4,6 +4,7 @@ import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
+import com.scottejames.downsman.ui.admin.AdminDialog;
 import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
@@ -71,7 +72,9 @@ public class MainView extends VerticalLayout {
 
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
-
+            
+            if(user.isAdmin())
+                userStrip.add( new Button("Admin", e-> admin()));
             updateTeamGrid();
 
         } else {
@@ -90,6 +93,11 @@ public class MainView extends VerticalLayout {
 
 
 
+    }
+
+    private void admin() {
+        AdminDialog adminDialog = new AdminDialog();
+        adminDialog.open();
     }
 
     private void updateTeamGrid(){

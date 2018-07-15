@@ -1,9 +1,12 @@
 package com.scottejames.downsman.model;
 
+import java.sql.Ref;
+
 public class UserModel extends Model {
 
     private String username = null;
     private String password = null;
+    private Boolean admin = false;
 
     public UserModel(String u, String p) {
         username = u;
@@ -28,5 +31,11 @@ public class UserModel extends Model {
         this.password = password;
     }
 
+    public Boolean isAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 }
