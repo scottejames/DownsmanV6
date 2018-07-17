@@ -1,5 +1,6 @@
 package com.scottejames.downsman.ui;
 
+import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
@@ -11,7 +12,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 
 class LoginDialog extends Dialog {
-    private static final String SESSION_USERNAME = "username";
 
     private final TextField userNameField = new TextField();
     private final PasswordField passwordField = new PasswordField();
@@ -50,8 +50,7 @@ class LoginDialog extends Dialog {
 
         UserModel user = service.login(username,password);
         if (user != null) {
-            VaadinSession.getCurrent().setAttribute(
-                    SESSION_USERNAME, username);
+            SessionState.getInstance().setCurrentUser(user);
             if (onEnter != null) onEnter.run();
             close();
         } else {
@@ -68,23 +67,9 @@ class LoginDialog extends Dialog {
         close();
     }
 
-    public UserModel getLoggedInUser(){
 
-        UserService service = ServiceManager.getInstance().getUserService();
-        String username = (String)VaadinSession.getCurrent().getAttribute(
-                SESSION_USERNAME);
 
-        return service.findByUserName(username);
-    }
 
-    public static boolean isAuthenticated() {
-        return (VaadinSession.getCurrent()
-                .getAttribute(SESSION_USERNAME) != null);
-    }
 
-    public void logout() {
-        VaadinSession.getCurrent()
-                .setAttribute(SESSION_USERNAME,null);
-    }
 
 }

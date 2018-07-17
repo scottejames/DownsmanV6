@@ -1,6 +1,7 @@
 package com.scottejames.downsman.services;
 
 import com.scottejames.downsman.model.Model;
+import com.scottejames.downsman.model.SessionState;
 import com.vaadin.flow.server.VaadinSession;
 
 import java.util.ArrayList;
@@ -11,39 +12,32 @@ import java.util.List;
 public class Service<M extends Model> {
     private int id = 0;
 
-    void setTestUser(String testUser) {
-        this.testUser = testUser;
-    }
-
-    private String testUser = null;
-
-    private static final String SESSION_USERNAME = "username";
+    // This means that username should not be used to disect data - UserService is not segregated
+    private boolean owned = false;
 
     private final HashMap<String,List<M>> ownedData = new HashMap<>();
 
     protected String getUser(){
         String username;
-        if (testUser == null){
-            username = (String) VaadinSession.getCurrent().getAttribute(
-                    SESSION_USERNAME);
+        if (owned ){
+            username = SessionState.getInstance().getCurrentUser().getUsername();
         } else {
-            username = testUser;
+            username = new String("UNOWNED");
         }
         ownedData.putIfAbsent(username, new ArrayList<>());
         return username;
     }
-    //private List<M> data = new ArrayList<>();
-    public Service(){
+    public Service(boolean owned){
+        this.owned = owned;
 
     }
-    public  Service(List<M> data) {
+    public Service(List<M> data) {
         this.ownedData.put(getUser(), data);
     }
 
     int getNextId(){
         return ++id;
     }
-
 
     public M getById(int id){
         M result = null;

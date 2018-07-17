@@ -1,9 +1,11 @@
 package com.scottejames.downsman.ui.admin;
 
+import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.Service;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
+import com.scottejames.downsman.ui.MessageDialog;
 import com.scottejames.downsman.ui.utils.YorNDialog;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -62,18 +64,20 @@ public class UserAdminDialog extends Dialog {
     }
     private void resetPassword() {
         setupUserGrid();
-//        String user = service.getCurrentUser().getUsername();
-//        System.err.println(user);
+
     }
 
     public void deleteUser(){
 
-        // Check that we are not trying to delete current user!
-
+        UserModel currentUser = SessionState.getInstance().getCurrentUser();
+        if (selectedUser.getId() != currentUser.getId()) {
             service.remove(selectedUser);
             selectedUser = null;
             setupUserGrid();
-
+        } else {
+            MessageDialog dialog = new MessageDialog("WARNING","Cant delete logged in user",true);
+            dialog.open();
+        }
 
 
     }

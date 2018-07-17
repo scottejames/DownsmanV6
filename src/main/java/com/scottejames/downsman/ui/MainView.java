@@ -1,5 +1,6 @@
 package com.scottejames.downsman.ui;
 
+import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.ServiceManager;
@@ -67,8 +68,8 @@ public class MainView extends VerticalLayout {
 
         HorizontalLayout userStrip = new HorizontalLayout();
 
-        if (LoginDialog.isAuthenticated()){
-            UserModel user = loginDialog.getLoggedInUser();
+        if (SessionState.getInstance().isAuthenticated()){
+            UserModel user = SessionState.getInstance().getCurrentUser();
 
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
@@ -84,7 +85,7 @@ public class MainView extends VerticalLayout {
         }
 
         add(userStrip);
-        if (LoginDialog.isAuthenticated()) {
+        if (SessionState.getInstance().isAuthenticated()) {
 
             add(teamGrid);
             add(gridButtons);
@@ -141,7 +142,7 @@ public class MainView extends VerticalLayout {
         loginDialog.open();
     }
     private void logout(){
-        loginDialog.logout();
+        SessionState.getInstance().setCurrentUser(null);
         buildUI();
     }
 
