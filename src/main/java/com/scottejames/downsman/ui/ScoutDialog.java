@@ -41,9 +41,9 @@ class ScoutDialog extends Dialog {
         isAdult = new Checkbox();
         isAdult.setValue(false);
 
-        binder.bind(isAdult,"adult");
-        form.addFormItem(isAdult,"Is Adult");
-        isAdult.addValueChangeListener(e->adultChanged());
+        binder.bind(isLeader,"leader");
+        form.addFormItem(isLeader,"Is Leader");
+        isAdult.addValueChangeListener(e->leaderChanged());
 
         binder.readBean(model);
         Button save = new Button("Save");
@@ -56,7 +56,7 @@ class ScoutDialog extends Dialog {
 
     }
 
-    private void adultChanged() {
+    private void leaderChanged() {
         if (isAdult.getValue()){
             dobDate.setValue(null);
             dobDate.setEnabled(false);

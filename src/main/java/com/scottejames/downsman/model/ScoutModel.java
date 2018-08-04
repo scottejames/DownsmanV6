@@ -3,7 +3,7 @@ package com.scottejames.downsman.model;
 public class ScoutModel extends Model{
     private String fullName = null;
     private java.time.LocalDate dob = null;
-    private boolean adult = false;
+    private boolean leader = false;
 
 
     public ScoutModel() {
@@ -26,12 +26,12 @@ public class ScoutModel extends Model{
     }
 
 
-    public boolean isAdult() {
-        return adult;
+    public boolean isLeader() {
+        return leader;
     }
 
     public void setAdult(boolean adult) {
-        this.adult = adult;
+        this.leader = adult;
     }
     public ScoutModel(String fullName, java.time.LocalDate dob) {
 
