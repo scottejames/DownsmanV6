@@ -1,9 +1,6 @@
 package com.scottejames.downsman.ui;
 
-import com.scottejames.downsman.model.ReferenceData;
-import com.scottejames.downsman.model.ScoutModel;
-import com.scottejames.downsman.model.SupportModel;
-import com.scottejames.downsman.model.TeamModel;
+import com.scottejames.downsman.model.*;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.validators.EmailValidator;
@@ -25,7 +22,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import javafx.scene.control.CheckBox;
-class TeamDialog extends Dialog {
+public class TeamDialog extends Dialog {
 
 
     private static final String ERROR = "error";
@@ -58,8 +55,10 @@ class TeamDialog extends Dialog {
     private  Runnable            onSave = null;
 
     public TeamDialog(TeamModel team, Runnable onSave) {
-        if (team == null)
+        if (team == null) {
             model = new TeamModel();
+            model.setLeaderName(SessionState.getInstance().getCurrentUser().getUsername());
+        }
         else
             model = team;
         this.onSave = onSave;
@@ -360,7 +359,7 @@ class TeamDialog extends Dialog {
             submitTeamButton = new Button("Withdraw Team");
             submitTeamButton.addClickListener(e -> this.withdrawTeam());
         }
-        // If you have not paid you cant submit
+        // If you have not paid you cant submit`
         if (model.isPaymentRecieved() == false){
             submitTeamButton.setEnabled(false);
         }
@@ -424,6 +423,7 @@ class TeamDialog extends Dialog {
 
     }
     private void saveForm(){
+
             if (binder.writeBeanIfValid(model)){
                 if (model.isPersisted())
                     service.update(model);

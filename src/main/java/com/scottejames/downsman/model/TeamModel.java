@@ -11,10 +11,11 @@ public class TeamModel extends Model {
     public String toString() {
         return "Team : " + teamName + " Hike class " + hikeClass;
     }
+    private String leaderName = null;
+
 
     private String teamName = null;
     private String hikeClass = null;
-    private String status = null;
     private String section = null;
     private String district = null;
     private String county = null;
@@ -23,6 +24,9 @@ public class TeamModel extends Model {
     private String backupMobile = null;
     private String emergencyContactName = null;
     private String emergencyContactMobile = null;
+    private boolean paymentSubmitted = false;
+    private boolean paymentRecieved = false;
+    private boolean teamSubmitted = false;
 
     public boolean isPaymentSubmitted() {
         return paymentSubmitted;
@@ -48,9 +52,6 @@ public class TeamModel extends Model {
         this.teamSubmitted = teamSubmitted;
     }
 
-    private boolean paymentSubmitted = false;
-    private boolean paymentRecieved = false;
-    private boolean teamSubmitted = false;
 
 
    public String getSubmittedStatus(){
@@ -102,16 +103,14 @@ public class TeamModel extends Model {
         this.teamName = teamName;
     }
 
-    public TeamModel(String teamName, String hikeClass, String status) {
+    public TeamModel(String teamName, String hikeClass) {
         this.teamName = teamName;
         this.hikeClass = hikeClass;
-        this.status = status;
     }
 
     public TeamModel(String teamName, String hikeClass, String status, String section, String district, String county, String prefStart, String activeMobile, String backupMobile, String emergencyContactName, String emergencyContactMobile, String emergencyContactLandline) {
         this.teamName = teamName;
         this.hikeClass = hikeClass;
-        this.status = status;
         this.section = section;
         this.district = district;
         this.county = county;
@@ -203,13 +202,6 @@ public class TeamModel extends Model {
         this.hikeClass = hikeClass;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public void addScoutMember(ScoutModel scout){
         if (scout.isPersisted())
@@ -224,6 +216,14 @@ public class TeamModel extends Model {
         else
             supportService.add((support));
 
+    }
+
+    public String getLeaderName() {
+        return leaderName;
+    }
+
+    public void setLeaderName(String leaderName) {
+        this.leaderName = leaderName;
     }
 
     public List<ScoutModel> getScoutsTeam(){

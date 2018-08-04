@@ -42,7 +42,8 @@ public class MainView extends VerticalLayout {
         // Add table of teams
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
         teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
-        teamGrid.addColumn(TeamModel::getStatus).setHeader("Status");
+        teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Submitted");
+        teamGrid.addColumn(TeamModel::isPaymentRecieved).setHeader("Paid");
         teamGrid.setHeightByRows(true);
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);
