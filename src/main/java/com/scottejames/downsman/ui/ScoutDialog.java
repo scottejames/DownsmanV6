@@ -19,7 +19,7 @@ class ScoutDialog extends Dialog {
 
     private final Binder<ScoutModel> binder = new Binder<>(ScoutModel.class);
     private final FormLayout form = new FormLayout();
-    private Checkbox isAdult;
+    private Checkbox isLeader;
     private DatePicker dobDate;
 
     public ScoutDialog(ScoutModel model, Runnable onChange){
@@ -38,12 +38,12 @@ class ScoutDialog extends Dialog {
         binder.bind(dobDate,"dob");
         form.addFormItem(dobDate,"DOB");
 
-        isAdult = new Checkbox();
-        isAdult.setValue(false);
+        isLeader = new Checkbox();
+        isLeader.setValue(false);
 
         binder.bind(isLeader,"leader");
         form.addFormItem(isLeader,"Is Leader");
-        isAdult.addValueChangeListener(e->leaderChanged());
+        isLeader.addValueChangeListener(e->leaderChanged());
 
         binder.readBean(model);
         Button save = new Button("Save");
@@ -57,7 +57,7 @@ class ScoutDialog extends Dialog {
     }
 
     private void leaderChanged() {
-        if (isAdult.getValue()){
+        if (isLeader.getValue()){
             dobDate.setValue(null);
             dobDate.setEnabled(false);
         } else {

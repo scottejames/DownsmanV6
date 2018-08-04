@@ -158,7 +158,7 @@ public class TeamDialog extends Dialog {
 
         teamMembersGrid.addColumn(ScoutModel::getFullName).setHeader("Full Name");
         teamMembersGrid.addColumn(ScoutModel::getDob).setHeader("DOB");
-        teamMembersGrid.addColumn(ScoutModel::isAdult).setHeader("is Adult");
+        teamMembersGrid.addColumn(ScoutModel::isLeader).setHeader("is Leader");
 
 
         add(teamMembersGrid);

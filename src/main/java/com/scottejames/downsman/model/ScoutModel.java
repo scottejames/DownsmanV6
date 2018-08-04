@@ -30,7 +30,7 @@ public class ScoutModel extends Model{
         return leader;
     }
 
-    public void setAdult(boolean adult) {
+    public void setLeader(boolean adult) {
         this.leader = adult;
     }
     public ScoutModel(String fullName, java.time.LocalDate dob) {
