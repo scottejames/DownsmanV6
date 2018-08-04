@@ -46,7 +46,7 @@ class TestScoutService {
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
 
-        ScoutModel scout = new ScoutModel("Scott", LocalDate.now(),"male");
+        ScoutModel scout = new ScoutModel("Scott", LocalDate.now());
 
         assertEquals(scout.isPersisted(),false);
         assertEquals(team.getScoutsTeam().size(),0);
@@ -62,9 +62,9 @@ class TestScoutService {
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
 
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
 
         assertEquals(team.getScoutsTeam().size(),3);
     }
@@ -73,9 +73,10 @@ class TestScoutService {
 
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()
+        ));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
 
         List<ScoutModel> list = team.getScoutsTeam();
         assertEquals(list.size(),3);
@@ -89,9 +90,9 @@ class TestScoutService {
     void removeScoutFromTeam(){
         TeamModel team = new TeamModel ("Team One");
         service.add(team);
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now(),"male"));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now(),"male"));
+        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
+        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()));
+        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
 
         ScoutModel scout = team.getScoutsTeam().get(0);
         assertEquals(team.getScoutsTeam().size(),3);

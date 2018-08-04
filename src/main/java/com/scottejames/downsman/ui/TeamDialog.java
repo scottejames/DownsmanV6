@@ -158,7 +158,7 @@ public class TeamDialog extends Dialog {
 
         teamMembersGrid.addColumn(ScoutModel::getFullName).setHeader("Full Name");
         teamMembersGrid.addColumn(ScoutModel::getDob).setHeader("DOB");
-        teamMembersGrid.addColumn(ScoutModel::getGender).setHeader("Gender");
+        teamMembersGrid.addColumn(ScoutModel::isAdult).setHeader("is Adult");
 
 
         add(teamMembersGrid);
@@ -354,15 +354,16 @@ public class TeamDialog extends Dialog {
             // Should check here for LOCKED
             submitTeamButton = new Button ("Submit Team");
             submitTeamButton.addClickListener( e-> this.submitTeam());
+            // If you have not paid you cant submit`
+            if (model.isPaymentRecieved() == false){
+                submitTeamButton.setEnabled(false);
+            }
 
         } else {
             submitTeamButton = new Button("Withdraw Team");
             submitTeamButton.addClickListener(e -> this.withdrawTeam());
         }
-        // If you have not paid you cant submit`
-        if (model.isPaymentRecieved() == false){
-            submitTeamButton.setEnabled(false);
-        }
+
 
         payButton = new Button ("Mark Payment");
         payButton.addClickListener( e-> this.markPayment());

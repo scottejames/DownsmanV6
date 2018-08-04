@@ -3,6 +3,7 @@ package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.ScoutModel;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,6 +19,8 @@ class ScoutDialog extends Dialog {
 
     private final Binder<ScoutModel> binder = new Binder<>(ScoutModel.class);
     private final FormLayout form = new FormLayout();
+    private Checkbox isAdult;
+    private DatePicker dobDate;
 
     public ScoutDialog(ScoutModel model, Runnable onChange){
         if (model == null)
@@ -29,16 +32,18 @@ class ScoutDialog extends Dialog {
 
         TextField fullName = new TextField();
         binder.bind(fullName,"fullName");
-        form.addFormItem(fullName,"Full Name");
+        form.addFormItem(fullName,"Name");
 
-        DatePicker dobDate = new DatePicker();
+        dobDate = new DatePicker();
         binder.bind(dobDate,"dob");
         form.addFormItem(dobDate,"DOB");
 
-        ComboBox<String> genderCombo= new ComboBox<>();
-        genderCombo.setItems("Male","Female");
-        binder.bind(genderCombo,"gender");
-        form.addFormItem(genderCombo,"Gender");
+        isAdult = new Checkbox();
+        isAdult.setValue(false);
+
+        binder.bind(isAdult,"adult");
+        form.addFormItem(isAdult,"Is Adult");
+        isAdult.addValueChangeListener(e->adultChanged());
 
         binder.readBean(model);
         Button save = new Button("Save");
@@ -49,6 +54,15 @@ class ScoutDialog extends Dialog {
         delete.addClickListener(e -> cancel());
         add(form);
 
+    }
+
+    private void adultChanged() {
+        if (isAdult.getValue()){
+            dobDate.setValue(null);
+            dobDate.setEnabled(false);
+        } else {
+            dobDate.setEnabled(true);
+        }
     }
 
 

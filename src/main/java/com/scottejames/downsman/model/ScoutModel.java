@@ -3,7 +3,8 @@ package com.scottejames.downsman.model;
 public class ScoutModel extends Model{
     private String fullName = null;
     private java.time.LocalDate dob = null;
-    private String gender = null;
+    private boolean adult = false;
+
 
     public ScoutModel() {
     }
@@ -24,18 +25,17 @@ public class ScoutModel extends Model{
         this.dob = dob;
     }
 
-    public String getGender() {
-        return gender;
+
+    public boolean isAdult() {
+        return adult;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAdult(boolean adult) {
+        this.adult = adult;
     }
-
-    public ScoutModel(String fullName, java.time.LocalDate dob, String gender) {
+    public ScoutModel(String fullName, java.time.LocalDate dob) {
 
         this.fullName = fullName;
         this.dob = dob;
-        this.gender = gender;
     }
 }

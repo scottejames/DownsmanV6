@@ -80,7 +80,7 @@ public class TeamAdminDialog extends Dialog {
 
     private void updateTeamGrid(){
         removeAll();
-        teamGrid.setItems(service.getAll());
+        teamGrid.setItems(service.getAllAll());
         gridButtonsLayout.setEnabled(false);
         form.add(teamGrid);
         form.add(gridButtonsLayout);

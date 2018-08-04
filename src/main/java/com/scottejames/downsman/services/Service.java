@@ -64,6 +64,15 @@ public class Service<M extends Model> {
         return ownedData.get(getUser());
 
     }
+
+    public List <M> getAllAll(){
+        ArrayList <M> results = new ArrayList<>();
+        for (String key: ownedData.keySet() ){
+            results.addAll(ownedData.get(key));
+        }
+        return results;
+
+    }
     public void add(M model){
         model.setId(this.getNextId());
         ownedData.get(getUser()).add(model);
