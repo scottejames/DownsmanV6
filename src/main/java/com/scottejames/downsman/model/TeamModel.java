@@ -24,24 +24,53 @@ public class TeamModel extends Model {
     private String emergencyContactName = null;
     private String emergencyContactMobile = null;
 
-    public String getSubmitted() {
-        return submitted;
+    public boolean isPaymentSubmitted() {
+        return paymentSubmitted;
     }
 
-    public void setSubmitted(String submitted) {
-        this.submitted = submitted;
+    public void setPaymentSubmitted(boolean paymentSubmitted) {
+        this.paymentSubmitted = paymentSubmitted;
     }
 
-    public String getPaid() {
-        return paid;
+    public boolean isPaymentRecieved() {
+        return paymentRecieved;
     }
 
-    public void setPaid(String paid) {
-        this.paid = paid;
+    public void setPaymentRecieved(boolean paymentRecieved) {
+        this.paymentRecieved = paymentRecieved;
     }
 
-    private String submitted = null;
-    private String paid = null;
+    public boolean isTeamSubmitted() {
+        return teamSubmitted;
+    }
+
+    public void setTeamSubmitted(boolean teamSubmitted) {
+        this.teamSubmitted = teamSubmitted;
+    }
+
+    private boolean paymentSubmitted = false;
+    private boolean paymentRecieved = false;
+    private boolean teamSubmitted = false;
+
+
+   public String getSubmittedStatus(){
+       if (teamSubmitted) {
+           return "Submitted";
+       } else {
+           return "Not Submitted";
+       }
+
+   }
+   public String getPaymentStatus(){
+       if (paymentRecieved) {
+           return "Paid";
+       } else if (paymentSubmitted){
+           return "Payment Submitted";
+       } else {
+           return "Not Paid";
+       }
+    }
+
 
     private final ScoutService scoutService = new ScoutService();
     private final SupportService supportService = new SupportService();
@@ -213,5 +242,12 @@ public class TeamModel extends Model {
     }
 
 
+    public String validateForSubmission() {
+        String validation = "";
+        if ((getTeamName() == null) || (getTeamName().isEmpty())){
+            validation += "Team Name Cant Be Empty\n";
+        }
+        return validation;
+    }
 }
 

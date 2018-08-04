@@ -22,7 +22,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
-
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
+import javafx.scene.control.CheckBox;
 class TeamDialog extends Dialog {
 
 
@@ -49,6 +51,9 @@ class TeamDialog extends Dialog {
 
     private  Button              saveFormButton     = null;
     private  Button              cancelFormButton   = null;
+    private  Button              submitTeamButton   = null;
+    private  Button              payButton          = null;
+
 
     private  Runnable            onSave = null;
 
@@ -61,43 +66,32 @@ class TeamDialog extends Dialog {
 
         setSizeUndefined();
 
-
         setupTeamDetails();
         setupScoutGrid();
         setupTeamPhone();
         setupSupportGrid();
         setupEmergencyContact();
-        ComboBox<String> submittedCombo = new ComboBox<>();
-        submittedCombo.setItems(ReferenceData.SUBMITTED_ENUM);
-        binder.bind(submittedCombo,"submitted");
 
-        ComboBox<String> paidCombo = new ComboBox<>();
-        paidCombo.setItems(ReferenceData.PAID_ENUM);
-        binder.bind(paidCombo,"paid");
-        VerticalLayout verticalLayout = new VerticalLayout();
+        setupStatusDetails();
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(new Label("Submitted: "),submittedCombo, new Label("paid: "), paidCombo);
-
-        verticalLayout.add(horizontalLayout);
-        saveFormButton = new Button("Save");
-        saveFormButton.addClickListener(e -> this.saveForm());
-
-        cancelFormButton = new Button("Cancel");
-        cancelFormButton.addClickListener(e -> this.cancelForm());
-
-
-        HorizontalLayout saveButtonLayout = new HorizontalLayout();
-        saveButtonLayout.add(saveFormButton, cancelFormButton);
-        verticalLayout.add(saveButtonLayout);
-
-        add(verticalLayout);
-
+       setupButtons();
         binder.readBean(model);
 
 
     }
 
+
+
+    private void setupStatusDetails() {
+        HorizontalLayout statusLayout = new HorizontalLayout();
+
+        statusLayout.add(new Label("Team Status : "));
+        statusLayout.add(new Label("Payment Status : "));
+        statusLayout.add(new Label(model.getPaymentStatus()));
+        statusLayout.add(new Label("Submitted Status : "));
+        statusLayout.add(new Label(model.getSubmittedStatus()));
+        add(statusLayout);
+    }
 
 
     private void setupTeamPhone(){
@@ -350,16 +344,85 @@ class TeamDialog extends Dialog {
 
         add(emergencyContactForm);
     }
-    private void addTextField(FormLayout form, String label, String bindValue){
 
-        TextField field = new TextField();
-        form.addFormItem(field,label);
-        if (bindValue != null)
-            binder.bind(field,bindValue);
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+    private void setupButtons(){
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+
+        if (model.isTeamSubmitted() == false){
+            // button is withdraw
+            // Should check here for LOCKED
+            submitTeamButton = new Button ("Submit Team");
+            submitTeamButton.addClickListener( e-> this.submitTeam());
+
+        } else {
+            submitTeamButton = new Button("Withdraw Team");
+            submitTeamButton.addClickListener(e -> this.withdrawTeam());
+        }
+        // If you have not paid you cant submit
+        if (model.isPaymentRecieved() == false){
+            submitTeamButton.setEnabled(false);
+        }
+
+        payButton = new Button ("Mark Payment");
+        payButton.addClickListener( e-> this.markPayment());
+        if (model.isPaymentSubmitted()){
+            payButton.setEnabled(false);
+        }
+        saveFormButton = new Button("Save");
+        saveFormButton.addClickListener(e -> this.saveForm());
+
+        cancelFormButton = new Button("Cancel");
+        cancelFormButton.addClickListener(e -> this.cancelForm());
 
 
+        HorizontalLayout saveButtonLayout = new HorizontalLayout();
+        saveButtonLayout.add(payButton,submitTeamButton,saveFormButton, cancelFormButton);
+
+        add(saveButtonLayout);
     }
 
+
+    private void markPayment() {
+        if (!paymentValidation()){
+            MessageDialog dialog= new MessageDialog("ERROR", "Please ensure team name set before paying",true);
+            dialog.open();
+        } else {
+            model.setPaymentSubmitted(true);
+            saveForm();
+
+        }
+    }
+
+    private boolean paymentValidation(){
+        if((model.getTeamName() == null) || (model.getTeamName().isEmpty()))
+            return false;
+
+        else
+            return true;
+    }
+    private void submitTeam() {
+        String submissionString = submitValidation();
+        if (submissionString.isEmpty()){
+            model.setTeamSubmitted(true);
+            saveForm();
+
+        }
+        else {
+            MessageDialog dialog = new MessageDialog("Validation Failed", submissionString,true);
+            dialog.open();
+        }
+
+    }
+    private void withdrawTeam() {
+        model.setTeamSubmitted(false);
+        saveForm();
+    }
+    private String submitValidation(){
+        return model.validateForSubmission();
+
+    }
     private void saveForm(){
             if (binder.writeBeanIfValid(model)){
                 if (model.isPersisted())
@@ -374,30 +437,26 @@ class TeamDialog extends Dialog {
                 showNotification("Error", "Team not saved check errors", true);
             }
     }
+
     private void cancelForm(){
        close();
+    }
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+    private void addTextField(FormLayout form, String label, String bindValue){
+
+        TextField field = new TextField();
+        form.addFormItem(field,label);
+        if (bindValue != null)
+            binder.bind(field,bindValue);
 
 
     }
-
     private void showNotification(String title, String message, boolean error) {
-        Dialog dialog = createDialog(title, message, error);
-        if (getUI().isPresent())
-            getUI().get().add(dialog);
+        MessageDialog dialog = new MessageDialog(title,message,error);
         dialog.open();
+
     }
-    private Dialog createDialog(String title, String text,
-                                boolean error) {
-        Dialog dialog = new Dialog();
-        dialog.setId("notification");
-        dialog.add(new H2(title));
-        HtmlComponent paragraph = new HtmlComponent(Tag.P);
-        paragraph.getElement().setText(text);
-        if (error) {
-            paragraph.setClassName(ERROR);
-        }
-        dialog.add(paragraph);
-        return dialog;
-    }
+
 
 }

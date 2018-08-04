@@ -15,9 +15,12 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.lumo.Lumo;
 
 @HtmlImport("styles/shared-styles.html")
 @Route("")
+@Theme(value = Lumo.class, variant = Lumo.DARK)
 public class MainView extends VerticalLayout {
 
     private final TeamService service = ServiceManager.getInstance().getTeamService();
