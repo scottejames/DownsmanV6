@@ -22,5 +22,20 @@ public class MessageDialog  extends Dialog {
         add(new Button(OK, e->close()));
     }
 
+    public MessageDialog(String title, String [] textList,
+                         boolean error) {
+        add(new H2(title));
+        for (String text: textList){
+            HtmlComponent paragraph = new HtmlComponent(Tag.P);
+
+            paragraph.getElement().setText(text);
+            if (error) {
+                paragraph.setClassName(ERROR);
+            }
+            add(paragraph);
+        }
+
+        add(new Button(OK, e->close()));
+    }
 
 }

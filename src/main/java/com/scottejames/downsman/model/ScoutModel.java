@@ -1,5 +1,7 @@
 package com.scottejames.downsman.model;
 
+import java.time.Period;
+
 public class ScoutModel extends Model{
     private String fullName = null;
     private java.time.LocalDate dob = null;
@@ -37,5 +39,13 @@ public class ScoutModel extends Model{
 
         this.fullName = fullName;
         this.dob = dob;
+    }
+    public int calculateAge() {
+
+        if ((dob != null) && (ReferenceData.HIKE_DATE != null)) {
+            return Period.between(dob, ReferenceData.HIKE_DATE).getYears();
+        } else {
+            return 0;
+        }
     }
 }

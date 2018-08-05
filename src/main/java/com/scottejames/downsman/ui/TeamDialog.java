@@ -403,8 +403,8 @@ public class TeamDialog extends Dialog {
             return true;
     }
     private void submitTeam() {
-        String submissionString = submitValidation();
-        if (submissionString.isEmpty()){
+        String [] submissionString = submitValidation();
+        if (submissionString.length == 0){
             model.setTeamSubmitted(true);
             saveForm();
 
@@ -419,7 +419,7 @@ public class TeamDialog extends Dialog {
         model.setTeamSubmitted(false);
         saveForm();
     }
-    private String submitValidation(){
+    private String[] submitValidation(){
         return model.validateForSubmission();
 
     }
