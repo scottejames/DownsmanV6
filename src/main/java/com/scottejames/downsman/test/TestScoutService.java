@@ -1,10 +1,9 @@
 package com.scottejames.downsman.test;
 
 import com.scottejames.downsman.model.ScoutModel;
-import com.scottejames.downsman.model.TeamModel;
+import com.scottejames.downsman.services.ScoutService;
 import com.scottejames.downsman.services.ServiceManager;
-import com.scottejames.downsman.services.TeamService;
-
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,92 +13,74 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class TestScoutService {
-
-    private static TeamService service = null;
+public class TestScoutService {
+    private static ScoutService service = new ScoutService();
 
     @BeforeEach
     void setup(){
-        service = ServiceManager.getInstance().getTeamService();
-        service.reset();
+        service = new ScoutService();
 
     }
 
     @Test
-    void addTeam(){
+    public void addScout(){
+        ScoutModel scout = new ScoutModel("Owner Id","This Is the Name", LocalDate.now());
+        assertTrue(scout.isPersisted() == false);
+        service.add(scout);
+        assertTrue(scout.isPersisted() == true);
+        service.remove(scout);
+        assertTrue(scout.isPersisted() == false);
 
-        TeamModel team = new TeamModel("Team One");
 
-        assertEquals(team.isPersisted(),false);
-        assertEquals(team.getId(),0);
-
-        service.add(team);
-        assertEquals(team.isPersisted(), true);
-        assertEquals(team.getId(),1);
-
-        TeamModel result = service.getById(1);
-        assertEquals(team, result);
     }
     @Test
-    void addScoutToTeam(){
+    public void retrieveScout(){
+        ScoutModel scout = new ScoutModel("ID-12-34","A new scout", LocalDate.now());
+        service.add(scout);
+        List<ScoutModel> scoutList = service.getAll("ID-12-34");
+        assertEquals(scoutList.size(),1);
 
-        TeamModel team = new TeamModel ("Team One");
-        service.add(team);
-
-        ScoutModel scout = new ScoutModel("Scott", LocalDate.now());
-
-        assertEquals(scout.isPersisted(),false);
-        assertEquals(team.getScoutsTeam().size(),0);
-
-        team.addScoutMember(scout);
-
-        assertEquals(scout.isPersisted(),true);
-        assertEquals(team.getScoutsTeam().size(),1);
+        ScoutModel result = scoutList.get(0);
+        assertTrue(scout.getFullName().equals(result.getFullName()));
+        assertEquals(scout.getDob(),result.getDob());
+        assertEquals(scout.getDobEpoch(),result.getDobEpoch());
+        service.remove(scout);
     }
     @Test
-    void addTwoScoutToTeam(){
+    public void addScoutsToDifferentOwners(){
+        ScoutModel scoutOne= new ScoutModel("ID-12-34","A new scout", LocalDate.now());
+        ScoutModel scoutTwo = new ScoutModel("ID-12-35","A new scout", LocalDate.now());
+        service.add(scoutOne);
+        service.add(scoutTwo);
 
-        TeamModel team = new TeamModel ("Team One");
-        service.add(team);
+        List<ScoutModel> scoutList = service.getAll("ID-12-34");
+        assertEquals(scoutList.size(),1);
+        service.remove(scoutOne);
+        service.remove(scoutTwo);
 
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
-
-        assertEquals(team.getScoutsTeam().size(),3);
     }
     @Test
-    void validateListOfScouts(){
+    public void addSeveralScoutsToSameOwner(){
+        ScoutModel scoutOne= new ScoutModel("ID-12-34","A new scout", LocalDate.now());
+        ScoutModel scoutTwo = new ScoutModel("ID-12-34","A new scout", LocalDate.now());
+        service.add(scoutOne);
+        service.add(scoutTwo);
 
-        TeamModel team = new TeamModel ("Team One");
-        service.add(team);
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()
-        ));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
-
-        List<ScoutModel> list = team.getScoutsTeam();
-        assertEquals(list.size(),3);
-        assertTrue(list.get(0).getFullName().equals("Scott"));
-        assertTrue(list.get(1).getFullName().equals("Fred"));
-        assertTrue(list.get(2).getFullName().equals("Harry"));
-
+        List<ScoutModel> scoutList = service.getAll("ID-12-34");
+        assertEquals(scoutList.size(),2);
+        service.remove(scoutOne);
+        service.remove(scoutTwo);
     }
 
     @Test
-    void removeScoutFromTeam(){
-        TeamModel team = new TeamModel ("Team One");
-        service.add(team);
-        team.addScoutMember(new ScoutModel("Scott", java.time.LocalDate.now()));
-        team.addScoutMember(new ScoutModel("Fred",java.time.LocalDate.now()));
-        team.addScoutMember(new ScoutModel("Harry",java.time.LocalDate.now()));
-
-        ScoutModel scout = team.getScoutsTeam().get(0);
-        assertEquals(team.getScoutsTeam().size(),3);
-
-        team.removeScoutMember(scout);
-        assertEquals(team.getScoutsTeam().size(),2);
-
+    public void noIDea(){
+        ScoutModel scoutOne= new ScoutModel("ID-12-36","A new scout", LocalDate.now());
+        service.add(scoutOne);
+        scoutOne.setFullName("New Name");
+        service.add(scoutOne);
+        List<ScoutModel> scoutList = service.getAll("ID-12-36");
+        assertEquals(scoutList.size(),1);
+        service.remove(scoutOne);
 
     }
 }

@@ -1,15 +1,16 @@
 package com.scottejames.downsman.services;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.utils.HashHelper;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
-public class UserService extends Service<UserModel> {
+public class UserService{
 
 
     public UserService(){
-        super(false);
     }
 
     public UserModel login(String username, String password){
@@ -28,9 +29,19 @@ public class UserService extends Service<UserModel> {
             return null;
     }
 
-    public UserModel findByUserName(String username){
-        List<UserModel> userList = getAll();
+    public List<UserModel> getAll(){
+        UserModel query = new UserModel();
 
+        DynamoDBQueryExpression<UserModel> queryExpression = (new DynamoDBQueryExpression<UserModel>().
+                withHashKeyValues(query));
+        List <UserModel> results = DatabaseService.getInstance().getMapper().
+                query(UserModel.class,queryExpression);
+        return results;
+    }
+
+    public UserModel findByUserName(String username){
+        // Can do this in DB later but for quick n cheap
+        List< UserModel> userList = getAll();
         for (UserModel user : userList) {
             // should check for password really
             if (user.getUsername().equals(username)) {
@@ -38,5 +49,19 @@ public class UserService extends Service<UserModel> {
             }
         }
         return null;
+    }
+
+    public void add(UserModel user) {
+        DatabaseService.getInstance().getMapper().save(user);
+    }
+
+
+    public void remove(UserModel user) {
+        DatabaseService.getInstance().getMapper().delete(user);
+    }
+
+    public void update(UserModel user) {
+        DatabaseService.getInstance().getMapper().save(user);
+
     }
 }

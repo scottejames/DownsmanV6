@@ -2,11 +2,9 @@ package com.scottejames.downsman.ui.admin;
 
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
-import com.scottejames.downsman.services.Service;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
 import com.scottejames.downsman.ui.MessageDialog;
-import com.scottejames.downsman.ui.utils.YorNDialog;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -70,7 +68,7 @@ public class UserAdminDialog extends Dialog {
     public void deleteUser(){
 
         UserModel currentUser = SessionState.getInstance().getCurrentUser();
-        if (selectedUser.getId() != currentUser.getId()) {
+        if (selectedUser.getUsername() != currentUser.getUsername()) {
             service.remove(selectedUser);
             selectedUser = null;
             setupUserGrid();

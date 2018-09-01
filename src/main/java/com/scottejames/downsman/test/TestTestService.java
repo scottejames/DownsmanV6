@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestTestService {
 
@@ -22,16 +24,18 @@ class TestTestService {
     @Test
     void storeModelSetsId(){
         TestModel model= new TestModel("First");
+        assertEquals(model.getId(),null);
         service.add(model);
-        assertEquals(model.getId(),1);
+        assertNotEquals(model.getId(),null);
+
     }
 
     @Test
     void storeModelGetSameModel(){
-        TestModel model= new TestModel("First");
+        TestModel model= new TestModel("Second");
         service.add(model);
         TestModel result = service.getById(model.getId());
-        assertEquals(model,result);
+        assertTrue(model.getId().equals(result.getId()));
     }
 
     @Test

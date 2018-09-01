@@ -28,13 +28,13 @@ public class ServiceManager {
     private void createTestData() {
 
 
-        UserModel userOne = new UserModel("scott",HashHelper.hashPassword("knot8gen"));
-        userOne.setAdmin(true);
-        UserModel userTwo = new UserModel("fred",HashHelper.hashPassword("knot8gen"));
-        userTwo.setAdmin(false);
+//        UserModel userOne = new UserModel("scott",HashHelper.hashPassword("knot8gen"));
+//        userOne.setAdmin(true);
+//        UserModel userTwo = new UserModel("fred",HashHelper.hashPassword("knot8gen"));
+//        userTwo.setAdmin(false);
 
-        userService.add(userOne);
-        userService.add(userTwo);
+//        userService.add(userOne);
+//        userService.add(userTwo);
 
 
 

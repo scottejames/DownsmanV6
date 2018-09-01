@@ -1,5 +1,6 @@
 package com.scottejames.downsman.model;
 
+import com.amazonaws.services.dynamodbv2.document.Item;
 import com.scottejames.downsman.services.ScoutService;
 import com.scottejames.downsman.services.SupportService;
 
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TeamModel extends Model {
+public class TeamModel  {
 
     public String toString() {
         return "Team : " + teamName + " Hike class " + hikeClass;
     }
     private String leaderName = null;
 
-
+    private String id = null;
     private String teamName = null;
     private String hikeClass = null;
     private String section = null;
@@ -228,11 +229,11 @@ public class TeamModel extends Model {
     }
 
     public List<ScoutModel> getScoutsTeam(){
-        return scoutService.getAll();
+        return scoutService.getAll(this.getId());
     }
 
     public List<SupportModel> getSupportTeam(){
-        return supportService.getAll();
+        return supportService.getAll(getId());
     }
 
     public void removeScoutMember(ScoutModel scout){
@@ -271,11 +272,12 @@ public class TeamModel extends Model {
         // Validation based on hike class
         String hikeClass = getHikeClass();
         if (hikeClass != null) {
-            int teamSize = scoutService.getAll().size();
+            int teamSize = scoutService.getAll(this.getId()).size();
             boolean leader = false;
             int combinedAge = 0;
             ArrayList<Integer> ages = new ArrayList<>();
-            for (ScoutModel s : scoutService.getAll()) {
+            for (ScoutModel s : scoutService.getAll(this.getId()
+            )) {
                 if (s.isLeader() == true)
                     leader = true;
                 else
@@ -311,7 +313,7 @@ public class TeamModel extends Model {
                     if (combinedAge > 48)
                         results.add("For B-Class combined age must be more than 48 ");
                     if (serviceCrew == false)
-                        results.add("Service crew required for B-Class");
+                        results.add("InMemoryService crew required for B-Class");
                     if (maxAge > 18)
                         results.add("For B-Class may not have hikers over 18");
                     break;
@@ -323,7 +325,7 @@ public class TeamModel extends Model {
                     if (combinedAge > 48)
                         results.add("For A-Class combined age must be more than 48 ");
                     if (serviceCrew == false)
-                        results.add("Service crew required for A-Class");
+                        results.add("InMemoryService crew required for A-Class");
                 case "V-Class":
                     if (teamSize != 3)
                         results.add("For V-Class team size must be 3");
@@ -332,7 +334,7 @@ public class TeamModel extends Model {
                     if (combinedAge > 100)
                         results.add("For V-Class combined age must be more than 100 ");
                     if (serviceCrew == false)
-                        results.add("Service crew required for V-Class");
+                        results.add("InMemoryService crew required for V-Class");
                     break;
                 case "S-Class":
                     if (teamSize != 4)
@@ -344,7 +346,7 @@ public class TeamModel extends Model {
                     if (maxAge < 14.5)
                         results.add("For S-Class max age must be less than 14.5");
                     if (serviceCrew == false)
-                        results.add("Service crew required for S-Class");
+                        results.add("InMemoryService crew required for S-Class");
                     break;
                 case "E-Class":
                     if (teamSize != 4)
@@ -356,13 +358,21 @@ public class TeamModel extends Model {
                     if (combinedAge < 62)
                         results.add("For E-Class combined age must be less than 62");
                     if (serviceCrew == false)
-                        results.add("Service crew required for E-Class");
+                        results.add("InMemoryService crew required for E-Class");
                     if (maxAge > 18)
                         results.add("For E-Class may not have hikers over 18");
                     break;
             }
         }
         return results.toArray(new String[results.size()]);
+    }
+
+    public boolean isPersisted() {
+        return false;
+    }
+
+    public String getId() {
+        return id;
     }
 }
 
