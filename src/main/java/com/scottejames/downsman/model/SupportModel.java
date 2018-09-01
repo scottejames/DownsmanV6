@@ -15,6 +15,13 @@ public class SupportModel  {
     public SupportModel(){
 
     }
+    public SupportModel( String fullName, String phoneNumber, String from, String to) {
+        this.ownerID = ownerID;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.from = from;
+        this.to = to;
+    }
     public SupportModel(String ownerID, String fullName, String phoneNumber, String from, String to) {
         this.ownerID = ownerID;
         this.fullName = fullName;

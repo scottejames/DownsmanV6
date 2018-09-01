@@ -3,6 +3,8 @@ package com.scottejames.downsman.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.utils.HashHelper;
+import com.scottejames.downsman.utils.LogUtil;
+import sun.rmi.log.LogHandler;
 
 import javax.xml.crypto.Data;
 import java.util.List;
@@ -14,6 +16,7 @@ public class UserService{
     }
 
     public UserModel login(String username, String password){
+        LogUtil.logEvent(username + " attempting to login");
         // if user or password is null dont try to loging
         if (password == null || password.length() == 0 || username == null || username.length() == 0)
             return null;
@@ -23,10 +26,13 @@ public class UserService{
             return null;
         
         String hash = HashHelper.hashPassword(password);
-        if (user.getPassword().equals(hash))
+        if (user.getPassword().equals(hash)) {
+            LogUtil.logEvent(username + " successfully logged in");
             return user;
-        else
+        }  else {
+            LogUtil.logEvent(username + " failed to login");
             return null;
+        }
     }
 
     public List<UserModel> getAll(){

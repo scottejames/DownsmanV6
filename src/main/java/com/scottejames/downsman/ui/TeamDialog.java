@@ -57,7 +57,11 @@ public class TeamDialog extends Dialog {
     public TeamDialog(TeamModel team, Runnable onSave) {
         if (team == null) {
             model = new TeamModel();
+            model.setTeamName("Default");
             model.setLeaderName(SessionState.getInstance().getCurrentUser().getUsername());
+            model.setOwnerID(SessionState.getInstance().getCurrentUser().getId());
+            service.add(model);
+
         }
         else
             model = team;
@@ -420,7 +424,8 @@ public class TeamDialog extends Dialog {
         saveForm();
     }
     private String[] submitValidation(){
-        return model.validateForSubmission();
+        //return model.validateForSubmission();
+        return null;
 
     }
     private void saveForm(){

@@ -1,5 +1,6 @@
 package com.scottejames.downsman.model;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.scottejames.downsman.services.ScoutService;
 import com.scottejames.downsman.services.SupportService;
@@ -8,13 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@DynamoDBTable(tableName = "Team")
 public class TeamModel  {
 
-    public String toString() {
-        return "Team : " + teamName + " Hike class " + hikeClass;
-    }
-    private String leaderName = null;
-
+    private String ownerID = null;
     private String id = null;
     private String teamName = null;
     private String hikeClass = null;
@@ -26,91 +24,44 @@ public class TeamModel  {
     private String backupMobile = null;
     private String emergencyContactName = null;
     private String emergencyContactMobile = null;
+    private String emergencyContactLandline = null;
+    private String emergencyContactEmail = null;
+    private String leaderName = null;
     private boolean paymentSubmitted = false;
     private boolean paymentRecieved = false;
     private boolean teamSubmitted = false;
 
-    public boolean isPaymentSubmitted() {
-        return paymentSubmitted;
-    }
-
-    public void setPaymentSubmitted(boolean paymentSubmitted) {
-        this.paymentSubmitted = paymentSubmitted;
-    }
-
-    public boolean isPaymentRecieved() {
-        return paymentRecieved;
-    }
-
-    public void setPaymentRecieved(boolean paymentRecieved) {
-        this.paymentRecieved = paymentRecieved;
-    }
-
-    public boolean isTeamSubmitted() {
-        return teamSubmitted;
-    }
-
-    public void setTeamSubmitted(boolean teamSubmitted) {
-        this.teamSubmitted = teamSubmitted;
-    }
-
-
-
-   public String getSubmittedStatus(){
-       if (teamSubmitted) {
-           return "Submitted";
-       } else {
-           return "Not Submitted";
-       }
-
-   }
-   public String getPaymentStatus(){
-       if (paymentRecieved) {
-           return "Paid";
-       } else if (paymentSubmitted){
-           return "Payment Submitted";
-       } else {
-           return "Not Paid";
-       }
-    }
 
 
     private final ScoutService scoutService = new ScoutService();
     private final SupportService supportService = new SupportService();
-
-    public String getEmergencyContactLandline() {
-        return emergencyContactLandline;
-    }
-
-    public void setEmergencyContactLandline(String emergencyContactLandline) {
-        this.emergencyContactLandline = emergencyContactLandline;
-    }
-
-    private String emergencyContactLandline = null;
-
-    public String getEmergencyContactEmail() {
-        return emergencyContactEmail;
-    }
-
-    public void setEmergencyContactEmail(String emergencyContactEmail) {
-        this.emergencyContactEmail = emergencyContactEmail;
-    }
-
-    private String emergencyContactEmail = null;
-
     public TeamModel(){
 
     }
-    public TeamModel(String teamName) {
+    public TeamModel(String ownerID, String teamName) {
+        this.ownerID = ownerID;
         this.teamName = teamName;
     }
 
-    public TeamModel(String teamName, String hikeClass) {
+    public TeamModel(String ownerID,String teamName, String hikeClass) {
+        this.ownerID = ownerID;
         this.teamName = teamName;
         this.hikeClass = hikeClass;
     }
-
-    public TeamModel(String teamName, String hikeClass, String status, String section, String district, String county, String prefStart, String activeMobile, String backupMobile, String emergencyContactName, String emergencyContactMobile, String emergencyContactLandline) {
+    public TeamModel(String ownerID,
+                     String teamName,
+                     String hikeClass,
+                     String status,
+                     String section,
+                     String district,
+                     String county,
+                     String prefStart,
+                     String activeMobile,
+                     String backupMobile,
+                     String emergencyContactName,
+                     String emergencyContactMobile,
+                     String emergencyContactLandline) {
+        this.ownerID = ownerID;
         this.teamName = teamName;
         this.hikeClass = hikeClass;
         this.section = section;
@@ -124,255 +75,214 @@ public class TeamModel  {
         this.emergencyContactLandline = emergencyContactLandline;
     }
 
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getCounty() {
-        return county;
-    }
-
-    public void setCounty(String county) {
-        this.county = county;
-    }
-
-    public String getPrefStart() {
-        return prefStart;
-    }
-
-    public void setPrefStart(String prefStart) {
-        this.prefStart = prefStart;
-    }
-
-    public String getActiveMobile() {
-        return activeMobile;
-    }
-
-    public void setActiveMobile(String activeMobile) {
-        this.activeMobile = activeMobile;
-    }
-
-    public String getBackupMobile() {
-        return backupMobile;
-    }
-
-    public void setBackupMobile(String backupMobile) {
-        this.backupMobile = backupMobile;
-    }
-
-    public String getEmergencyContactName() {
-        return emergencyContactName;
-    }
-
-    public void setEmergencyContactName(String emergencyContactName) {
-        this.emergencyContactName = emergencyContactName;
-    }
-
-    public String getEmergencyContactMobile() {
-        return emergencyContactMobile;
-    }
-
-    public void setEmergencyContactMobile(String emergencyContactMobile) {
-        this.emergencyContactMobile = emergencyContactMobile;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public String getHikeClass() {
-        return hikeClass;
-    }
-
-    public void setHikeClass(String hikeClass) {
-        this.hikeClass = hikeClass;
-    }
-
-
+    @DynamoDBIgnore
     public void addScoutMember(ScoutModel scout){
+        scout.setOwnerID(id);
         if (scout.isPersisted())
             scoutService.update(scout);
         else
             scoutService.add(scout);
     }
-
+    @DynamoDBIgnore
     public void addSupportMember(SupportModel support){
+        support.setOwnerID(id);
         if (support.isPersisted())
             supportService.update((support));
         else
             supportService.add((support));
 
     }
+    @DynamoDBIgnore
+    public List<ScoutModel> getScoutsTeam(){
+        if (this.getId() == null) // if i dont have an id i have not been saved so cant have any scouts
+            return null;
+        else
+            return scoutService.getAll(this.getId());
+    }
+    @DynamoDBIgnore
+    public List<SupportModel> getSupportTeam(){
+        if (this.getId() == null) // if i dont have an id i have not been saved so cant have any support
+            return null;
+        else
+            return supportService.getAll(getId());
+    }
+    @DynamoDBIgnore
+    public void removeScoutMember(ScoutModel scout){
 
+        scoutService.remove(scout);
+        scout.setOwnerID(null);
+    }
+    @DynamoDBIgnore
+    public void removeSupportMember(SupportModel support){
+
+        supportService.remove(support);
+        support.setOwnerID(null);
+    }
+
+    @DynamoDBRangeKey
+    @DynamoDBAutoGeneratedKey
+    public String getId(){ return id;}
+    public void setId(String id){ this.id = id;}
+
+    @DynamoDBHashKey
+    public String getOwnerID() { return ownerID; }
+    public void setOwnerID(String ownerID) { this.ownerID = ownerID;}
+
+    @DynamoDBAttribute
+    public boolean isPaymentSubmitted() {
+        return paymentSubmitted;
+    }
+    public void setPaymentSubmitted(boolean paymentSubmitted) {
+        this.paymentSubmitted = paymentSubmitted;
+    }
+
+    @DynamoDBAttribute
+    public boolean isPaymentRecieved() {
+        return paymentRecieved;
+    }
+    public void setPaymentRecieved(boolean paymentRecieved) {
+        this.paymentRecieved = paymentRecieved;
+    }
+
+    @DynamoDBAttribute
+    public boolean isTeamSubmitted() {
+        return teamSubmitted;
+    }
+    public void setTeamSubmitted(boolean teamSubmitted) {
+        this.teamSubmitted = teamSubmitted;
+    }
+
+    @DynamoDBAttribute
+    public String getEmergencyContactLandline() { return emergencyContactLandline; }
+    public void setEmergencyContactLandline(String emergencyContactLandline) {
+        this.emergencyContactLandline = emergencyContactLandline;
+    }
+
+    @DynamoDBAttribute
+    public String getEmergencyContactEmail() {
+        return emergencyContactEmail;
+    }
+    public void setEmergencyContactEmail(String emergencyContactEmail) {
+        this.emergencyContactEmail = emergencyContactEmail;
+    }
+
+    @DynamoDBAttribute
+    public String getSection() {
+        return section;
+    }
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    @DynamoDBAttribute
+    public String getDistrict() { return district; }
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    @DynamoDBAttribute
+    public String getCounty() {
+        return county;
+    }
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    @DynamoDBAttribute
+    public String getPrefStart() {
+        return prefStart;
+    }
+    public void setPrefStart(String prefStart) {
+        this.prefStart = prefStart;
+    }
+
+    @DynamoDBAttribute
+    public String getActiveMobile() {
+        return activeMobile;
+    }
+    public void setActiveMobile(String activeMobile) {
+        this.activeMobile = activeMobile;
+    }
+
+    @DynamoDBAttribute
+    public String getBackupMobile() {
+        return backupMobile;
+    }
+    public void setBackupMobile(String backupMobile) {
+        this.backupMobile = backupMobile;
+    }
+
+    @DynamoDBAttribute
+    public String getEmergencyContactName() {
+        return emergencyContactName;
+    }
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
+    }
+
+    @DynamoDBAttribute
+    public String getEmergencyContactMobile() {
+        return emergencyContactMobile;
+    }
+    public void setEmergencyContactMobile(String emergencyContactMobile) {
+        this.emergencyContactMobile = emergencyContactMobile;
+    }
+
+    @DynamoDBAttribute
+    public String getTeamName() {
+        return teamName;
+    }
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    @DynamoDBAttribute
+    public String getHikeClass() {
+        return hikeClass;
+    }
+    public void setHikeClass(String hikeClass) {
+        this.hikeClass = hikeClass;
+    }
+
+    @DynamoDBAttribute
     public String getLeaderName() {
         return leaderName;
     }
-
     public void setLeaderName(String leaderName) {
         this.leaderName = leaderName;
     }
 
-    public List<ScoutModel> getScoutsTeam(){
-        return scoutService.getAll(this.getId());
-    }
 
-    public List<SupportModel> getSupportTeam(){
-        return supportService.getAll(getId());
-    }
-
-    public void removeScoutMember(ScoutModel scout){
-        scoutService.remove(scout);
-    }
-    public void removeSupportMember(SupportModel support){
-        supportService.remove(support);
-    }
-
-
-    public String [] validateForSubmission() {
-        String validation = "";
-        ArrayList<String> results = new ArrayList<>();
-
-        // Mandatory Fields
-        if ((getTeamName() == null) || (getTeamName().isEmpty())){
-            results.add("Team Name Cant Be Empty");
-        }
-        if ((getHikeClass() == null) || (getHikeClass().isEmpty())){
-            results.add("Hike Class Cant Be Empty");
-        }
-        if ((getActiveMobile() == null ) || (getActiveMobile().isEmpty())){
-            results.add("Active mobile cant be empty");
-        }
-        if ((getBackupMobile() == null) || (getBackupMobile().isEmpty())){
-            results.add("Backup mobile cant be empty");
-        }
-        if ((getEmergencyContactEmail().isEmpty()) ||
-                (getEmergencyContactLandline().isEmpty()) ||
-                (getEmergencyContactLandline().isEmpty()) ||
-                (getEmergencyContactName().isEmpty())){
-            results.add("Complete emergency contact information");
-        }
-
-
-        // Validation based on hike class
-        String hikeClass = getHikeClass();
-        if (hikeClass != null) {
-            int teamSize = scoutService.getAll(this.getId()).size();
-            boolean leader = false;
-            int combinedAge = 0;
-            ArrayList<Integer> ages = new ArrayList<>();
-            for (ScoutModel s : scoutService.getAll(this.getId()
-            )) {
-                if (s.isLeader() == true)
-                    leader = true;
-                else
-                    ages.add(s.calculateAge());
-            }
-            int minAge = Integer.MAX_VALUE;
-            int maxAge = 0;
-            for (Integer age : ages) {
-                combinedAge += age;
-                if (minAge > age) minAge = age;
-                if (maxAge < age) maxAge = age;
-            }
-            boolean serviceCrew = false;
-            if (getSupportTeam().size() != 0)
-                serviceCrew = true;
-
-            // Do the validation
-            if (minAge == 0){
-                results.add("Please ensure date of birth is entered for all (non leader) hikers");
-            }
-            switch (hikeClass) {
-                case "Open":
-                    if ((teamSize < 3) || (teamSize > 6))
-                        results.add("For Open, team size must be between 3 and 6");
-                    if ((minAge < 12) && (leader == false))
-                        results.add("For Open, if min age is less than 12 you have to have a leader hiking");
-                    break;
-                case "B-Class":
-                    if (teamSize != 4)
-                        results.add("For B-Class team size must be 4");
-                    if (leader == true)
-                        results.add("For B-Class leaders may not hike");
-                    if (combinedAge > 48)
-                        results.add("For B-Class combined age must be more than 48 ");
-                    if (serviceCrew == false)
-                        results.add("InMemoryService crew required for B-Class");
-                    if (maxAge > 18)
-                        results.add("For B-Class may not have hikers over 18");
-                    break;
-                case "A-Class":
-                    if (teamSize != 3)
-                        results.add("For A-Class team size must be 3");
-                    if (leader == true)
-                        results.add("For A-Class leaders may not hike");
-                    if (combinedAge > 48)
-                        results.add("For A-Class combined age must be more than 48 ");
-                    if (serviceCrew == false)
-                        results.add("InMemoryService crew required for A-Class");
-                case "V-Class":
-                    if (teamSize != 3)
-                        results.add("For V-Class team size must be 3");
-                    if (leader == true)
-                        results.add("For V-Class leaders may not hike");
-                    if (combinedAge > 100)
-                        results.add("For V-Class combined age must be more than 100 ");
-                    if (serviceCrew == false)
-                        results.add("InMemoryService crew required for V-Class");
-                    break;
-                case "S-Class":
-                    if (teamSize != 4)
-                        results.add("For S-Class team size must be 4");
-                    if (leader == true)
-                        results.add("For S-Class leaders may not hike");
-                    if (combinedAge > 48)
-                        results.add("For S-Class combined age must be more than 48");
-                    if (maxAge < 14.5)
-                        results.add("For S-Class max age must be less than 14.5");
-                    if (serviceCrew == false)
-                        results.add("InMemoryService crew required for S-Class");
-                    break;
-                case "E-Class":
-                    if (teamSize != 4)
-                        results.add("For E-Class team size must be 4");
-                    if (leader == true)
-                        results.add("For E-Class leaders may not hike");
-                    if (combinedAge > 48)
-                        results.add("For E-Class combined age must be more than 48");
-                    if (combinedAge < 62)
-                        results.add("For E-Class combined age must be less than 62");
-                    if (serviceCrew == false)
-                        results.add("InMemoryService crew required for E-Class");
-                    if (maxAge > 18)
-                        results.add("For E-Class may not have hikers over 18");
-                    break;
-            }
-        }
-        return results.toArray(new String[results.size()]);
-    }
-
+    @DynamoDBIgnore
     public boolean isPersisted() {
-        return false;
+        if (id == null) return false;
+        else return true;
     }
 
-    public String getId() {
-        return id;
+
+    @DynamoDBIgnore
+    public String getSubmittedStatus(){
+        if (teamSubmitted) {
+            return "Submitted";
+        } else {
+            return "Not Submitted";
+        }
+
+    }
+    @DynamoDBIgnore
+    public String getPaymentStatus(){
+        if (paymentRecieved) {
+            return "Paid";
+        } else if (paymentSubmitted){
+            return "Payment Submitted";
+        } else {
+            return "Not Paid";
+        }
+    }
+
+    @DynamoDBIgnore
+    public String toString() {
+        return "Team : " + teamName + " Hike class " + hikeClass;
     }
 }
 

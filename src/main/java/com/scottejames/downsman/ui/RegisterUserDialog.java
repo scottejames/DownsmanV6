@@ -89,8 +89,7 @@ class RegisterUserDialog extends Dialog {
         else{
             LogUtil.logEvent("Registered user " + username);
 
-            String hash= HashHelper.hashPassword(password);
-            ServiceManager.getInstance().getUserService().add(new UserModel(username,hash));
+            ServiceManager.getInstance().getUserService().add(new UserModel(username,password));
             close();
             MessageDialog dialog = new MessageDialog("Success","User " + username + " successfully registered",false);
             dialog.open();

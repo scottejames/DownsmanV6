@@ -17,7 +17,12 @@ public class ScoutModel{
 
     public ScoutModel() {
     }
+    public ScoutModel(String fullName, java.time.LocalDate dob) {
 
+        this.ownerID = ownerID;
+        this.fullName = fullName;
+        this.dob = dob.toEpochDay();
+    }
     public ScoutModel(String ownerID, String fullName, java.time.LocalDate dob) {
 
         this.ownerID = ownerID;
