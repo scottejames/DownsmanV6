@@ -58,8 +58,19 @@ public class ScoutModel{
     public java.time.LocalDate getDob() {
         return LocalDate.ofEpochDay(dob);
     }
+    @DynamoDBIgnore
+    public String getDobString(){
+        LocalDate dob = LocalDate.ofEpochDay(this.dob);
+        String result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear();
+        return result;
+
+
+    };
     public void setDob(java.time.LocalDate dob) {
-        this.dob = dob.toEpochDay();
+        if (dob != null)
+            this.dob = dob.toEpochDay();
+        else
+            this.dob = 0;
     }
 
     @DynamoDBAttribute

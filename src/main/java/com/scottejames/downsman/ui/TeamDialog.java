@@ -138,11 +138,6 @@ public class TeamDialog extends Dialog {
         addTextField(teamDetailsForm,"District", "district");
         addTextField(teamDetailsForm,"County", "county");
 
-        ComboBox<String> startTimeCombo= new ComboBox<>();
-        startTimeCombo.setItems(ReferenceData.START_TIMES);
-        teamDetailsForm.addFormItem(startTimeCombo,"Start Time");
-        binder.bind(startTimeCombo,"prefStart");
-
         ComboBox<String> hikeClass= new ComboBox<>();
         hikeClass.setItems(ReferenceData.HIKE_CLASSES);
         teamDetailsForm.addFormItem(hikeClass,"Hike Class Time");
@@ -161,7 +156,7 @@ public class TeamDialog extends Dialog {
         add(new Label("Hiking Team"));
 
         teamMembersGrid.addColumn(ScoutModel::getFullName).setHeader("Full Name");
-        teamMembersGrid.addColumn(ScoutModel::getDob).setHeader("DOB");
+        teamMembersGrid.addColumn(ScoutModel::getDobString).setHeader("DOB");
         teamMembersGrid.addColumn(ScoutModel::isLeader).setHeader("is Leader");
 
 

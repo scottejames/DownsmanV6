@@ -19,7 +19,6 @@ public class TeamModel  {
     private String section = null;
     private String district = null;
     private String county = null;
-    private String prefStart = null;
     private String activeMobile = null;
     private String backupMobile = null;
     private String emergencyContactName = null;
@@ -55,7 +54,6 @@ public class TeamModel  {
                      String section,
                      String district,
                      String county,
-                     String prefStart,
                      String activeMobile,
                      String backupMobile,
                      String emergencyContactName,
@@ -67,7 +65,6 @@ public class TeamModel  {
         this.section = section;
         this.district = district;
         this.county = county;
-        this.prefStart = prefStart;
         this.activeMobile = activeMobile;
         this.backupMobile = backupMobile;
         this.emergencyContactName = emergencyContactName;
@@ -186,14 +183,6 @@ public class TeamModel  {
     }
     public void setCounty(String county) {
         this.county = county;
-    }
-
-    @DynamoDBAttribute
-    public String getPrefStart() {
-        return prefStart;
-    }
-    public void setPrefStart(String prefStart) {
-        this.prefStart = prefStart;
     }
 
     @DynamoDBAttribute
