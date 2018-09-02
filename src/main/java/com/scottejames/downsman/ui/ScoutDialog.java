@@ -34,7 +34,7 @@ class ScoutDialog extends Dialog {
         TextField fullName = new TextField();
         binder.bind(fullName,"fullName");
         form.addFormItem(fullName,"Name");
-        
+
         dobDate = new DatePicker();
         binder.bind(dobDate,"dob");
         form.addFormItem(dobDate,"DOB");

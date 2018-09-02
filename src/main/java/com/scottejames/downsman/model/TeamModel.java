@@ -29,6 +29,7 @@ public class TeamModel  {
     private boolean paymentSubmitted = false;
     private boolean paymentRecieved = false;
     private boolean teamSubmitted = false;
+    private boolean campingAtStart = false;
 
 
 
@@ -241,6 +242,14 @@ public class TeamModel  {
         this.leaderName = leaderName;
     }
 
+    @DynamoDBAttribute
+    public boolean isCampingAtStart() {
+        return campingAtStart;
+    }
+
+    public void setCampingAtStart(boolean campingAtStart) {
+        this.campingAtStart = campingAtStart;
+    }
 
     @DynamoDBIgnore
     public boolean isPersisted() {

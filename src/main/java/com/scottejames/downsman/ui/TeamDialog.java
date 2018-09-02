@@ -5,6 +5,7 @@ import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.validators.EmailValidator;
 import com.scottejames.downsman.ui.validators.PhoneValidator;
+import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
@@ -19,9 +20,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.component.checkbox.Checkbox;
+
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
-import javafx.scene.control.CheckBox;
+
 public class TeamDialog extends Dialog {
 
 
@@ -143,13 +146,27 @@ public class TeamDialog extends Dialog {
         teamDetailsForm.addFormItem(hikeClass,"Hike Class");
         binder.bind(hikeClass,"hikeClass");
 
+
+        Checkbox campingAtStart = new Checkbox();
+        teamDetailsForm.addFormItem(campingAtStart,"Camping at start (Class A/B only)");
+        hikeClass.addValueChangeListener(e-> {
+            if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))){
+                campingAtStart.setEnabled(true);
+
+            } else {
+                campingAtStart.setEnabled(false);
+                campingAtStart.setValue(false);
+
+            }
+        });
+        binder.bind(campingAtStart,"campingAtStart");
+        campingAtStart.setEnabled(false);
+
         add(teamDetailsForm);
-
-
-
-
-
     }
+
+
+
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
     private void setupScoutGrid(){
