@@ -1,6 +1,7 @@
 package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.utils.HashHelper;
 import com.scottejames.downsman.utils.LogUtil;
@@ -90,6 +91,8 @@ class RegisterUserDialog extends Dialog {
             LogUtil.logEvent("Registered user " + username);
 
             ServiceManager.getInstance().getUserService().add(new UserModel(username,password));
+            LogService.logEvent("New user registered" + username);
+
             close();
             MessageDialog dialog = new MessageDialog("Success","User " + username + " successfully registered",false);
             dialog.open();

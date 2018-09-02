@@ -62,7 +62,7 @@ public class ScoutModel{
     @DynamoDBIgnore
     public String getDobString(){
         LocalDate dob = LocalDate.ofEpochDay(this.dob);
-        String result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear();
+        String result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear() + " Age at hike " + calculateAge();
         return result;
 
 

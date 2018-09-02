@@ -1,6 +1,7 @@
 package com.scottejames.downsman.ui.admin;
 
 import com.scottejames.downsman.model.TeamModel;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.TeamDialog;
@@ -31,8 +32,7 @@ public class TeamAdminDialog extends Dialog {
         teamGrid.addColumn(TeamModel::getLeaderName).setHeader("Leader");
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
         teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
-        teamGrid.addColumn(TeamModel::isPaymentRecieved).setHeader("Paid");
-        teamGrid.addColumn(TeamModel::isPaymentSubmitted).setHeader("Pay Submitted");
+        teamGrid.addColumn(TeamModel::getPaymentStatus).setHeader("Paid");
         teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Entered");
         teamGrid.setHeightByRows(true);
 
@@ -61,20 +61,26 @@ public class TeamAdminDialog extends Dialog {
     }
 
     private void toggleSubmitted() {
+        LogService.logEvent("Admin submitted team " + selectedTeam.getTeamName());
+
         if (selectedTeam.isTeamSubmitted()){
             selectedTeam.setTeamSubmitted(false);
         } else{
             selectedTeam.setTeamSubmitted(true);
         }
+        service.add(selectedTeam);
         updateTeamGrid();
     }
 
     private void togglePaid() {
+        LogService.logEvent("Admin marked team paid " + selectedTeam.getTeamName());
+
         if (selectedTeam.isPaymentRecieved()){
             selectedTeam.setPaymentRecieved(false);
         } else{
             selectedTeam.setPaymentRecieved(true);
         }
+        service.add(selectedTeam);
         updateTeamGrid();
     }
 
@@ -87,14 +93,14 @@ public class TeamAdminDialog extends Dialog {
         add(form);
     }
     private void editTeam() {
-        LogUtil.logDebug("MainView : editTeam()");
+        LogService.logEvent("Admin edit team " + selectedTeam.getTeamName());
 
         teamDialog = new TeamDialog(selectedTeam,this::onTeamSave);
         teamDialog.open();
     }
 
     private void deleteTeam(ClickEvent<Button> e) {
-        LogUtil.logDebug("MainView : deleteTeam()");
+        LogService.logEvent("Admin delete team " + selectedTeam.getTeamName());
 
         if (selectedTeam!=null)
             service.remove(selectedTeam);

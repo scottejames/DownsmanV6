@@ -16,7 +16,6 @@ public class UserService{
     }
 
     public UserModel login(String username, String password){
-        LogUtil.logEvent(username + " attempting to login");
         // if user or password is null dont try to loging
         if (password == null || password.length() == 0 || username == null || username.length() == 0)
             return null;
@@ -27,10 +26,8 @@ public class UserService{
         
         String hash = HashHelper.hashPassword(password);
         if (user.getPassword().equals(hash)) {
-            LogUtil.logEvent(username + " successfully logged in");
             return user;
         }  else {
-            LogUtil.logEvent(username + " failed to login");
             return null;
         }
     }

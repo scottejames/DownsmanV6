@@ -2,6 +2,7 @@ package com.scottejames.downsman.ui.admin;
 
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
 import com.scottejames.downsman.ui.MessageDialog;
@@ -61,12 +62,14 @@ public class UserAdminDialog extends Dialog {
 
     }
     private void resetPassword() {
+        LogService.logEvent("Admin reset password user " + selectedUser.getUsername());
+
         setupUserGrid();
 
     }
 
     public void deleteUser(){
-
+        LogService.logEvent("Admin deleted user " + selectedUser.getUsername());
         UserModel currentUser = SessionState.getInstance().getCurrentUser();
         if (selectedUser.getUsername() != currentUser.getUsername()) {
             service.remove(selectedUser);
@@ -80,6 +83,8 @@ public class UserAdminDialog extends Dialog {
 
     }
     public void toggleAdmin(){
+        LogService.logEvent("Admin made admin user " + selectedUser.getUsername());
+
         if (selectedUser.isAdmin())
             selectedUser.setAdmin(false);
         else

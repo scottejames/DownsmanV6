@@ -26,7 +26,6 @@ public class TeamModel  {
     private String emergencyContactLandline = null;
     private String emergencyContactEmail = null;
     private String leaderName = null;
-    private boolean paymentSubmitted = false;
     private boolean paymentRecieved = false;
     private boolean teamSubmitted = false;
     private boolean campingAtStart = false;
@@ -125,14 +124,6 @@ public class TeamModel  {
     @DynamoDBHashKey
     public String getOwnerID() { return ownerID; }
     public void setOwnerID(String ownerID) { this.ownerID = ownerID;}
-
-    @DynamoDBAttribute
-    public boolean isPaymentSubmitted() {
-        return paymentSubmitted;
-    }
-    public void setPaymentSubmitted(boolean paymentSubmitted) {
-        this.paymentSubmitted = paymentSubmitted;
-    }
 
     @DynamoDBAttribute
     public boolean isPaymentRecieved() {
@@ -271,8 +262,6 @@ public class TeamModel  {
     public String getPaymentStatus(){
         if (paymentRecieved) {
             return "Paid";
-        } else if (paymentSubmitted){
-            return "Payment Submitted";
         } else {
             return "Not Paid";
         }

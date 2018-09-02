@@ -1,8 +1,10 @@
 package com.scottejames.downsman.ui;
 
+import com.scottejames.downsman.model.LogModel;
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.admin.AdminDialog;
@@ -113,28 +115,22 @@ public class MainView extends VerticalLayout {
     }
 
     private void register() {
-        LogUtil.logDebug("MainView : register()");
         registerUserDialog = new RegisterUserDialog(this::onRegister);
         registerUserDialog.open();
     }
 
     private void addTeam() {
-        LogUtil.logDebug("MainView : addTeam()");
-
         teamDialog = new TeamDialog(null,this::onTeamSave);
         teamDialog.open();
     }
 
     private void editTeam() {
-        LogUtil.logDebug("MainView : editTeam()");
-
         teamDialog = new TeamDialog(selectedTeam,this::onTeamSave);
         teamDialog.open();
     }
 
     private void deleteTeam(ClickEvent<Button> e) {
-        LogUtil.logDebug("MainView : deleteTeam()");
-
+        LogService.logEvent("Removed team " + selectedTeam.getTeamName());
         if (selectedTeam!=null)
             service.remove(selectedTeam);
         buildUI();

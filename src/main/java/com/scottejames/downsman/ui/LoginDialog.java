@@ -2,6 +2,7 @@ package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
 import com.vaadin.flow.component.button.Button;
@@ -57,6 +58,7 @@ class LoginDialog extends Dialog {
             MessageDialog dialog = new MessageDialog("Login Failed", "Unable to login with that user check username or password", true);
             dialog.open();
         }
+        LogService.logEvent("Logged in");
 
 
 

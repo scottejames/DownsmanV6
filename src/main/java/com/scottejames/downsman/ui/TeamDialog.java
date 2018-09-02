@@ -1,6 +1,7 @@
 package com.scottejames.downsman.ui;
 
 import com.scottejames.downsman.model.*;
+import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.validators.EmailValidator;
@@ -53,6 +54,7 @@ public class TeamDialog extends Dialog {
     private  Button              cancelFormButton   = null;
     private  Button              submitTeamButton   = null;
     private  Button              payButton          = null;
+    private  Button              validateTeamButton = null;
 
 
     private  Runnable            onSave = null;
@@ -91,11 +93,11 @@ public class TeamDialog extends Dialog {
     private void setupStatusDetails() {
         HorizontalLayout statusLayout = new HorizontalLayout();
 
-        statusLayout.add(new Label("Team Status : "));
+        statusLayout.add(new Label("Team Status  ["));
         statusLayout.add(new Label("Payment Status : "));
         statusLayout.add(new Label(model.getPaymentStatus()));
         statusLayout.add(new Label("Submitted Status : "));
-        statusLayout.add(new Label(model.getSubmittedStatus()));
+        statusLayout.add(new Label(model.getSubmittedStatus() + " ]"));
         add(statusLayout);
     }
 
@@ -379,78 +381,86 @@ public class TeamDialog extends Dialog {
             submitTeamButton = new Button("Withdraw Team");
             submitTeamButton.addClickListener(e -> this.withdrawTeam());
         }
-
+        validateTeamButton = new Button ("Validate Team");
+        validateTeamButton.addClickListener( e-> this.validateTeam());
 
         payButton = new Button ("Mark Payment");
         payButton.addClickListener( e-> this.markPayment());
-        if (model.isPaymentSubmitted()){
-            payButton.setEnabled(false);
-        }
+
         saveFormButton = new Button("Save");
-        saveFormButton.addClickListener(e -> this.saveForm());
+        saveFormButton.addClickListener(e -> this.saveForm(true));
 
         cancelFormButton = new Button("Cancel");
         cancelFormButton.addClickListener(e -> this.cancelForm());
 
 
         HorizontalLayout saveButtonLayout = new HorizontalLayout();
-        saveButtonLayout.add(payButton,submitTeamButton,saveFormButton, cancelFormButton);
+        saveButtonLayout.add(payButton,validateTeamButton,submitTeamButton,saveFormButton, cancelFormButton);
 
         add(saveButtonLayout);
     }
 
 
     private void markPayment() {
-        if (!paymentValidation()){
-            MessageDialog dialog= new MessageDialog("ERROR", "Please ensure team name set before paying",true);
+            MessageDialog dialog= new MessageDialog("Information", "Sorry, online payment not supported (YET! Hopefully next year)\n" +
+                    "To pay please send a BACS payment to " + ReferenceData.BANK_DETAILS + "\n" +
+                    "Add your team names in the reference for the payment.\n" +
+                    "Once we have payment you can submit your teams.",false);
             dialog.open();
-        } else {
-            model.setPaymentSubmitted(true);
-            saveForm();
-
-        }
     }
 
-    private boolean paymentValidation(){
-        if((model.getTeamName() == null) || (model.getTeamName().isEmpty()))
-            return false;
-
-        else
-            return true;
-    }
     private void submitTeam() {
-        String [] submissionString = submitValidation();
+        String [] submissionString = service.validate(model);
         if (submissionString.length == 0){
+            LogService.logEvent("Submitted team " + model.getTeamName());
+
             model.setTeamSubmitted(true);
-            saveForm();
+            saveForm(true);
 
         }
         else {
+            LogService.logEvent("Failed to submit team (validation failed) " + model.getTeamName());
+
             MessageDialog dialog = new MessageDialog("Validation Failed", submissionString,true);
             dialog.open();
         }
 
     }
-    private void withdrawTeam() {
-        model.setTeamSubmitted(false);
-        saveForm();
-    }
-    private String[] submitValidation(){
-        //return model.validateForSubmission();
-        return null;
+    private void validateTeam(){
+        saveForm(false);
+
+        String [] submissionString = service.validate(model);
+
+        if (submissionString.length==0){
+            MessageDialog dialog = new MessageDialog("Team all looks great", submissionString,false);
+            dialog.open();
+        } else {
+            MessageDialog dialog = new MessageDialog("Validation Failed", submissionString,true);
+            dialog.open();
+        }
+
 
     }
-    private void saveForm(){
+    private void withdrawTeam() {
+        LogService.logEvent("Withdrew team " + model.getTeamName());
+
+        model.setTeamSubmitted(false);
+        saveForm(true);
+    }
+
+    private void saveForm(boolean close){
+        LogService.logEvent("Saved team " + model.getTeamName());
 
             if (binder.writeBeanIfValid(model)){
                 if (model.isPersisted())
                     service.update(model);
                 else
                     service.add(model);
-                showNotification("Team Saved Successfully", model.toString(),false);
                 onSave.run();
-
-                close();
+                if (close) {
+                    showNotification("Team Saved Successfully ", model.toString(), false);
+                    close();
+                }
             } else {
                 showNotification("Error", "Team not saved check errors", true);
             }
