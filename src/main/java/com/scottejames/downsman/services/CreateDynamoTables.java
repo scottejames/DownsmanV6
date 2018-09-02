@@ -7,9 +7,9 @@ import com.scottejames.downsman.model.*;
 import javax.xml.crypto.Data;
 
 public class CreateDynamoTables {
-    public static void createTables(){
+    public static void createTables(Class c){
         CreateTableRequest req =
-                DatabaseService.getInstance().getMapper().generateCreateTableRequest(LogModel.class);
+                DatabaseService.getInstance().getMapper().generateCreateTableRequest(c);
         req.setProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
 
         DatabaseService.getInstance().getClient().createTable(req);
@@ -18,7 +18,11 @@ public class CreateDynamoTables {
     }
     public static void main(String [] args){
 
-        createTables();
+        createTables(LogModel.class);
+        createTables(ScoutModel.class);
+        createTables(SupportModel.class);
+        createTables(TeamModel.class);
+        createTables(UserModel.class);
 
 
     }

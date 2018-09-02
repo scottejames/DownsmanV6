@@ -6,7 +6,7 @@
     <groupId>com.scottejames.downsman</groupId>
     <artifactId>downsman</artifactId>
     <name>Downsman</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -19,7 +19,6 @@
         <!-- Dependencies -->
         <vaadin.version>10.0.0.beta9</vaadin.version>
         <flow.maven.plugin.version>1.0.0.beta9</flow.maven.plugin.version>
-
         <jetty.version>9.3.7.v20160115</jetty.version>
         <maven.war.plugin.version>3.1.0</maven.war.plugin.version>
     </properties>
@@ -113,53 +112,32 @@
             </plugin>
         </plugins>
     </build>
-
     <profiles>
         <profile>
-            <id>productionMode</id>
-            <activation>
-                <property>
-                    <name>vaadin.productionMode</name>
-                </property>
-            </activation>
-
-            <properties>
-                <transpilation.output>${project.build.directory}/build</transpilation.output>
-            </properties>
+            <id>production</id>
 
             <dependencies>
                 <dependency>
                     <groupId>com.vaadin</groupId>
                     <artifactId>flow-server-production-mode</artifactId>
                 </dependency>
-                <dependency>
-                    <groupId>com.amazonaws</groupId>
-                    <artifactId>aws-java-sdk</artifactId>
-                    <version>1.11.327</version>
-                </dependency>
             </dependencies>
 
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>${maven.war.plugin.version}</version>
-                        <configuration>
-                            <archive>
-                                <manifestEntries>
-                                    <Implementation-Title>${project.name}</Implementation-Title>
-                                    <Implementation-Version>${project.version}</Implementation-Version>
-                                </manifestEntries>
-                            </archive>
-                            <webResources>
-                                <resource>
-                                    <directory>${transpilation.output}</directory>
-                                </resource>
-                            </webResources>
-                        </configuration>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-maven-plugin</artifactId>
+                        <version>${vaadin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>copy-production-files</goal>
+                                    <goal>package-for-production</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
-
                     <plugin>
                         <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>

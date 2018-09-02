@@ -14,6 +14,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 
+import java.util.Locale;
+
 class ScoutDialog extends Dialog {
     private ScoutModel model = null;
     private Runnable onChange = null;
@@ -36,6 +38,8 @@ class ScoutDialog extends Dialog {
         form.addFormItem(fullName,"Name");
 
         dobDate = new DatePicker();
+        dobDate.setLocale(Locale.UK);
+
         binder.bind(dobDate,"dob");
         form.addFormItem(dobDate,"DOB");
 

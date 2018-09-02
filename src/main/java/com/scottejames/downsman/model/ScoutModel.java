@@ -57,12 +57,21 @@ public class ScoutModel{
 
     @DynamoDBIgnore
     public java.time.LocalDate getDob() {
-        return LocalDate.ofEpochDay(dob);
+        if(this.dob == 0) {
+            return null;
+        }else
+            return LocalDate.ofEpochDay(dob);
     }
     @DynamoDBIgnore
     public String getDobString(){
         LocalDate dob = LocalDate.ofEpochDay(this.dob);
-        String result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear() + " Age at hike " + calculateAge();
+        String result = null;
+
+        if (this.dob == 0) {
+            result = "Not Entered";
+        } else {
+            result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear() + " Age at hike " + calculateAge();
+        }
         return result;
 
 
