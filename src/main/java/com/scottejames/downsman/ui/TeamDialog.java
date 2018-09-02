@@ -140,7 +140,7 @@ public class TeamDialog extends Dialog {
 
         ComboBox<String> hikeClass= new ComboBox<>();
         hikeClass.setItems(ReferenceData.HIKE_CLASSES);
-        teamDetailsForm.addFormItem(hikeClass,"Hike Class Time");
+        teamDetailsForm.addFormItem(hikeClass,"Hike Class");
         binder.bind(hikeClass,"hikeClass");
 
         add(teamDetailsForm);

@@ -9,6 +9,7 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -33,7 +34,7 @@ class ScoutDialog extends Dialog {
         TextField fullName = new TextField();
         binder.bind(fullName,"fullName");
         form.addFormItem(fullName,"Name");
-
+        
         dobDate = new DatePicker();
         binder.bind(dobDate,"dob");
         form.addFormItem(dobDate,"DOB");
@@ -42,8 +43,13 @@ class ScoutDialog extends Dialog {
         isLeader.setValue(false);
 
         binder.bind(isLeader,"leader");
-        form.addFormItem(isLeader,"Is Leader");
+        form.addFormItem(isLeader,"Scout Leader (Walking with open team)");
         isLeader.addValueChangeListener(e->leaderChanged());
+
+        TextArea medicalNotes = new TextArea();
+        medicalNotes.setHeight("500");
+        binder.bind(medicalNotes,"medicalNotes");
+        form.addFormItem(medicalNotes,"Medical Notes");
 
         binder.readBean(model);
         Button save = new Button("Save");

@@ -14,6 +14,7 @@ public class ScoutModel{
     private String fullName = null;
     private long dob = 0;
     private boolean leader = false;
+    private String medicalNotes = null;
 
     public ScoutModel() {
     }
@@ -72,6 +73,10 @@ public class ScoutModel{
         else
             this.dob = 0;
     }
+
+    @DynamoDBAttribute
+    public String getMedicalNotes() { return medicalNotes; }
+    public void setMedicalNotes(String menicalNotes) { this.medicalNotes = menicalNotes; }
 
     @DynamoDBAttribute
     public boolean isLeader() {
