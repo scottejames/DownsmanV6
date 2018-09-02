@@ -25,6 +25,7 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
+import sun.plugin2.message.Message;
 
 public class TeamDialog extends Dialog {
 
@@ -148,9 +149,12 @@ public class TeamDialog extends Dialog {
         teamDetailsForm.addFormItem(hikeClass,"Hike Class");
         binder.bind(hikeClass,"hikeClass");
 
+        VerticalLayout cbLayout = new VerticalLayout();
+        HorizontalLayout campingLayout  = new HorizontalLayout();
+        cbLayout.add(campingLayout);
 
         Checkbox campingAtStart = new Checkbox();
-        teamDetailsForm.addFormItem(campingAtStart,"Camping at start (Class A/B only)");
+        campingLayout.add(campingAtStart,new Label("Camping at start (Class A/B only)"));
         hikeClass.addValueChangeListener(e-> {
             if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))){
                 campingAtStart.setEnabled(true);
@@ -164,6 +168,21 @@ public class TeamDialog extends Dialog {
         binder.bind(campingAtStart,"campingAtStart");
         campingAtStart.setEnabled(false);
 
+
+        Checkbox teamRunningCheckBox = new Checkbox();
+        HorizontalLayout runningLayout  = new HorizontalLayout();
+
+        runningLayout.add(teamRunningCheckBox,new Label("Team committed to running"));
+        cbLayout.add(runningLayout);
+
+        teamRunningCheckBox.addValueChangeListener(e-> {
+                    if (e.getValue() == true) {
+                        MessageDialog message = new MessageDialog("Info!", "Please review rules regarding running, additional checks required", false);
+                        message.open();
+                    }
+                });
+        binder.bind(teamRunningCheckBox,"committedToRun");
+        teamDetailsForm.add(cbLayout);
         add(teamDetailsForm);
     }
 

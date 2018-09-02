@@ -29,6 +29,7 @@ public class TeamModel  {
     private boolean paymentRecieved = false;
     private boolean teamSubmitted = false;
     private boolean campingAtStart = false;
+    private boolean committedToRun = false;
 
 
 
@@ -237,10 +238,18 @@ public class TeamModel  {
     public boolean isCampingAtStart() {
         return campingAtStart;
     }
-
     public void setCampingAtStart(boolean campingAtStart) {
         this.campingAtStart = campingAtStart;
     }
+
+    @DynamoDBAttribute
+    public boolean isCommittedToRun() {
+        return committedToRun;
+    }
+    public void setCommittedToRun(boolean committedToRun) {
+        this.committedToRun = committedToRun;
+    }
+
 
     @DynamoDBIgnore
     public boolean isPersisted() {
