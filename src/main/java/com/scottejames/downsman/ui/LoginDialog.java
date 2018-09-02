@@ -39,8 +39,11 @@ class LoginDialog extends Dialog {
         add(new Label("password: "));
         add(passwordField);
 
-        add(new Button("Enter", e->enter()));
+        Button enter = new Button("Enter", e->enter());
+        add(enter);
         add(new Button("Cancel", e->cancel()));
+        enter.getElement().setAttribute("theme", "contrast primary");
+
     }
 
     private void enter(){

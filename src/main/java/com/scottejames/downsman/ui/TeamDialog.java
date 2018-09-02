@@ -389,6 +389,7 @@ public class TeamDialog extends Dialog {
 
         saveFormButton = new Button("Save");
         saveFormButton.addClickListener(e -> this.saveForm(true));
+        saveFormButton.getElement().setAttribute("theme", "contrast primary");
 
         cancelFormButton = new Button("Cancel");
         cancelFormButton.addClickListener(e -> this.cancelForm());

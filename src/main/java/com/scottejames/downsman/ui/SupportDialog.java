@@ -30,6 +30,8 @@ class SupportDialog extends Dialog {
 
         binder.readBean(model);
         Button save = new Button("Save");
+        save.getElement().setAttribute("theme", "contrast primary");
+
         Button delete = new Button("Cancel");
         HorizontalLayout buttons = new HorizontalLayout(save, delete);
         add(buttons);
