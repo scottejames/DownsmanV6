@@ -18,6 +18,7 @@ public class TeamModel  {
     private String hikeClass = null;
     private String section = null;
     private String district = null;
+    private String groupName = null;
     private String county = null;
     private String activeMobile = null;
     private String backupMobile = null;
@@ -155,6 +156,9 @@ public class TeamModel  {
     public void setEmergencyContactEmail(String emergencyContactEmail) {
         this.emergencyContactEmail = emergencyContactEmail;
     }
+    @DynamoDBAttribute
+    public String getGroupName() {return groupName; }
+    public void setGroupName(String groupName) {this.groupName = groupName; }
 
     @DynamoDBAttribute
     public String getSection() {

@@ -162,6 +162,7 @@ public class TeamService {
                             results.add("For A-Class combined age must be more than 48 your combined age is " + combinedAge);
                         if (serviceCrew == false)
                             results.add("Service crew required for A-Class");
+                        break;
                     case "V-Class":
                         if (teamSize != 3)
                             results.add("For V-Class team size must be 3 your team size is " + teamSize);
@@ -179,7 +180,7 @@ public class TeamService {
                             results.add("For S-Class leaders may not hike");
                         if (combinedAge < 48)
                             results.add("For S-Class combined age must be more than 48 your combined age is " + combinedAge);
-                        if (maxAge < 14.5)
+                        if (maxAge > 14.5)
                             results.add("For S-Class max age must be less than 14.5 your max age is " + maxAge);
                         if (serviceCrew == false)
                             results.add("Service crew required for S-Class");
@@ -191,7 +192,7 @@ public class TeamService {
                             results.add("For E-Class leaders may not hike");
                         if (combinedAge < 48)
                             results.add("For E-Class combined age must be more than 48 your combined age is " + combinedAge);
-                        if (combinedAge < 62)
+                        if (combinedAge > 62)
                             results.add("For E-Class combined age must be less than 62 your combined age is " + combinedAge);
                         if (serviceCrew == false)
                             results.add("Service crew required for E-Class");

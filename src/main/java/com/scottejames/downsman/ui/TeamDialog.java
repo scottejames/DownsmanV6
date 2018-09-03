@@ -141,6 +141,7 @@ public class TeamDialog extends Dialog {
 
         addTextField(teamDetailsForm,"Team Name", "teamName");
         addTextField(teamDetailsForm,"Section", "section");
+        addTextField(teamDetailsForm, "Group Name","groupName");
         addTextField(teamDetailsForm,"District", "district");
         addTextField(teamDetailsForm,"County", "county");
 
@@ -149,31 +150,30 @@ public class TeamDialog extends Dialog {
         teamDetailsForm.addFormItem(hikeClass,"Hike Class");
         binder.bind(hikeClass,"hikeClass");
 
-        VerticalLayout cbLayout = new VerticalLayout();
-        HorizontalLayout campingLayout  = new HorizontalLayout();
-        cbLayout.add(campingLayout);
+        Checkbox teamRunningCheckBox = new Checkbox();
+        teamDetailsForm.addFormItem(teamRunningCheckBox,new Label("Team committed to running"));
 
         Checkbox campingAtStart = new Checkbox();
-        campingLayout.add(campingAtStart,new Label("Camping at start (Class A/B only)"));
+        teamDetailsForm.addFormItem(campingAtStart,"Camping at start (Class A/B only)");
         hikeClass.addValueChangeListener(e-> {
-            if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))){
-                campingAtStart.setEnabled(true);
+            if (e.getValue()!=null) {
+                if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))) {
+                    campingAtStart.setEnabled(true);
 
+                } else {
+                    campingAtStart.setEnabled(false);
+                    campingAtStart.setValue(false);
+
+                }
             } else {
                 campingAtStart.setEnabled(false);
                 campingAtStart.setValue(false);
-
             }
         });
         binder.bind(campingAtStart,"campingAtStart");
         campingAtStart.setEnabled(false);
 
 
-        Checkbox teamRunningCheckBox = new Checkbox();
-        HorizontalLayout runningLayout  = new HorizontalLayout();
-
-        runningLayout.add(teamRunningCheckBox,new Label("Team committed to running"));
-        cbLayout.add(runningLayout);
 
         teamRunningCheckBox.addValueChangeListener(e-> {
                     if (e.getValue() == true) {
@@ -182,7 +182,6 @@ public class TeamDialog extends Dialog {
                     }
                 });
         binder.bind(teamRunningCheckBox,"committedToRun");
-        teamDetailsForm.add(cbLayout);
         add(teamDetailsForm);
     }
 
