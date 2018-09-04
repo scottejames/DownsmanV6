@@ -3,6 +3,8 @@ package com.scottejames.downsman.ui;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
+import com.scottejames.downsman.ui.validators.EmailValidator;
+import com.scottejames.downsman.ui.validators.PhoneValidator;
 import com.scottejames.downsman.utils.HashHelper;
 import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.button.Button;
@@ -16,9 +18,11 @@ import com.vaadin.flow.component.textfield.TextField;
 class RegisterUserDialog extends Dialog {
     private Runnable onEnter = null;
     private final TextField userNameField = new TextField("UserName");
-
+    private final TextField emailField = new TextField("Email address");
+    private final TextField phoneNumberField = new TextField("Phone Number");
     private final PasswordField passwordField = new PasswordField("Password");
     private final PasswordField checkPasswordField = new PasswordField("Re-enter Password");
+
     private final Label status = new Label();
     public RegisterUserDialog (Runnable onEnter){
 
@@ -29,6 +33,8 @@ class RegisterUserDialog extends Dialog {
 
         VerticalLayout layout = new VerticalLayout();
         layout.add(userNameField);
+        layout.add(emailField);
+        layout.add(phoneNumberField);
         layout.add(passwordField);
         layout.add(checkPasswordField);
         layout.add(status);
@@ -49,6 +55,8 @@ class RegisterUserDialog extends Dialog {
         String username = userNameField.getValue();
         String password = passwordField.getValue();
         String checkPassword = checkPasswordField.getValue();
+        String email = emailField.getValue();
+        String phone = phoneNumberField.getValue();
 
         LogUtil.logDebug("Trying to register new user ");
 
@@ -90,7 +98,7 @@ class RegisterUserDialog extends Dialog {
         else{
             LogUtil.logEvent("Registered user " + username);
 
-            ServiceManager.getInstance().getUserService().add(new UserModel(username,password));
+            ServiceManager.getInstance().getUserService().add(new UserModel(username,password,phone,email));
             LogService.logEvent("New user registered" + username);
 
             close();

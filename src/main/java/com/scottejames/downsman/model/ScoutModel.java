@@ -3,8 +3,10 @@ package com.scottejames.downsman.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.amazonaws.services.dynamodbv2.document.Item;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 @DynamoDBTable(tableName = "Scouts")
 public class ScoutModel{
@@ -70,7 +72,9 @@ public class ScoutModel{
         if (this.dob == 0) {
             result = "Not Entered";
         } else {
-            result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear() + " Age at hike " + calculateAge();
+            String age = String.format("%.2f",calculateAge());
+
+            result = dob.getDayOfMonth() + " / " + dob.getMonth() + " / " + dob.getYear() + " Age at hike " + age ;
         }
         return result;
 
@@ -95,10 +99,16 @@ public class ScoutModel{
         this.leader = adult;
     }
 
-    public int calculateAge() {
+    public float calculateAge() {
+        DecimalFormat df = new DecimalFormat("#.##");
 
         if ((dob != 0) && (ReferenceData.HIKE_DATE != null)) {
-            return Period.between(LocalDate.ofEpochDay(dob), ReferenceData.HIKE_DATE).getYears();
+            LocalDate dateOfBirth = LocalDate.ofEpochDay(dob);
+            LocalDate hikeDate = ReferenceData.HIKE_DATE;
+            float days = ChronoUnit.DAYS.between(dateOfBirth,hikeDate);
+            float age = days/365;
+
+            return age;
         } else {
             return 0;
         }

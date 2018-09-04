@@ -111,17 +111,17 @@ public class TeamService {
             if (hikeClass != null) {
                 int teamSize = model.getScoutsTeam().size();
                 boolean leader = false;
-                int combinedAge = 0;
-                ArrayList<Integer> ages = new ArrayList<>();
+                float combinedAge = 0;
+                ArrayList<Float> ages = new ArrayList<>();
                 for (ScoutModel s : scouts) {
                     if (s.isLeader() == true)
                         leader = true;
                     else
                         ages.add(s.calculateAge());
                 }
-                int minAge = Integer.MAX_VALUE;
-                int maxAge = 0;
-                for (Integer age : ages) {
+                float minAge = Integer.MAX_VALUE;
+                float maxAge = 0;
+                for (Float age : ages) {
                     combinedAge += age;
                     if (minAge > age) minAge = age;
                     if (maxAge < age) maxAge = age;
