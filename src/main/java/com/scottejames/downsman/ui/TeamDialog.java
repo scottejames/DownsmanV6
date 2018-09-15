@@ -37,6 +37,9 @@ public class TeamDialog extends Dialog {
     private TeamModel                 model               = null;
     private final Binder<TeamModel>   binder              = new Binder<>(TeamModel.class);
     private final FormLayout          teamDetailsForm     = new FormLayout();
+    private final FormLayout          teamPhoneForm = new FormLayout();
+    private final FormLayout          emergencyContactForm = new FormLayout();
+
     private final Grid<SupportModel>  supportMembersGrid  = new Grid<>();
     private Button              addNewSupportButton = null;
     private Button              editSupportButton   = null;
@@ -83,8 +86,23 @@ public class TeamDialog extends Dialog {
 
         setupStatusDetails();
 
-       setupButtons();
+        setupButtons();
         binder.readBean(model);
+
+        if (model.isTeamSubmitted() == true) {
+            teamDetailsForm.setEnabled(false);
+            teamPhoneForm.setEnabled(false);
+            emergencyContactForm.setEnabled(false);
+            supportMembersGrid.setEnabled(false);
+            teamMembersGrid.setEnabled(false);
+            addNewScoutButton.setEnabled(false);
+            addNewSupportButton.setEnabled(false);
+            saveFormButton.setEnabled(false);
+            payButton.setEnabled(false);
+            validateTeamButton.setEnabled(false);
+        } else {
+
+        }
 
 
     }
@@ -105,8 +123,6 @@ public class TeamDialog extends Dialog {
 
     private void setupTeamPhone(){
         add(new Label("Team Phones"));
-
-        FormLayout teamPhoneForm = new FormLayout();
 
 
         TextField activePhone = new TextField();
@@ -331,7 +347,6 @@ public class TeamDialog extends Dialog {
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
     private void setupEmergencyContact(){
-        FormLayout          emergencyContactForm = new FormLayout();
         add(new Label("Emergency Contact"));
 
         TextField name = new TextField();
