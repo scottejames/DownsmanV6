@@ -206,7 +206,7 @@ public class TeamService {
                             results.add("For E-Class leaders may not hike");
                         if (combinedAge < 48)
                             results.add("For E-Class combined age must be more than 48 your combined age is " + intCombinedAge);
-                        if (combinedAge < 62)
+                        if (combinedAge > 62)
                             results.add("For E-Class combined age must be less than 62 your combined age is " + intCombinedAge);
                         if (serviceCrew == false)
                             results.add("Service crew required for E-Class");
