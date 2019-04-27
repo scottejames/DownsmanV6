@@ -14,9 +14,8 @@ public class DatabaseService {
 
     private DatabaseService(){
         client = AmazonDynamoDBClientBuilder.standard()
-                //.withEndpointConfiguration(new AwsClientBuilder
-                     //   .EndpointConfiguration("http://localhost:8000",
-                       // "us-east-1"))
+                .withEndpointConfiguration(new AwsClientBuilder
+                .EndpointConfiguration("http://localhost:8000","us-east-1"))
                 .build();
         dynamoDB = new DynamoDB(client);
         DynamoDBMapper mapper = new DynamoDBMapper(client);
