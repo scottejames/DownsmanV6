@@ -56,3 +56,10 @@ To run the app against this local store update the client in services/DatabaseSe
 Found from https://github.com/aaronshaf/dynamodb-admin note you will need to update the region
 
 `export AWS_REGION="us-east-1"`
+
+## Persistant local storage
+
+`$ docker run -v ~/tmp/data:/data -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data`
+
+THis will run dyn in a mode that puts its storage into local file system so will remain past reboots.
+
