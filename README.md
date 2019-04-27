@@ -1,5 +1,10 @@
 
-TODO:
+# introduction
 
-- Make save buttons more prominant
-- Implement SSL on ELB
+# Guide to the code
+
+This software uses AWS to for infrastructure 
+
+## DB Setup
+
+Assuming an empty database to create the tables run the code in services.CreateDynamoTables 
