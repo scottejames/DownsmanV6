@@ -9,8 +9,8 @@ import com.scottejames.downsman.utils.HashHelper;
 public class ResetPassword {
 
     public static void main(String [] args){
-        String userName = "--- ";
-        String password = "---";
+        String userName = "JD1cForest";
+        String password = "sc0u75";
         String hashedPassword = HashHelper.hashPassword(password);
         UserService service = ServiceManager.getInstance().getUserService();
 
