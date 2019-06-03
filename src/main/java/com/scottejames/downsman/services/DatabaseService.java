@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.scottejames.downsman.utils.Config;
 
 public class DatabaseService {
 
@@ -13,10 +14,16 @@ public class DatabaseService {
     private DynamoDB dynamoDB = null;
 
     private DatabaseService(){
-        client = AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder
-                .EndpointConfiguration("http://localhost:8000","us-east-1"))
-                .build();
+        if (Config.getInstance().isDev()==true) {
+            client = AmazonDynamoDBClientBuilder.standard()
+                    .withEndpointConfiguration(new AwsClientBuilder
+                            .EndpointConfiguration("http://localhost:8000", "us-east-1"))
+                    .build();
+        } else {
+            client = AmazonDynamoDBClientBuilder.standard().build();
+
+        }
+
         dynamoDB = new DynamoDB(client);
         DynamoDBMapper mapper = new DynamoDBMapper(client);
 
