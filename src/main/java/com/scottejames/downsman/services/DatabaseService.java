@@ -15,11 +15,14 @@ public class DatabaseService {
 
     private DatabaseService(){
         if (Config.getInstance().isDev()==true) {
+            System.out.println("DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT ");
             client = AmazonDynamoDBClientBuilder.standard()
                     .withEndpointConfiguration(new AwsClientBuilder
                             .EndpointConfiguration("http://localhost:8000", "us-east-1"))
                     .build();
         } else {
+            System.out.println("PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION ");
+
             client = AmazonDynamoDBClientBuilder.standard().build();
 
         }

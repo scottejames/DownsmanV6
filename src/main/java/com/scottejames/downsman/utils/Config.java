@@ -9,7 +9,6 @@ public class Config {
         config.put("test", "test");
 
         String dev = System.getenv("DM_DEV");
-        System.out.println("Dev : " + dev);
         if (dev == null) {
             dev = "true"; // if variable is not set then assume we are in dev
         }
