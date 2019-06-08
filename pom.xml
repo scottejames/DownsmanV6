@@ -9,17 +9,19 @@
     <version>1.13-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
+        <jetty.plugin.version>9.4.11.v20180605</jetty.plugin.version>
+
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
+        <aws.java.sdk.version>[1.11.89, 2.0.0)</aws.java.sdk.version>
 
         <!-- Dependencies -->
         <vaadin.version>10.0.16</vaadin.version>
         <maven.war.plugin.version>3.1.0</maven.war.plugin.version>
     </properties>
-
 
 
     <dependencies>
@@ -55,6 +57,8 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.5.0-M1</version>
         </dependency>
+
+
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
@@ -66,23 +70,91 @@
             <version>1.2.12</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven.war.plugin.version}</version>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.plugin.version}</version>
                 <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Title>${project.name}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                        </manifestEntries>
-                    </archive>
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
+
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-war-plugin</artifactId>-->
+    <!--<version>${maven.war.plugin.version}</version>-->
+    <!--<configuration>-->
+    <!--<archive>-->
+    <!--<manifestEntries>-->
+    <!--<Implementation-Title>${project.name}</Implementation-Title>-->
+    <!--<Implementation-Version>${project.version}</Implementation-Version>-->
+    <!--</manifestEntries>-->
+    <!--</archive>-->
+    <!--</configuration>-->
+    <!--</plugin>-->
+
+    <!--</plugins>-->
+    <!--</build>-->
+
+    <profiles>
+        <profile>
+            <id>productionMode</id>
+            <activation>
+                <property>
+                    <name>vaadin.productionMode</name>
+                </property>
+            </activation>
+
+            <properties>
+                <vaadin.productionMode>true</vaadin.productionMode>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-server-production-mode</artifactId>
+                    <version>LATEST</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.vaadin</groupId>
+                        <artifactId>vaadin-maven-plugin</artifactId>
+                        <version>${vaadin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>copy-production-files</goal>
+                                    <goal>package-for-production</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${jetty.plugin.version}</version>
+                        <configuration>
+                            <webAppConfig>
+                                <resourceBases>
+                                    <!-- add the default transpileOutputDirectory as resourceBase for jetty -->
+                                    <resourceBase>${project.build.directory}/${project.build.finalName}</resourceBase>
+                                </resourceBases>
+                            </webAppConfig>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

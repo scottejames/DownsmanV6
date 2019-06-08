@@ -78,7 +78,9 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         removeAll();
 
         HorizontalLayout userStrip = new HorizontalLayout();
-
+        if (Config.getInstance().isDev() == true){
+            userStrip.add(new Label("This is DEVELOPMENT"));
+        }
         if (SessionState.getInstance().isAuthenticated()){
             UserModel user = SessionState.getInstance().getCurrentUser();
 
@@ -106,6 +108,8 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
 
 
     }
+
+
 
     private void admin() {
         AdminDialog adminDialog = new AdminDialog();
