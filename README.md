@@ -63,3 +63,8 @@ Found from https://github.com/aaronshaf/dynamodb-admin note you will need to upd
 
 THis will run dyn in a mode that puts its storage into local file system so will remain past reboots.
 
+## Create ECS cluster ready for recieving our docker image
+$ ecs-cli up --force --keypair SJMBP --capability-iam --size 2 --instance-type t2.medium --cluster-config downsman
+
+Create security group
+aws ec2 create-security-group --group-name my-ecs-sg --description my-ecs-sg

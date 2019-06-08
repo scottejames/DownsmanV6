@@ -8,6 +8,7 @@ import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.admin.AdminDialog;
+import com.scottejames.downsman.utils.Config;
 import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
@@ -16,6 +17,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -23,7 +26,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @HtmlImport("styles/shared-styles.html")
 @Route("")
 @Theme(value = Lumo.class, variant = Lumo.DARK)
-public class MainView extends VerticalLayout {
+public class MainView extends VerticalLayout implements HasDynamicTitle {
 
     private final TeamService service = ServiceManager.getInstance().getTeamService();
     private TeamModel selectedTeam = null;
@@ -40,6 +43,8 @@ public class MainView extends VerticalLayout {
     private Button editTeam = null;
 
     public MainView(){
+        this.
+
         loginDialog = new LoginDialog(this::onLogin);
         // Add table of teams
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
@@ -153,4 +158,14 @@ public class MainView extends VerticalLayout {
         buildUI();
     }
     private void onRegister() { buildUI(); }
+
+    @Override
+    public String getPageTitle() {
+
+        if (Config.getInstance().getConfigString("dev").equals("true"))
+            return  "DEV Downsman";
+        else
+            return "Downsman";
+
+    }
 }

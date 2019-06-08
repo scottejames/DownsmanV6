@@ -12,4 +12,10 @@ public class TestConfig {
     public void testGetConfiguration(){
         assertTrue(Config.getInstance().getConfigString("test").equals("test"));
     }
+
+    @Test
+    public void testGetConfigFromEnv(){
+        assertTrue(Config.getInstance().getConfigString("dev").equals("true"));
+    }
+
 }

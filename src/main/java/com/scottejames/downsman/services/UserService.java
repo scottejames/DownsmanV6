@@ -3,10 +3,7 @@ package com.scottejames.downsman.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.utils.HashHelper;
-import com.scottejames.downsman.utils.LogUtil;
-import sun.rmi.log.LogHandler;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class UserService{

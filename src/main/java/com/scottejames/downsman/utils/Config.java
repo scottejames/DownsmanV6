@@ -5,9 +5,15 @@ import java.util.HashMap;
 public class Config {
     private static Config _instance = null;
     private HashMap<String, String> config = new HashMap<String, String>();
-    private Config(){
-        config.put("test","test");
-        config.put("dev","true");
+    private Config() {
+        config.put("test", "test");
+
+        String dev = System.getenv("DM_DEV");
+        System.out.println("Dev : " + dev);
+        if (dev == null) {
+            dev = "true"; // if variable is not set then assume we are in dev
+        }
+        config.put("dev", dev);
     }
     static public Config getInstance(){
         if(_instance == null){
