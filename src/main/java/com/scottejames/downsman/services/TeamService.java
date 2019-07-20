@@ -2,10 +2,7 @@ package com.scottejames.downsman.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.scottejames.downsman.model.ScoutModel;
-import com.scottejames.downsman.model.SessionState;
-import com.scottejames.downsman.model.SupportModel;
-import com.scottejames.downsman.model.TeamModel;
+import com.scottejames.downsman.model.*;
 import elemental.html.Database;
 
 import javax.xml.crypto.Data;
@@ -149,13 +146,17 @@ public class TeamService {
                     results.add("Please ensure date of birth is entered for all (non leader) hikers");
                 }
                 switch (hikeClass) {
-                    case "Open":
+                    case ReferenceData.OPENBIGORWASHINGTON:
+                    case ReferenceData.OPENBIGNORSTEYNING:
+                    case ReferenceData.OPENPLUMPTONFIRLE:
+                    case ReferenceData.OPENPLUMPTONITFORD:
+                    case ReferenceData.OPENITFORDEASTBOURNE:
                         if ((teamSize < 3) || (teamSize > 6))
                             results.add("For Open, team size must be between 3 and 6");
                         if ((minAge < 12) && (leader == false))
                             results.add("For Open, if min age is less than 12 you have to have a leader hiking");
                         break;
-                    case "B-Class":
+                    case ReferenceData.BCLASS:
                         if (teamSize != 4)
                             results.add("For B-Class team size must be 4 your team is " + teamSize);
                         if (leader == true)
@@ -167,9 +168,9 @@ public class TeamService {
                         if (maxAge > 18)
                             results.add("For B-Class may not have hikers over 18 your max age is " + intMaxAge);
                         break;
-                    case "A-Class":
-                        if (teamSize != 3)
-                            results.add("For A-Class team size must be 3 your team is " + teamSize);
+                    case ReferenceData.ACLASS:
+                        if (teamSize < 3)
+                            results.add("For A-Class team size must be 3 or 4your team is " + teamSize);
                         if (leader == true)
                             results.add("For A-Class leaders may not hike");
                         if (intCombinedAge < 48)
@@ -177,9 +178,9 @@ public class TeamService {
                         if (serviceCrew == false)
                             results.add("Service crew required for A-Class");
                         break;
-                    case "V-Class":
-                        if (teamSize != 3)
-                            results.add("For V-Class team size must be 3 your team size is " + teamSize);
+                    case ReferenceData.VCLASS:
+                        if (teamSize < 3)
+                            results.add("For V-Class team size must be 3 or 4 your team size is " + teamSize);
                         if (leader == true)
                             results.add("For V-Class leaders may not hike");
                         if (intCombinedAge < 100)
@@ -187,7 +188,8 @@ public class TeamService {
                         if (serviceCrew == false)
                             results.add("Service crew required for V-Class");
                         break;
-                    case "S-Class":
+                    case ReferenceData.SCLASS:
+                    case ReferenceData.SCLASSWALK:
                         if (teamSize != 4)
                             results.add("For S-Class team size must be 4 your team size is " + teamSize);
                         if (leader == true)
@@ -199,7 +201,7 @@ public class TeamService {
                         if (serviceCrew == false)
                             results.add("Service crew required for S-Class");
                         break;
-                    case "E-Class":
+                    case ReferenceData.ECLASS:
                         if (teamSize != 4)
                             results.add("For E-Class team size must be 4 your team size is " + teamSize);
                         if (leader == true)
