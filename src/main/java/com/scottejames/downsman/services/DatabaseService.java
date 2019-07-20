@@ -18,7 +18,7 @@ public class DatabaseService {
             System.out.println("DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT DEVELOPMENT ");
             client = AmazonDynamoDBClientBuilder.standard()
                     .withEndpointConfiguration(new AwsClientBuilder
-                            .EndpointConfiguration("http://localhost:8000", "us-east-1"))
+                            .EndpointConfiguration("http://localhost:8000", "eu-west-2"))
                     .build();
         } else {
             System.out.println("PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION PRODUCTION ");
