@@ -171,23 +171,23 @@ public class TeamDialog extends Dialog {
 
         Checkbox campingAtStart = new Checkbox();
         teamDetailsForm.addFormItem(campingAtStart,"Camping at Plumpton College (available to teams travelling from afar)");
-        hikeClass.addValueChangeListener(e-> {
-            if (e.getValue()!=null) {
-                if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))) {
-                    campingAtStart.setEnabled(true);
-
-                } else {
-                    campingAtStart.setEnabled(false);
-                    campingAtStart.setValue(false);
-
-                }
-            } else {
-                campingAtStart.setEnabled(false);
-                campingAtStart.setValue(false);
-            }
-        });
+//        hikeClass.addValueChangeListener(e-> {
+//            if (e.getValue()!=null) {
+//                if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))) {
+//                    campingAtStart.setEnabled(true);
+//
+//                } else {
+//                    campingAtStart.setEnabled(false);
+//                    campingAtStart.setValue(false);
+//
+//                }
+//            } else {
+//                campingAtStart.setEnabled(false);
+//                campingAtStart.setValue(false);
+//            }
+//        });
         binder.bind(campingAtStart,"campingAtStart");
-        campingAtStart.setEnabled(false);
+        campingAtStart.setEnabled(true);
 
 
 
