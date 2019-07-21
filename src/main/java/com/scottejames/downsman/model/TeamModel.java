@@ -27,6 +27,7 @@ public class TeamModel  {
     private String emergencyContactLandline = null;
     private String emergencyContactEmail = null;
     private String leaderName = null;
+    private int paymentAmount = 0;
     private boolean paymentRecieved = false;
     private boolean teamSubmitted = false;
     private boolean campingAtStart = false;
@@ -254,6 +255,9 @@ public class TeamModel  {
         this.committedToRun = committedToRun;
     }
 
+    @DynamoDBAttribute
+    public int getPaymentAmount() { return paymentAmount; }
+    public void setPaymentAmount(int paymentAmount) { this.paymentAmount = paymentAmount; }
 
     @DynamoDBIgnore
     public boolean isPersisted() {
@@ -277,6 +281,22 @@ public class TeamModel  {
             return "Paid";
         } else {
             return "Not Paid";
+        }
+    }
+
+    @DynamoDBIgnore
+    public int getEntranceFee(){
+        int fee = 0;
+        fee=ReferenceData.ENTRYCOST * getScoutsTeam().size();
+        return fee;
+
+    }
+    @DynamoDBIgnore
+    public boolean isPaidInFull(){
+        if (getPaymentAmount() >= getEntranceFee()){
+            return true;
+        } else {
+            return false;
         }
     }
 

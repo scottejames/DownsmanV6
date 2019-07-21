@@ -21,4 +21,5 @@ public class ReferenceData {
     public static final LocalDate HIKE_DATE = LocalDate.of(2019,10,5);
 
     public static final String BANK_DETAILS = "A/C: XXX S/C: XXX";
+    public static final int ENTRYCOST = 7;
 }

@@ -50,7 +50,9 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
         teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
         teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Submitted");
-        teamGrid.addColumn(TeamModel::isPaymentRecieved).setHeader("Paid");
+        teamGrid.addColumn(TeamModel::getPaymentAmount).setHeader("AmountPaid");
+        teamGrid.addColumn(TeamModel::isPaymentRecieved).setHeader("Payment Recieved");
+        teamGrid.addColumn(TeamModel::isPaidInFull).setHeader("Paid In Full");
         teamGrid.setHeightByRows(true);
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);

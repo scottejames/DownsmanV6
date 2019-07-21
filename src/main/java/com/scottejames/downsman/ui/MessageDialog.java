@@ -6,7 +6,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
 
-public class MessageDialog  extends Dialog {
+public class  MessageDialog  extends Dialog {
     private static final String ERROR = "error";
     private static final String OK = "ok";
 

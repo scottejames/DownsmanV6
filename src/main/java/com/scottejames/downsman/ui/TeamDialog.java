@@ -166,8 +166,8 @@ public class TeamDialog extends Dialog {
         teamDetailsForm.addFormItem(hikeClass,"Hike Class");
         binder.bind(hikeClass,"hikeClass");
 
-        Checkbox teamRunningCheckBox = new Checkbox();
-        teamDetailsForm.addFormItem(teamRunningCheckBox,new Label("Team committed to running"));
+//        Checkbox teamRunningCheckBox = new Checkbox();
+//        teamDetailsForm.addFormItem(teamRunningCheckBox,new Label("Team committed to running"));
 
         Checkbox campingAtStart = new Checkbox();
         teamDetailsForm.addFormItem(campingAtStart,"Camping at start (Class A/B only)");
@@ -191,13 +191,13 @@ public class TeamDialog extends Dialog {
 
 
 
-        teamRunningCheckBox.addValueChangeListener(e-> {
-                    if (e.getValue() == true) {
-                        MessageDialog message = new MessageDialog("Info!", "Please review rules regarding running, additional checks required", false);
-                        message.open();
-                    }
-                });
-        binder.bind(teamRunningCheckBox,"committedToRun");
+//        teamRunningCheckBox.addValueChangeListener(e-> {
+//                    if (e.getValue() == true) {
+//                        MessageDialog message = new MessageDialog("Info!", "Please review rules regarding running, additional checks required", false);
+//                        message.open();
+//                    }
+//                });
+//        binder.bind(teamRunningCheckBox,"committedToRun");
         add(teamDetailsForm);
     }
 
@@ -436,11 +436,9 @@ public class TeamDialog extends Dialog {
 
 
     private void markPayment() {
-            MessageDialog dialog= new MessageDialog("Information", "Sorry, online payment not supported (YET! Hopefully next year)\n" +
-                    "To pay please send a BACS payment to " + ReferenceData.BANK_DETAILS + "\n" +
-                    "Add your team names in the reference for the payment.\n" +
-                    "Once we have payment you can submit your teams.",false);
-            dialog.open();
+
+        PayDialog dialog = new PayDialog(model,service);
+        dialog.open();
     }
 
     private void submitTeam() {
