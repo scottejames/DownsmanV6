@@ -293,7 +293,7 @@ public class TeamModel  {
     }
     @DynamoDBIgnore
     public boolean isPaidInFull(){
-        if (getPaymentAmount() >= getEntranceFee()){
+        if ((getPaymentAmount() >= getEntranceFee()) && (getPaymentAmount() != 0)){
             return true;
         } else {
             return false;
