@@ -170,7 +170,7 @@ public class TeamDialog extends Dialog {
 //        teamDetailsForm.addFormItem(teamRunningCheckBox,new Label("Team committed to running"));
 
         Checkbox campingAtStart = new Checkbox();
-        teamDetailsForm.addFormItem(campingAtStart,"Camping at start (Class A/B only)");
+        teamDetailsForm.addFormItem(campingAtStart,"Camping at Plumpton College (available to teams travelling from afar)");
         hikeClass.addValueChangeListener(e-> {
             if (e.getValue()!=null) {
                 if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))) {

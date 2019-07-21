@@ -183,8 +183,13 @@ public class TeamService {
                             results.add("For V-Class team size must be 3 or 4 your team size is " + teamSize);
                         if (leader == true)
                             results.add("For V-Class leaders may not hike");
-                        if (intCombinedAge < 100)
-                            results.add("For V-Class combined age must be more than 100 your combined age is " + intCombinedAge);
+
+                        if ((intCombinedAge < 100) && (teamSize == 3))
+                            results.add("For V-Class team of three combined age must be more than 100 your combined age is " + intCombinedAge);
+
+                        if ((intCombinedAge < 133) && (teamSize == 4))
+                            results.add("For V-Class team of four combined age must be more than 133 your combined age is " + intCombinedAge);
+
                         if (serviceCrew == false)
                             results.add("Service crew required for V-Class");
                         break;
