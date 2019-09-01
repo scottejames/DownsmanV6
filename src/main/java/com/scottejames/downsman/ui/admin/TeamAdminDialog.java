@@ -14,6 +14,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class TeamAdminDialog extends Dialog {
+
     private FormLayout form = new FormLayout();
     private final TeamService service = ServiceManager.getInstance().getTeamService();
     private TeamDialog teamDialog = null;
@@ -33,8 +34,12 @@ public class TeamAdminDialog extends Dialog {
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
         teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
         teamGrid.addColumn(TeamModel::getPaymentStatus).setHeader("Paid");
+        teamGrid.addColumn(TeamModel::getPaymentAmount).setHeader("Payment Amount");
+        teamGrid.addColumn(TeamModel::getEntranceFee).setHeader("Entrance Fee");
         teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Entered");
         teamGrid.setHeightByRows(true);
+        this.setSizeFull();
+
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);
         editTeam = new Button("Edit Team", e->editTeam());

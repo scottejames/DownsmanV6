@@ -227,6 +227,13 @@ public class TeamModel  {
     public String getHikeClass() {
         return hikeClass;
     }
+    public String getHikeClassAsString(){
+        String hikeClass = getHikeClass();
+        if (hikeClass == null)
+            return null;
+        return hikeClass.replaceAll(",","-");
+
+    }
     public void setHikeClass(String hikeClass) {
         this.hikeClass = hikeClass;
     }

@@ -6,11 +6,22 @@ import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.services.UserService;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TeamSignupReport {
     public static void main(String [] args) throws InterruptedException {
+        try {
+            String out = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+            String fileName = "/tmp/Team-Report-" + out + ".csv";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+
         TeamService teamService = ServiceManager.getInstance().getTeamService();
         UserService userService = ServiceManager.getInstance().getUserService();
 
@@ -26,24 +37,32 @@ public class TeamSignupReport {
             int teamSize = team.getScoutsTeam().size();
             int serviceTeamSize = team.getSupportTeam().size();
 
-            results.add(owner.getUsername() + ", " + owner.getEmail() + ", " + team.getTeamName() + ", " +
-            team.getHikeClass() + ", " + team.getGroupName() + ", " + team.getDistrict() + ", " + team.getSection() + ", " +
-            team.getCounty() + ", " + team.getEmergencyContactName() + ", " + team.getEmergencyContactLandline() + ", " + team.isCampingAtStart() + ", " + team.isCommittedToRun() + ", " + team.isPaymentRecieved() + ", " +
-            team.isTeamSubmitted() + ", " + (teamService.validate(team).length == 0) + "," + teamSize + ", " +  serviceTeamSize);
+            results.add(owner.getUsername() +  ", " + team.getTeamName() + ", " +
+            team.getHikeClassAsString() + ", " + team.getGroupName() + ", " + team.getDistrict() + ", " + team.getSection() + ", " +
+            team.getCounty()  +  ", "  + team.getPaymentAmount() + ", " + team.getEntranceFee()  + ", " + team.isPaymentRecieved() + ", " +
+            team.isTeamSubmitted() + ", " + (teamService.validate(team).length == 0) );
             if (teamService.validate(team).length == 0){
                 valid++;
             }
            // Thread.sleep(1000);
 
         }
-        System.out.println("Leader Name, Leader Email, Team Name, Class, Group Name, District, Section, County, Emergency Contact, Emergency Contact Phone, Camping, Running, Paid, Submitted, Valid Team, Size, Service Team");
+
+            writer.write("Leader Name, Team Name, Class, Group Name, District, Section, County, Paid Amount, Entry Cost, Cost Validated, Submitted, Valid Team \n");
+
 
         for (String line: results){
 
-            System.out.println(line);
+            writer.write(line + "\n");
         }
 
-        System.out.println(results.size() + " teams entered of which " + valid + " are valid");
+
+            writer.write(results.size() + " teams entered of which " + valid + " are valid\n");
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("UNABLE TO WRITE TO FILE!");
+            e.printStackTrace();
+        }
     }
 
     public static UserModel getUserById(List<UserModel> userList,String id){
