@@ -1,7 +1,7 @@
 version: '2'
 services:
   web:
-   image:  scottejames/downsman:2.2
+   image:  scottejames/downsman:3.3
    ports:
     - "80:8080"
     - "443:8443"

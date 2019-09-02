@@ -3,7 +3,7 @@ MAINTAINER scottejames@gmail.com
 ENV DM_DEV false
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 
-COPY ./target/downsman-2.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+COPY ./target/downsman-3.2-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 COPY ./resources/server.xml /usr/local/tomcat/conf/server.xml
 
 CMD ["catalina.sh", "run"]

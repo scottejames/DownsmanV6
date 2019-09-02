@@ -227,6 +227,8 @@ public class TeamModel  {
     public String getHikeClass() {
         return hikeClass;
     }
+
+    @DynamoDBIgnore
     public String getHikeClassAsString(){
         String hikeClass = getHikeClass();
         if (hikeClass == null)
