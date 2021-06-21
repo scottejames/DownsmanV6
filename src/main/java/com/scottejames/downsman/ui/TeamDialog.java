@@ -25,7 +25,6 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
-import sun.plugin2.message.Message;
 
 public class TeamDialog extends Dialog {
 

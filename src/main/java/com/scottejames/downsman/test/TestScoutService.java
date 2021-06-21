@@ -3,7 +3,6 @@ package com.scottejames.downsman.test;
 import com.scottejames.downsman.model.ScoutModel;
 import com.scottejames.downsman.services.ScoutService;
 import com.scottejames.downsman.services.ServiceManager;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

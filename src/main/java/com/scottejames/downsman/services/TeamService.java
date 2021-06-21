@@ -3,7 +3,6 @@ package com.scottejames.downsman.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.scottejames.downsman.model.*;
-import elemental.html.Database;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
