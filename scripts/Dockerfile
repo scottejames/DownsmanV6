@@ -1,10 +1,10 @@
-FROM tomcat
+FROM openjdk:11
 MAINTAINER scottejames@gmail.com
 ENV DM_DEV false
-RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 
-COPY ./target/downsman-3.3-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
-COPY ./resources/server.xml /usr/local/tomcat/conf/server.xml
+RUN mkdir /usr/src/myapp
+COPY ./target/downsman-4.0-SNAPSHOT.jar /usr/src/myapp
+WORKDIR /usr/src/myapp
 
-CMD ["catalina.sh", "run"]
+CMD ["java", "-jar", "downsman-4.0-SNAPSHOT.jar"]
 

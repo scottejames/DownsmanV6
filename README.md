@@ -68,3 +68,92 @@ $ ecs-cli up --force --keypair SJMBP --capability-iam --size 2 --instance-type t
 
 Create security group
 aws ec2 create-security-group --group-name my-ecs-sg --description my-ecs-sg
+
+##2021 installation Log
+
+updage version     
+`<version>4.0-SNAPSHOT</version>` 
+
+in POM
+
+`cd /Users/scottejames/IdeaProjects/DownsmanV6 ; mvn clean package -Pproduction`
+
+Dev mode controlled by env variable DM_DEV; lets get it running locally.  Install local dynamoDB
+Run this up with persistant storage :
+
+`docker run -v ~/tmp/data:/data -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data`
+
+Validate its running and list tables
+
+`aws dynamodb list-tables --endpoint-url http://localhost:8000 --region="us-east-1"`
+
+No tables WOOT.  Create tables there are some handy dandy scripts `...\scripts` firstly
+rebuild the classpath to ensure that the scripts can see the build files `./updateClasspath.sh"
+` to build tables `./createTables.sh` and now we are pro note there is `./listTables.sh`
+
+to start `java -jar .../target/downsman-4.0-SNAPSHOT.jar`
+
+point browser at `http://localhost:8080/` and login
+
+To look in the database. install admin tool `npm install -g dynamodb-admin` (-g means its installed globally)
+tell it to connect to local end point `export DYNAMO_ENDPOINT=http://localhost:8000` the run it
+`dynamodb-admin` connect to web 'http://localhost:8001/tables/User' to see the users you have created woot all working.
+
+Now lets do it ALL again but using docker.
+
+There is a docker file in scripts
+
+```
+FROM openjdk:11
+MAINTAINER scottejames@gmail.com
+ENV DM_DEV false
+
+RUN mkdir /usr/src/myapp
+COPY ./target/downsman-4.0-SNAPSHOT.jar /usr/src/myapp
+WORKDIR /usr/src/myapp
+
+CMD ["java", "-jar", "downsman-4.0-SNAPSHOT.jar"]
+```
+
+login to dockerhub `docker login` and then run the script (from the scripts dir).  It will rebuild
+the docker imagine and then push to docker hub.  NOTE this does NOT contrain your AWS credentials this is
+important!
+
+##Tinker with lightsail
+
+install docker `sudo yum install docker; sudo service docker start'
+and then add user to docker group `sudo usermod -aG docker scottejames
+
+Switch to user and run up downsman 
+`docker login`
+`docker run scottejames/downsman:4.0`
+
+Ok at this point you will realise that building docker images on an M1 mmac cant run on amazon sooooo.
+this helps : https://blog.jaimyn.dev/how-to-build-multi-architecture-docker-images-on-an-m1-mac/
+
+`docker buildx ls` will show you the current builder instances you have create a new builder instance (so we can
+build for more than one arch at at time `docker buildx create --use`)
+
+Lets check all is well by kicking off a build by hand:
+
+`docker buildx build --platform linux/amd64,linux/arm64 -f scripts/Dockerfile -t scott/downsman:4.0 .`
+
+This will take a bit the first time as it pulls down moby build kit.
+
+Then to build : 
+
+`docker buildx build --platform linux/amd64,linux/arm64 -f scripts/Dockerfile --push -t scottejames/downsman:4.1 .`
+
+(make sure you login to docker hub first!)
+
+Login to your AWS host and then 
+
+'docker run -it -p 80:8080 -v $HOME/.aws:/root/.aws:ro scottejames/downsman:4.1'
+
+NOTE this assumes that /root is home and that you have prepopulated your .aws dir on lightsail.
+
+NOW .. how to https!
+
+instructions here gets me a cert https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-amazon-linux-2.html#letsencrypt
+
+moved server.xml into jar but server is not using it.
