@@ -26,22 +26,22 @@ public class Application extends SpringBootServletInitializer {
         LaunchUtil.launchBrowserInDevelopmentMode(SpringApplication.run(Application.class, args));
     }
 
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-        return tomcat;
-    }
-    /**
-     * Turn http request into https request
-     * @return
-     */
-    private Connector createStandardConnector() {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setPort(8083);
-        connector.addSslHostConfig(new SSLHostConfig();
-        return connector;
-    }
+//    @Bean
+//    public ServletWebServerFactory servletContainer() {
+//        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+//        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+//        return tomcat;
+//    }
+//    /**
+//     * Turn http request into https request
+//     * @return
+//     */
+//    private Connector createStandardConnector() {
+//        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+//        connector.setPort(8083);
+// //       connector.addSslHostConfig(new SSLHostConfig());
+//        return connector;
+//    }
 
     //            <SSLHostConfig>
     //                <Certificate certificateKeyFile="/etc/letsencrypt/live/signup.downsman.com/privkey.pem"
