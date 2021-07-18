@@ -6,9 +6,7 @@ import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.validators.EmailValidator;
 import com.scottejames.downsman.ui.validators.PhoneValidator;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.HtmlComponent;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -23,6 +21,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.component.checkbox.Checkbox;
 
+import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
@@ -168,8 +167,8 @@ public class TeamDialog extends Dialog {
 //        Checkbox teamRunningCheckBox = new Checkbox();
 //        teamDetailsForm.addFormItem(teamRunningCheckBox,new Label("Team committed to running"));
 
-        Checkbox campingAtStart = new Checkbox();
-        teamDetailsForm.addFormItem(campingAtStart,"Camping at Plumpton College (available to teams travelling from afar)");
+//        Checkbox campingAtStart = new Checkbox();
+//        teamDetailsForm.addFormItem(campingAtStart,"Camping at Plumpton College (available to teams travelling from afar)");
 //        hikeClass.addValueChangeListener(e-> {
 //            if (e.getValue()!=null) {
 //                if ((e.getValue().equals("A-Class")) || (e.getValue().equals("B-Class"))) {
@@ -185,8 +184,8 @@ public class TeamDialog extends Dialog {
 //                campingAtStart.setValue(false);
 //            }
 //        });
-        binder.bind(campingAtStart,"campingAtStart");
-        campingAtStart.setEnabled(true);
+//        binder.bind(campingAtStart,"campingAtStart");
+//        campingAtStart.setEnabled(true);
 
 
 
@@ -508,7 +507,18 @@ public class TeamDialog extends Dialog {
         form.addFormItem(field,label);
         if (bindValue != null)
             binder.bind(field,bindValue);
-
+        Registration registration = field.addInputListener(new ComponentEventListener<InputEvent>() {
+            @Override
+            public void onComponentEvent(InputEvent inputEvent) {
+                System.out.println("EVent fired : " + inputEvent);
+            }
+        });
+         registration = field.addKeyPressListener(new ComponentEventListener<KeyPressEvent>() {
+             @Override
+             public void onComponentEvent(KeyPressEvent keyPressEvent) {
+                 System.out.println("EVent fired : " + keyPressEvent);
+             }
+         });
 
     }
     private void showNotification(String title, String message, boolean error) {
