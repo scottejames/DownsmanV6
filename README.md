@@ -157,3 +157,43 @@ NOW .. how to https!
 instructions here gets me a cert https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-amazon-linux-2.html#letsencrypt
 
 moved server.xml into jar but server is not using it.
+
+## Getting a cert working
+
+ok this was a lot harder than it should be.   firstly we need some certificates.  Lets encrypt are favourate.   You will 
+need to proove you have control over the domain.   Now note certs expire in a few months so the approach i am about to 
+describe is totally the wrong way.    Use a technique called DNS challenge.  This allows you to create certs anywhere.
+
+install certbot using homebrew 'brew install certbot' then run:
+
+` sudo certbot -d signup.downsman.com --manual --preferred-challenges dns certonly`
+
+This will ultimatly ask you to set a TXT record in word press go do that:
+
+acme-challenge.signup.downsman.com. wait a second click go and you will have shiny certs on your local machine.  Setup DNS to point
+signup.downsman.com to 127.0.0.1 this is BAD DONT DO THIS (except its ok for the use case i have).  Better option would be 
+a self signed cert that is trusted.  i will investigate this next but for now.   HACKING.
+
+Server will be different, come to that in a bit.   It will be different so we can renew the certs.
+
+Right so it seems that the server does not want pems so need to convert to a p12 key store as root:
+
+`openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out keystore.p12 -name downsman -CAfile chain.pem -caname root`
+
+This needs to be put in .../src/main/resources/ create file in same dir keystore.yml:
+
+server:
+  ssl:
+    key-store: classpath:keystore/keystore.p12
+    key-store-password: knot8gen
+    key-store-type: pkcs12
+    enabled=true:
+  port: 443
+
+SO now to release prod build
+
+`mvn clean package -Pproduction`
+`docker buildx build --platform linux/amd64,linux/arm64 -f scripts/Dockerfile --push -t scottejames/downsman:4.2 .`
+
+
+This pushes a new to docker hub goto server to run and run 'docker run -it -p 443:443 -v $HOME/.aws:/root/.aws:ro scottejames/downsman:4.2` all is well
