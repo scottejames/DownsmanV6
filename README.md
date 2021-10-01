@@ -197,3 +197,6 @@ SO now to release prod build
 
 
 This pushes a new to docker hub goto server to run and run 'docker run -it -p 443:443 -v $HOME/.aws:/root/.aws:ro scottejames/downsman:4.2` all is well
+
+
+Dont forget to insert the  -e DM_BANKDETS to indicate where to pay.

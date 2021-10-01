@@ -6,16 +6,21 @@ import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.services.UserService;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class EntryReport {
 
-    public static void main(String [] args) throws InterruptedException {
+    public static void main(String [] args) throws InterruptedException, IOException {
         TeamService teamService = ServiceManager.getInstance().getTeamService();
+        String out = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
+        String fileName = "/tmp/Entry-Report-" + out + ".csv";
+        BufferedWriter    writer = new BufferedWriter(new FileWriter(fileName));
+        List<String> results = new ArrayList<>();
 
         List<TeamModel> dynTeamModelList = teamService.getAllAll();
         List<TeamModel> teamModelList = new LinkedList<>();
@@ -24,41 +29,46 @@ public class EntryReport {
 
         Collections.sort(teamModelList,new TeamComparitor());
         for (String hikeClass : ReferenceData.HIKE_CLASSES) {
-            System.out.println("Printing teams for " + hikeClass);
+            results.add("Printing teams for " + hikeClass);
             for (TeamModel team : teamModelList) {
                 if (team.getHikeClass().equals(hikeClass)) {
-                    System.out.println("Leader Name : " + team.getLeaderName() + ", Team Name : '" + team.getTeamName()) ;
-                    System.out.println("Active Phone: '" + team.getActiveMobile() + ", Backup Phone : '" + team.getBackupMobile());
-                    if (team.isCommittedToRun() == true){
-                        System.out.println("Team is committed to run");
-                    }
+                    results.add("Leader Name : " + team.getLeaderName() + ", Team Name : '" + team.getTeamName()) ;
+                    results.add("Active Phone: '" + team.getActiveMobile() + ", Backup Phone : '" + team.getBackupMobile());
+//                    if (team.isCommittedToRun() == true){
+//                        results.add("Team is committed to run");
+//                    }
                     List<ScoutModel> scouts = team.getScoutsTeam();
-                    System.out.println("");
+                    results.add("");
 
-                    System.out.println("Name, DOB, Leader, Medical notes");
+                    results.add("Name, DOB, Leader, Medical notes");
 
                     for (ScoutModel scout: scouts){
-                        System.out.println(scout.getFullName() + ", " + scout.getDob() + ", " + scout.isLeader() + ", " + emptyString(scout.getMedicalNotes()));
+                        results.add(scout.getFullName() + ", " + scout.getDob() + ", " + scout.isLeader() + ", " + emptyString(scout.getMedicalNotes()));
                     }
-                    System.out.println("");
+                    results.add("");
                     List<SupportModel> supportTeam = team.getSupportTeam();
-                    System.out.println("Support Team");
-                    System.out.println("Name, Phone, From, To");
+                    results.add("Support Team");
+                    results.add("Name, Phone, From, To");
 
                     for (SupportModel support: supportTeam){
-                        System.out.println(support.getFullName() + ", '" + support.getPhoneNumber() + ", " + support.getFrom() + ", " + support.getTo());
+                        results.add(support.getFullName() + ", '" + support.getPhoneNumber() + ", " + support.getFrom() + ", " + support.getTo());
 
                     }
-                    System.out.println("");
-                    System.out.println("Emergency Contact");
-                    System.out.println("Name: " + team.getEmergencyContactName());
-                    System.out.println("LandLine: '" + team.getEmergencyContactLandline());
-                    System.out.println("Mobile: '" + team.getEmergencyContactMobile());
-                    System.out.println("");
+                    results.add("");
+                    results.add("Emergency Contact");
+                    results.add("Name: " + team.getEmergencyContactName());
+                    results.add("LandLine: '" + team.getEmergencyContactLandline());
+                    results.add("Mobile: '" + team.getEmergencyContactMobile());
+                    results.add("");
                 }
 
             }
         }
+        for (String line: results){
+
+            writer.write(line + "\n");
+        }
+        writer.close();
     }
     private static String emptyString(String s){
         if (s==null)
