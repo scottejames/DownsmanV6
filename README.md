@@ -179,6 +179,7 @@ Server will be different, come to that in a bit.   It will be different so we ca
 Right so it seems that the server does not want pems so need to convert to a p12 key store as root:
 
 `openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out keystore.p12 -name downsman -CAfile chain.pem -caname root`
+'sudo openssl pkcs12 -export -in  /etc/letsencrypt/live/signup.downsman.com/fullchain.pem -inkey /etc/letsencrypt/live/signup.downsman.com/privkey.pem -out keystore.p12 -name downsman -CAfile chain.pem -caname root
 
 This needs to be put in .../src/main/resources/ create file in same dir keystore.yml:
 
