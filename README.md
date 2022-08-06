@@ -201,3 +201,11 @@ This pushes a new to docker hub goto server to run and run 'docker run -it -p 44
 
 
 Dont forget to insert the  -e DM_BANKDETS to indicate where to pay.
+
+Decided to stop using docker becase - ARGH,   to bind to ports < 1024 need to run as root.  No way i am running my app as root so use iptables 
+
+'sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j REDIRECT --to-port 1443
+
+This will bind 1443 to 443 and allows app to bind to 1443 to change thsi goto application.yml in src/main/resources/
+
+Also moved keystore into /home so now this app only works on lightsale!
