@@ -3,5 +3,5 @@ export DM_WAR="../target/downsman-4.3-SNAPSHOT.war"
 export DM_CLASSES="../target/classes/"
 export AWS_REGION="eu-west-2"
 export DM_DEV=true
-CLASSPATH=$CLASSPATH:`cat ClassPath`
+CLASSPATH=$DM_CLASSES:$CLASSPATH:`cat ClassPath`
 

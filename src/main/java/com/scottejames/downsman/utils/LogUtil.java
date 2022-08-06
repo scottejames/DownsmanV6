@@ -1,11 +1,18 @@
 package com.scottejames.downsman.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 
 public class LogUtil {
-    static Logger log = Logger.getLogger(LogUtil.class.getName());
+    static Logger log;
+    static {
+        log =  LoggerFactory.getLogger(LogUtil.class.getName());
 
+                /*Logger.getLogger(LogUtil.class.getName());
+        BasicConfigurator.configure(); */
+        logEvent("Logging initialised");
+    }
     public static void logEvent(String msg){
 
         log.info("[SJ] " +msg);

@@ -27,7 +27,6 @@ public class HashHelper {
         {
             e.printStackTrace();
         }
-        LogUtil.logDebug("Password: " + psswd + " to hash " + generatedPassword);
         return generatedPassword;
     }
 }

@@ -5,6 +5,7 @@ import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.services.LogService;
 import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.UserService;
+import com.scottejames.downsman.utils.LogUtil;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
@@ -18,7 +19,7 @@ class LoginDialog extends Dialog {
     private final PasswordField passwordField = new PasswordField();
 
     private String username = null;
-    private Runnable onEnter = null;
+    private Runnable onEnter;
     public String getUsername() {
         return username;
     }
@@ -56,8 +57,10 @@ class LoginDialog extends Dialog {
         if (user != null) {
             SessionState.getInstance().setCurrentUser(user);
             if (onEnter != null) onEnter.run();
+            LogUtil.logEvent(username + " tried to login successfully");
             close();
         } else {
+            LogUtil.logEvent(username + " tried to login UNsuccessfully");
             MessageDialog dialog = new MessageDialog("Login Failed", "Unable to login with that user check username or password", true);
             dialog.open();
         }

@@ -38,4 +38,6 @@ public class LogModel {
     public void setWhat(String what) {
         this.what = what;
     }
+
+    public String toString(){ return "At " + when + " - " + who + " did " + what + " to " + id;}
 }

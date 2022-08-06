@@ -3,6 +3,7 @@ package com.scottejames.downsman.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.scottejames.downsman.model.UserModel;
 import com.scottejames.downsman.utils.HashHelper;
+import com.scottejames.downsman.utils.LogUtil;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class UserService{
 
     public UserModel login(String username, String password){
         // if user or password is null dont try to loging
+
         if (password == null || password.length() == 0 || username == null || username.length() == 0)
             return null;
 
@@ -34,9 +36,9 @@ public class UserService{
 
         DynamoDBQueryExpression<UserModel> queryExpression = (new DynamoDBQueryExpression<UserModel>().
                 withHashKeyValues(query));
-        List <UserModel> results = DatabaseService.getInstance().getMapper().
+        return DatabaseService.getInstance().getMapper().
                 query(UserModel.class,queryExpression);
-        return results;
+
     }
 
     public UserModel findByUserName(String username){

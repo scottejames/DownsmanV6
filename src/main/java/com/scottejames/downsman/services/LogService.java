@@ -3,6 +3,7 @@ package com.scottejames.downsman.services;
 import com.scottejames.downsman.model.LogModel;
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.UserModel;
+import com.scottejames.downsman.utils.LogUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 public class LogService {
 
     public static void logEvent(String what){
+
         UserModel user = SessionState.getInstance().getCurrentUser();
         String who;
         if (user == null){
@@ -23,7 +25,7 @@ public class LogService {
         log.setWhat(what);
         log.setWhen(when);
         log.setWho(who);
-
+        LogUtil.logEvent(log.toString());
         DatabaseService.getInstance().getMapper().save(log);
     }
 }
