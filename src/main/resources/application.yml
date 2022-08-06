@@ -1,7 +1,7 @@
 server:
   ssl:
-    key-store: ~/keystore.p12
+    key-store: /home/scottejames/keystore.p12
     key-store-password: knot8gen
     key-store-type: pkcs12
     enabled=true:
-  port: 443
+  port: 1443
