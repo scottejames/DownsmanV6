@@ -507,18 +507,18 @@ public class TeamDialog extends Dialog {
         form.addFormItem(field,label);
         if (bindValue != null)
             binder.bind(field,bindValue);
-        Registration registration = field.addInputListener(new ComponentEventListener<InputEvent>() {
-            @Override
-            public void onComponentEvent(InputEvent inputEvent) {
-                System.out.println("EVent fired : " + inputEvent);
-            }
-        });
-         registration = field.addKeyPressListener(new ComponentEventListener<KeyPressEvent>() {
-             @Override
-             public void onComponentEvent(KeyPressEvent keyPressEvent) {
-                 System.out.println("EVent fired : " + keyPressEvent);
-             }
-         });
+//        Registration registration = field.addInputListener(new ComponentEventListener<InputEvent>() {
+//            @Override
+////            public void onComponentEvent(InputEvent inputEvent) {
+////                System.out.println("EVent fired : " + inputEvent);
+////            }
+//        });
+//         registration = field.addKeyPressListener(new ComponentEventListener<KeyPressEvent>() {
+//             @Override
+//             public void onComponentEvent(KeyPressEvent keyPressEvent) {
+//                 //System.out.println("EVent fired : " + keyPressEvent);
+//             }
+//         });
 
     }
     private void showNotification(String title, String message, boolean error) {
