@@ -41,11 +41,12 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
     private Button deleteTeam = null;
     private Button addTeam = null;
     private Button editTeam = null;
-
+    private boolean locked = false;
     public MainView(){
-        this.
 
-        loginDialog = new LoginDialog(this::onLogin);
+        locked = Config.getInstance().isLocked();
+
+        this.loginDialog = new LoginDialog(this::onLogin);
         // Add table of teams
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
         teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
@@ -57,7 +58,9 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);
         editTeam = new Button("Edit Team", e->editTeam());
+
         addTeam = new Button("Add Team",e->addTeam());
+        if (locked) addTeam.setEnabled(false);
         gridButtons.add(deleteTeam,editTeam,addTeam);
 
         teamGrid.asSingleSelect().addValueChangeListener(event -> {
@@ -68,6 +71,7 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
                 editTeam.setEnabled(false);
                 deleteTeam.setEnabled(false);
             }
+            if (locked) deleteTeam.setEnabled(false);
 
             selectedTeam = event.getValue();
         });

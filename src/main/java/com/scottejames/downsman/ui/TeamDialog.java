@@ -6,6 +6,7 @@ import com.scottejames.downsman.services.ServiceManager;
 import com.scottejames.downsman.services.TeamService;
 import com.scottejames.downsman.ui.validators.EmailValidator;
 import com.scottejames.downsman.ui.validators.PhoneValidator;
+import com.scottejames.downsman.utils.Config;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -62,6 +63,8 @@ public class TeamDialog extends Dialog {
     private  Runnable            onSave = null;
 
     public TeamDialog(TeamModel team, Runnable onSave) {
+        boolean locked = Config.getInstance().isLocked();
+
         if (team == null) {
             model = new TeamModel();
             model.setTeamName("Default");
@@ -87,7 +90,7 @@ public class TeamDialog extends Dialog {
         setupButtons();
         binder.readBean(model);
 
-        if (model.isTeamSubmitted() == true) {
+        if ((model.isTeamSubmitted() == true)||(locked)){
             teamDetailsForm.setEnabled(false);
             teamPhoneForm.setEnabled(false);
             emergencyContactForm.setEnabled(false);
