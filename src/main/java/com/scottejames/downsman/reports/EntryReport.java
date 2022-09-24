@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collector;
 
 public class EntryReport {
 
@@ -26,13 +27,15 @@ public class EntryReport {
         List<TeamModel> teamModelList = new LinkedList<>();
         for(TeamModel model : dynTeamModelList)
             teamModelList.add(model);
-
+        Arrays.sort(ReferenceData.HIKE_CLASSES);
+        int bibNumber = 1;
         Collections.sort(teamModelList,new TeamComparitor());
         for (String hikeClass : ReferenceData.HIKE_CLASSES) {
-            results.add("Printing teams for " + hikeClass);
+            results.add("Printing teams for " + hikeClass +"=========================\n");
             for (TeamModel team : teamModelList) {
                 if (team.getHikeClass().equals(hikeClass)) {
-                    results.add("Leader Name : " + team.getLeaderName() + ", Team Name : '" + team.getTeamName()) ;
+                    results.add("Bib Number = " + bibNumber++);
+                    results.add("\nLeader Name : " + team.getLeaderName() + ", Team Name : '" + team.getTeamName()) ;
                     results.add("Active Phone: '" + team.getActiveMobile() + ", Backup Phone : '" + team.getBackupMobile());
 //                    if (team.isCommittedToRun() == true){
 //                        results.add("Team is committed to run");
@@ -87,6 +90,6 @@ class TeamComparitor implements Comparator<TeamModel>{
 
     @Override
     public int compare(TeamModel o1, TeamModel o2) {
-        return o1.getLeaderName().compareTo(o2.getLeaderName());
+        return o1.getGroupName().compareToIgnoreCase(o2.getGroupName());
     }
 }

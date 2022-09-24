@@ -80,7 +80,7 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
     }
 
     private void buildUI(){
-
+        teamGrid.getDataProvider().refreshAll();
         removeAll();
 
         HorizontalLayout userStrip = new HorizontalLayout();
@@ -89,7 +89,11 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         }
         if (SessionState.getInstance().isAuthenticated()){
             UserModel user = SessionState.getInstance().getCurrentUser();
-
+            if (user.getBreakLock()){
+                addTeam.setEnabled(true);
+            } else {
+                addTeam.setEnabled(false);
+            }
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
             

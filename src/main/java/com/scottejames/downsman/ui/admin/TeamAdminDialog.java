@@ -29,16 +29,20 @@ public class TeamAdminDialog extends Dialog {
     private TeamModel selectedTeam = null;
 
     TeamAdminDialog(){
+        this.setWidthFull();
+        this.setHeightFull();
+
         // Add table of teams
-        teamGrid.addColumn(TeamModel::getLeaderName).setHeader("Leader");
-        teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
-        teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass");
-        teamGrid.addColumn(TeamModel::getPaymentStatus).setHeader("Paid");
-        teamGrid.addColumn(TeamModel::getPaymentAmount).setHeader("Payment Amount");
-        teamGrid.addColumn(TeamModel::getEntranceFee).setHeader("Entrance Fee");
-        teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Entered");
-        teamGrid.setHeightByRows(true);
+        teamGrid.addColumn(TeamModel::getLeaderName).setHeader("Leader").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::getHikeClass).setHeader("HikeClass").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::getPaymentStatus).setHeader("Paid").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::getPaymentAmount).setHeader("Payment Amount").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::getEntranceFee).setHeader("Entrance Fee").setAutoWidth(true);
+        teamGrid.addColumn(TeamModel::isTeamSubmitted).setHeader("Entered").setAutoWidth(true);
+
         this.setSizeFull();
+
 
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);
@@ -60,7 +64,8 @@ public class TeamAdminDialog extends Dialog {
 
         });
         setSizeUndefined();
-
+        this.setWidthFull();
+        this.setHeightFull();
 
         updateTeamGrid();
     }

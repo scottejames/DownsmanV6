@@ -40,15 +40,16 @@ public class TeamSignupReport {
             results.add(owner.getUsername() +  ", " + team.getTeamName() + ", " +
             team.getHikeClassAsString() + ", " + team.getGroupName() + ", " + team.getDistrict() + ", " + team.getSection() + ", " +
             team.getCounty()  +  ", "  + team.getPaymentAmount() + ", " + team.getEntranceFee()  + ", " + team.isPaymentRecieved() + ", " +
-            team.isTeamSubmitted() + ", " + (teamService.validate(team).length == 0) );
+            team.isTeamSubmitted() + ", " + (teamService.validate(team).length == 0) + ", " + teamSize + ", " + serviceTeamSize);
             if (teamService.validate(team).length == 0){
                 valid++;
             }
+
            // Thread.sleep(1000);
 
         }
 
-            writer.write("Leader Name, Team Name, Class, Group Name, District, Section, County, Paid Amount, Entry Cost, Cost Validated, Submitted, Valid Team \n");
+            writer.write("Leader Name, Team Name, Class, Group Name, District, Section, County, Paid Amount, Entry Cost, Cost Validated, Submitted, Valid Team, Team Size, Service Team Size \n");
 
 
         for (String line: results){

@@ -63,7 +63,13 @@ public class TeamDialog extends Dialog {
     private  Runnable            onSave = null;
 
     public TeamDialog(TeamModel team, Runnable onSave) {
+
         boolean locked = Config.getInstance().isLocked();
+        UserModel user = SessionState.getInstance().getCurrentUser();
+
+        if (user.getBreakLock()){
+            locked = false;
+        }
 
         if (team == null) {
             model = new TeamModel();

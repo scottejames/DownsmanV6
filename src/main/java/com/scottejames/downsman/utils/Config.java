@@ -22,6 +22,7 @@ public class Config {
 
         config.put("dev", dev);
         config.put("bank_details",bankDetails);
+
         if (lock == null)
             config.put("lock","false");
         else

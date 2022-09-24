@@ -42,7 +42,7 @@ public class CheckinReport {
             results.add("Printing teams for " + hikeClass);
             results.add("");
             for (TeamModel team : teamModelList) {
-                if (team.getHikeClass().equals(hikeClass)) {
+                if ((team.getHikeClass() == null)|| (team.getHikeClass().equals(hikeClass))) {
                     results.add("Leader Name : " + team.getLeaderName() + ", Team Name : '" + team.getTeamName() + ", Group Name : " + team.getGroupName());
                     results.add("County: " + team.getCounty() + ", District: " + team.getDistrict() + ", Section: " + team.getSection());
                     results.add("Team phone : " + team.getActiveMobile() + ", backup : " + team.getBackupMobile());
