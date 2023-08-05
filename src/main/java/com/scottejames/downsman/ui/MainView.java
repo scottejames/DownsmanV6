@@ -1,6 +1,5 @@
 package com.scottejames.downsman.ui;
 
-import com.scottejames.downsman.model.LogModel;
 import com.scottejames.downsman.model.SessionState;
 import com.scottejames.downsman.model.TeamModel;
 import com.scottejames.downsman.model.UserModel;
@@ -43,9 +42,12 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
     private Button editTeam = null;
     private boolean locked = false;
     public MainView(){
-
+        UserModel user = SessionState.getInstance().getCurrentUser();
         locked = Config.getInstance().isLocked();
+        LogService.logEvent("Starting MainView and lock status is " + locked);
 
+        // if we have a valid logged in user and they have break lock then let them make changes.
+        if ((user != null)  && (user.getBreakLock() == true)) locked = false;
         this.loginDialog = new LoginDialog(this::onLogin);
         // Add table of teams
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
@@ -61,6 +63,7 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
 
         addTeam = new Button("Add Team",e->addTeam());
         if (locked) addTeam.setEnabled(false);
+
         gridButtons.add(deleteTeam,editTeam,addTeam);
 
         teamGrid.asSingleSelect().addValueChangeListener(event -> {
@@ -89,11 +92,7 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         }
         if (SessionState.getInstance().isAuthenticated()){
             UserModel user = SessionState.getInstance().getCurrentUser();
-            if (user.getBreakLock()){
-                addTeam.setEnabled(true);
-            } else {
-                addTeam.setEnabled(false);
-            }
+
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
             

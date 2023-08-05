@@ -209,3 +209,32 @@ Decided to stop using docker becase - ARGH,   to bind to ports < 1024 need to ru
 This will bind 1443 to 443 and allows app to bind to 1443 to change thsi goto application.yml in src/main/resources/
 
 Also moved keystore into /home so now this app only works on lightsale!
+
+##This year.. no docker
+
+sudo dnf install java-1.8.0-amazon-corretto
+
+update pom.xml with later version of vardin, suspect next year will need a full update.
+
+get a cert.  On macmini certbot exists
+
+sudo certbot -d signup.downsman.com --manual --preferred-challenges dns certonly
+update DNS on wordpress set A-record match the challenge
+
+cd ~/tmp
+sudo openssl pkcs12 -export -in /etc/letsencrypt/live/signup.downsman.com/fullchain.pem -inkey /etc/letsencrypt/live/signup.downsman.com/privkey.pem -out keystore.p12 -name downsman -CAfile chain.pem -caname root
+
+enter password for sudo, then enter password for export (usual)
+then move the kkeystore to home dir of ec2
+
+Setup a redirect from 1443 to 443 to avoid rootness
+
+sudo iptables -A PREROUTING -t nat -p tcp --dport 443 -j REDIRECT --to-port 1443
+export DM_BANKDETS="Not telling"
+export DM_DEV=false
+export DM_LOCK=false
+
+java -jar downsman-4.3-SNAPSHOT.jar
+
+Open 443 port on lightsale
+

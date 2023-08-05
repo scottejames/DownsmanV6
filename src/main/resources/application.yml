@@ -1,7 +1,10 @@
+#server:
+#  ssl:
+#    key-store: /home/scottejames/keystore.p12
+#    key-store-password: knot8gen
+#    key-store-type: pkcs12
+#    enabled=true:
+#  port: 1443
 server:
-  ssl:
-    key-store: /home/scottejames/keystore.p12
-    key-store-password: knot8gen
-    key-store-type: pkcs12
-    enabled=true:
-  port: 1443
+  port: 8080
+  

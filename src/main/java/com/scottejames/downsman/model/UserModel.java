@@ -33,6 +33,7 @@ public class UserModel {
             password = HashHelper.hashPassword(p);
          mobile = phone;
          this.email = email;
+         this.breakLock = false;
     }
     @DynamoDBRangeKey
     public String getUsername() {
