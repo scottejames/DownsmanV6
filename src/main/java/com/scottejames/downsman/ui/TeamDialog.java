@@ -105,7 +105,7 @@ public class TeamDialog extends Dialog {
             addNewScoutButton.setEnabled(false);
             addNewSupportButton.setEnabled(false);
             saveFormButton.setEnabled(false);
-            payButton.setEnabled(false);
+            submitTeamButton.setEnabled(false);
             validateTeamButton.setEnabled(false);
         } else {
 
@@ -412,10 +412,7 @@ public class TeamDialog extends Dialog {
             // Should check here for LOCKED
             submitTeamButton = new Button ("Submit Team");
             submitTeamButton.addClickListener( e-> this.submitTeam());
-            // If you have not paid you cant submit`
-            if (model.isPaymentRecieved() == false){
-                submitTeamButton.setEnabled(false);
-            }
+
 
         } else {
             submitTeamButton = new Button("Withdraw Team");
@@ -424,7 +421,7 @@ public class TeamDialog extends Dialog {
         validateTeamButton = new Button ("Validate Team");
         validateTeamButton.addClickListener( e-> this.validateTeam());
 
-        payButton = new Button ("Mark Payment");
+        payButton = new Button ("How do I pay");
         payButton.addClickListener( e-> this.markPayment());
 
         saveFormButton = new Button("Save");
@@ -436,6 +433,7 @@ public class TeamDialog extends Dialog {
 
 
         HorizontalLayout saveButtonLayout = new HorizontalLayout();
+        //saveButtonLayout.add(validateTeamButton,submitTeamButton,saveFormButton, cancelFormButton);
         saveButtonLayout.add(payButton,validateTeamButton,submitTeamButton,saveFormButton, cancelFormButton);
 
         add(saveButtonLayout);

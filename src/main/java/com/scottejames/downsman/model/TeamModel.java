@@ -289,7 +289,7 @@ public class TeamModel  {
         if (paymentRecieved) {
             return "Paid";
         } else {
-            return "Not Paid";
+            return "Payment Not Yet Acknowledged";
         }
     }
 

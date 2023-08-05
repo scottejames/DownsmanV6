@@ -46,8 +46,6 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         locked = Config.getInstance().isLocked();
         LogService.logEvent("Starting MainView and lock status is " + locked);
 
-        // if we have a valid logged in user and they have break lock then let them make changes.
-        if ((user != null)  && (user.getBreakLock() == true)) locked = false;
         this.loginDialog = new LoginDialog(this::onLogin);
         // Add table of teams
         teamGrid.addColumn(TeamModel::getTeamName).setHeader("TeamName");
@@ -59,8 +57,11 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         teamGrid.setHeightByRows(true);
 
         deleteTeam = new Button("Delete Team", this::deleteTeam);
-        editTeam = new Button("Edit Team", e->editTeam());
 
+        if (locked == false)
+            editTeam = new Button("Edit Team", e->editTeam());
+        else
+            editTeam = new Button("View Team", e->editTeam());
         addTeam = new Button("Add Team",e->addTeam());
         if (locked) addTeam.setEnabled(false);
 
@@ -87,12 +88,20 @@ public class MainView extends VerticalLayout implements HasDynamicTitle {
         removeAll();
 
         HorizontalLayout userStrip = new HorizontalLayout();
+        UserModel user = SessionState.getInstance().getCurrentUser();
+
         if (Config.getInstance().isDev() == true){
             userStrip.add(new Label("This is DEVELOPMENT"));
         }
         if (SessionState.getInstance().isAuthenticated()){
-            UserModel user = SessionState.getInstance().getCurrentUser();
-
+            // if we have a valid logged in user and they have break lock then let them make changes.
+            if ((user != null)  && (user.getBreakLock() == true)) locked = false;
+            if (locked) {
+                userStrip.add(new Label("Entries have been CLOSED, and all teams are locked.  If you have to make changes please mail web@downsman.com"));
+                editTeam.setText("View Team");
+            } else {
+                editTeam.setText("Edit Team");
+            }
             userStrip.add(new Label("Logged in : " + user.getUsername()));
             userStrip.add(new Button("Logout", e -> logout()));
             
