@@ -1,7 +1,7 @@
 server:
   ssl:
     key-store: /home/scottejames/keystore.p12
-    key-store-password: XXXX
+    key-store-password:
     key-store-type: pkcs12
     enabled=true:
   port: 1443

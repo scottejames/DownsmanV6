@@ -18,8 +18,8 @@ public class ReferenceData {
     public static final String OPENITFORDEASTBOURNE = "Open, Itford - Eastbourne";
 
     public static final String [] HIKE_CLASSES = {ACLASS,SCLASS,SCLASSWALK,VCLASS,ECLASS,BCLASS,OPENBIGORWASHINGTON,OPENBIGNORSTEYNING,OPENPLUMPTONITFORD,OPENPLUMPTONFIRLE,OPENITFORDEASTBOURNE};
-    public static final LocalDate HIKE_DATE = LocalDate.of(2022,10,1);
+    public static final LocalDate HIKE_DATE = LocalDate.of(2024,10,5);
 
     public static final String BANK_DETAILS = "A/C: XXX S/C: XXX";
-    public static final int ENTRYCOST = 7;
+    public static final int ENTRYCOST = 10;
 }
