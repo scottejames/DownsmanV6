@@ -14,6 +14,7 @@
         <vaadin.version>14.14.1</vaadin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <snakeyaml.version>2.2</snakeyaml.version>
     </properties>
 
     <parent>
