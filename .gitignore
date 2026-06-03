@@ -1,2 +1,7 @@
 /src/main/resources/keystore/keystore.p12
 /src/main/resources/keystore.p12
+node_modules/
+target/
+NewDownsman/node_modules/
+NewDownsman/.next/
+.env.local
